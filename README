@@ -1,9 +1,5 @@
 GWRL
 
 A high performance cross platform event reactor and proactor written in C.
-
-Features kqueue, epoll, poll, select, IO Completion Ports for Windows.
-
-Monitors File IO, Timeouts, Intervals, Future Date Timeouts.
-
-See the documentation at for more information.
+Featuring kqueue, epoll, poll, select, IO Completion Ports for Windows,
+and a small but elegant code base with minimal #ifdef source splitting.

@@ -14,8 +14,8 @@ proactor interface to create a unified cross-platform API for Unix and Windows.
 
 This document explains as much as possible about GWRL - how to use it,
 and how it works. If you have suggestions, comments, spelling corrections,
-or gramar nazi corrections (which I gladly accept)  you can email me at
-gngrwzrd@gmail.com. But please don't email me for technical support.
+or gramar nazi corrections  you can email me at gngrwzrd@gmail.com.
+But please don't email me for technical support.
 
 =head1 LICENSE
 
@@ -1566,14 +1566,3 @@ No details other than their function prototypes will be listed:
  bool gwtm_timespec_is_expired(struct timespec * ts1);
  bool gwtm_timespec_copy_if_smaller(struct timespec * source, struct timespec * update);
  struct timespec * gwtm_timespec_cmp(struct timespec * ts1, struct timespec * ts2);
-
-=head1 DOCUMENT HISTORY
-
-=head1 FUNCTION REFERENCE
-
-=head2 gwrl_create
-
-=head2 gwpr_create
-
-=head2 gwrl_evt_create
-
