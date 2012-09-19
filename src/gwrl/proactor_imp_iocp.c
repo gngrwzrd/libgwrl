@@ -183,6 +183,47 @@ void gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc) {
 	}
 }
 
+int
+gwpr_asynchronous_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_ovlp_op op) {
+	int res = 0;
+	DWORD flags = 0;
+	gwprdata * pdata = _gwprdata(fsrc->pdata);
+	gwpr_ovlp * ovlp = gwpr_ovlp_get(pr);
+	while(!ovlp) ovlp = gwpr_ovlp_get(pr);
+	ovlp->pr = pr;
+	ovlp->src = fsrc;
+	ovlp->op = op;
+	ovlp->buf = buf;
+	pdata->rdovlp = ovlp;
+	if(op == gwpr_ovlp_op_read) {
+		res = ReadFile(fsrc->fd,buf->buf,(DWORD)buf->bufsize,NULL,(LPOVERLAPPED)ovlp);
+		if(res == true) return 0;
+		if(!res && GetLastError() != ERROR_IO_PENDING) {
+			gwprintsyserr("(3FVs8) ReadFile error",GetLastError());
+			res = GetLastError();
+		}
+	} else if(op == gwpr_ovlp_op_recv) {
+		ovlp->wsabuf.buf = buf->buf;
+		ovlp->wsabuf.len = (ULONG)buf->bufsize;
+		res = WSARecv((SOCKET)fsrc->fd,&ovlp->wsabuf,1,NULL,&flags,(LPOVERLAPPED)ovlp,NULL);
+		if(res == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING) {
+			gwprintsyserr("(L4FdS) recv error",WSAGetLastError());
+			res = WSAGetLastError();
+		}
+	} else if(op == gwpr_ovlp_op_recvmsg) {
+		ovlp->wsabuf.buf = buf->buf;
+		ovlp->wsabuf.len = (ULONG)buf->bufsize;
+		ovlp->peerlen = sizeof(ovlp->peer);
+		res = WSARecvFrom((SOCKET)fsrc->fd,&ovlp->wsabuf,1,NULL,&flags,_sockaddr(&ovlp->peer),&ovlp->peerlen,(WSAOVERLAPPED*)ovlp,NULL);
+		if(res == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING) {
+			gwprintsyserr("(3FDsK) recvfrom error",WSAGetLastError());
+			res = WSAGetLastError();
+		}
+	}
+	return res;
+}
+
 int gwpr_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	int res = 0;
 	gwprdata * pdata = _gwprdata(fsrc->pdata);
