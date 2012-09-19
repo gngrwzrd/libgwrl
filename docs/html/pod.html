@@ -26,6 +26,8 @@
 
 		<li><a href="#known_supported_platforms_and_compilers">Known Supported Platforms and Compilers</a></li>
 		<li><a href="#supporting_new_platforms_or_compilers">Supporting New Platforms or Compilers</a></li>
+		<li><a href="#quick_start___generate_a_makefile">Quick Start - Generate a Makefile</a></li>
+		<li><a href="#cmake_output">CMake Output</a></li>
 	</ul>
 
 	<li><a href="#reactor_and_proactor">REACTOR AND PROACTOR</a></li>
@@ -318,11 +320,27 @@ ones that I have at my disposal and have tested examples on.</p>
 <p>If a particular operating system or compiler isn't listed here, give it
 a shot anyway - either it'll work or it wont. If you know enough about
 C and are willing to try and add support for your platform or compiler,
-it'd be something that can be added into GWRL.</p>
+it'd be something worth contributing to GWRL.</p>
 <p>I'm willing to help get GWRL compiling on other systems, you'd have to
 dedicate some resources on a server over SSH with git and compiler installed.
 I won't drop everything to add support for a target operating system or
 compiler though - when I get free time I would, unless you want to pay me.</p>
+<p>
+</p>
+<h2><a name="quick_start___generate_a_makefile">Quick Start - Generate a Makefile</a></h2>
+<p>This is just a quick example of generating a makefile - because CMake
+supports so many generators you can read CMake docs for more information.
+Here's how to generate a Makefile on Linux or Mac:</p>
+<pre>
+ cd libgwrl
+ mkdir build; cd build
+ cmake ..
+ make</pre>
+<p>
+</p>
+<h2><a name="cmake_output">CMake Output</a></h2>
+<p>By default CMake is configured to create a static .a archive and a dyld
+for Linux and Max. Windows will create a .lib file and .dll.</p>
 <p>
 </p>
 <hr />
