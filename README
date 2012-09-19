@@ -1,4 +1,4 @@
-GWRL
+LIBGWRL
 
 A high performance cross platform event reactor and proactor written in C.
 Featuring kqueue, epoll, poll, select, IO Completion Ports for Windows,
