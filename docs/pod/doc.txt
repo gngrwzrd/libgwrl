@@ -1,0 +1,133 @@
+REACTOR
+==============================================================================
+
+gwrl at it's core is an event reactor run loop that polls for IO with the
+kernel. At the reactor level it supports *nix flavored operating systems with
+kernel polling functions kqueue, epoll, poll, select, and will support any
+other *nix flavored file descriptors like eventfd, signalfd or plain old
+file descriptors like stdin and stdout.
+
+The reactor uses input sources that define where the reactor is gathering
+events from, it supports these input sources:
+
+Time Sources - these can generate timeout events, interval events, future date
+timeout events, and delayed function call events.
+
+IO Sources - these can generate read ready events, write ready events, and
+exception events.
+
+Signal Sources - these can generate signal events.
+
+File System Vnode Sources - these can generate file system vnode monitoring
+events like change, delete, update, etc. These sources are only supported
+with XXXXXXXXX
+
+As the reactor run loop is running these input sources are registered with
+the appropriate polling function with the kernel and events are waited for.
+
+The reactor also supports Windows IO Completion Ports but can't dispatch
+events to the user solely with the reactor. The proactor (below) is required
+to get user callbacks.
+
+PROACTOR
+==============================================================================
+
+Built on top of the reactor run loop is a proactor to support Windows IO
+Completion Ports and to unify a single asynchronous IO API across platforms.
+Because Window's asynchronous facilities are already "proactor" like it's a
+natural fit.
+
+For *nix like operating systems, the proactor uses read and write buffers to
+complete IO events that are ready with the kernel and call user defined
+callbacks to receive the data.
+
+On Windows the same read and write buffers are used, but OVERLAPPED objects
+are used with Windows' APIs that support overlapped IO to pass in the
+necessary buffers and parameters required for the Windows Kernel.
+
+On Windows the reactor runloop pulls completed IO Completion Ports packets
+with GetQueuedCompletionStatus and posts events for the proactor to dispatch
+back to the user.
+
+PROACTOR IO FILTERS
+==============================================================================
+
+The proactor supports read and write filters which are called on the buffer
+data after a read, and before a write. Typical uses are modifying the buffer
+data before or after it's been transmitted or received.
+
+THREADING MODEL
+==============================================================================
+
+gwrl uses a single lock to protect when input sources are added or removed.
+One thread may need to add an input source to a runloop on another thread
+and is therefore the only thing that is cross thread safe. This threading
+model has pros and cons - mostly pros though.
+
+Typically on Windows, the user creates one IO Completion Port then starts
+multiple worker threads. Each thread then pulls completed packets from the
+completion port with GetQueuedCompletionStatus. Other examples of Windows
+IOCP use locking mechanisms and sequence numbers to ensure the order of
+reads and writes to the same file descriptor across multiple threads are
+accurate and in order. This however adds complexity and locking that isn't
+required if the thread model is changed.
+
+With gwrl, the "Windows" approach isn't recommended. It's recommended that
+each thread have it's own runloop and proactor that handles IO events for any
+number of file descriptors. By associating an input source with a runloop on
+a single thread, locks can be removed because no cross thread operations are
+happening.
+
+With *nix like operating systems, you can remove an input source from a run
+loop and associate it with a different run loop on a different thread at any
+point. But with Windows, once a file descriptor has a completion port
+associated with it, it cannot be easily removed. Some thought should be put
+into how you use worker threads.
+
+WORKER THREAD MODEL
+==============================================================================
+
+Worker threads implement business logic. In a network app, business logic
+starts after two clients are connected. In a UDP based application, the
+clients can be considered connected as soon as a message is received.
+
+To use "worker threads" like most Windows users like. The pattern is slightly
+different. Typically you'll have an accept/connect run loop that then passes
+off connected clients to your worker threads. The worker thread then registers
+the input source with it's own loop. Then all IO operations will happen from
+the same thread.
+
+This threading model is also the most portable for Windows because once the
+file descriptor is registered with IO Completion Ports, it cannot be easily
+changed.
+
+THREADING RULES
+==============================================================================
+
+-Event input sources should be owned by a single thread's run loop.
+-The only cross thread safe functions are gwrl_src_add, and gwrl_src_remove.
+ That means from one thread you can could call gwrl_src_remove to remove an
+ input source from the current thread's run loop. Then call gwrl_src_add to
+ add the source to another runloop owned by another thread.
+
+STRUCTURE INTEGRITY TESTS
+==============================================================================
+
+Unit tests for this project don't provide 100% coverage. The focus is structure
+integrity. Meaning do the internal linked lists and other data structures remain
+valid after using my add / update / delete functions?
+
+EXAMPLES
+==============================================================================
+
+ECHO_REACTOR - simple echo server/client using just the reactor. *NIX ONLY.
+This illustrates how using the reactor is slightly more complicated because
+you have to do more yourself.
+
+ECHO_PROACTOR - simple echo server/client using the proactor. *NIX & WINDOWS.
+This illustrates how the proactor is slightly simpler and is portable.
+
+STDIN - simple example polling stdin with the proactor.
+
+TIMERS - demonstrates using timeout, future timeout, interval, delayed
+function calls and function calls.

@@ -1,0 +1,180 @@
+<!doctype>
+<html>
+<head>
+<style>
+body{}
+.nospace{margin:0;padding:0;}
+.fontnorm{font-weight:normal;}
+span.h3{font-size:18px;margin:0;padding:0;}
+#content{text-align:justify}
+ul li{margin-top:10px;}
+</style>
+</head>
+<body>
+<div id="content2">
+<table><tr><td width="50%">
+<div id="content">
+<h1 class="nospace">GINGER WIZARDS RUN LOOP</h1>
+<p class="nospace">
+<small>An event reactor and proactor for Unix and Windows.</small>
+</p>
+<hr/>
+<h2>REACTOR</h2>
+<p>
+At it's core gwrl is an event reactor that polls for IO events with the kernel.
+It supports kernel polling functions <strong><em>kqueue</em></strong>,
+<strong><em>epoll</em></strong>,
+<strong><em>poll</em></strong>, <strong><em>select</em></strong> and
+<strong><em>GetQueuedCompletionStatus</em></strong>.
+</p>
+<p>
+The reactor uses input sources that define where the reactor is gathering
+events from, these inputs are registered with the reactor for kernel polling.
+It supports these input sources:
+</p>
+<ul>
+<li>
+<strong>Time Sources</strong> - these can generate
+<em><strong>timeout events</strong></em>,
+<em><strong>interval events</strong></em>,
+<em><strong>future date timeout events</strong></em>, and
+<em><strong>delayed function call events</strong></em>.
+</li>
+<li>
+<strong>IO Sources</strong> - these can generate
+<strong><em>read ready events</em></strong>,
+<strong><em>write ready events</em></strong>, and
+<strong><em>exception events</em></strong>.
+</li>
+<li>
+<strong>Signal Sources</strong> - these can generate <strong><em>signal events</em></strong>.
+</li>
+<li>
+<strong>File System Sources</strong> - these can generate file system vnode monitoring
+events like change, delete, update, etc. These sources are only supported
+with XXXXXXXXX
+</li>
+</ul>
+<p>
+<p>
+	<table width="100%">
+		<tr>
+			<td width="50%">
+				<img src="reactor_architecture.png" />
+			</td>
+			<td>
+				<img src="reactor_flowchart.png" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<strong><small><em>reactor architecture</em></small></strong>
+			</td>
+			<td>
+				<strong><small><em>reactor flowchart</em></small></strong>
+			</td>
+		</tr>
+	</table>
+</p>
+<hr/>
+
+<h2>PROACTOR</h2>
+<p>
+Built on top of the reactor is a proactor to support Windows IO
+Completion Ports and to unify a single asynchronous IO API across platforms.
+Because Window's asynchronous facilities are already "proactor" like it's a
+natural fit.
+</p>
+<p>
+On Unix it uses read and write buffers to complete IO ready events on your
+behalf and dispatch a user callback when it's completed. On Windows it facilities
+calling overlapped IO functions and dispatching the user when those have completed.
+</p>
+<p>
+<table width="100%">
+	<tr>
+		<td width="100%" align="center">
+			<img src="proactor_architecture.png" />
+		</td>
+	</tr>
+	<tr>
+		<td align="center">
+			<strong><small><em>proactor architecture</em></small></strong>
+		</td>
+	</tr>
+</table>
+</p>
+
+<h4>PROACTOR IO FILTERS</h4>
+<p>
+The proactor supports read and write filters which are called on buffer
+data after a read, and before a write. Typical uses are modifying the buffer
+data before or after it's been transmitted or received.
+</p>
+
+<h4>PROACTOR CALLBACKS</h4>
+<p>
+Supported callbacks include:
+<ul>
+<li>Client Accepted</li>
+<li>Client Connected</li>
+<li>Closed</li>
+<li>Did Read</li>
+<li>Did Write</li>
+<li>Exception</li>
+</ul>
+</p>
+<hr/>
+
+<h2>THREADING</h2>
+<p>
+gwrl uses a single lock when input sources are added to the runloop -
+one thread may need to add an input source to a runloop on another thread
+and is therefore the only thing that is cross thread safe. As long as a
+few rules are followed locks will rarely be used.
+</p>
+<ul>
+<li>Input sources should be owned by a single runloop.</li>
+<li>All IO for an input source happens on a single thread.</li>
+<li>Keep in mind the only cross thread safe function is <strong><em>gwrl_src_add</em></strong>.
+</li>
+</ul>
+<hr/>
+
+<h2>WORKER THREADS</h2>
+<p>
+Any number of threads can use their own runloop to offload IO operations from
+another runloop. A typical example is a server that has one acceptor runloop
+to accept clients, create a new input source for the new client, then move
+it to another runloop on another thread that implements the business logic.
+Here's a flowchart for this pattern:
+</p>
+<p>
+<table>
+	<tr>
+		<td>
+			<img src="worker_thread.png" /><br/>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<small><strong><em>Recommended worker thread pattern</em></strong></small>
+		</td>
+	</tr>
+</table>
+</p>
+
+</div>
+</td>
+<td width="5%">&nbsp;</td>
+<td valign="top">
+<div id="source">
+	Get the source on github.
+</div>
+<div id="compiling">
+	Compiling
+</div>
+</td></tr></table>
+</div>
+</body>
+</html>

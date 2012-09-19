@@ -1,0 +1,18 @@
+libgwrl is Copyright 2012 by Aaron Smith (gngrwzrd@gmail.com)
+
+-You are free to modify for private studying.
+-You are free to use in commercial software.
+-You are free to re-distribute modified versions of the source.
+-You are free to derive or fork other versions of the source.
+-You are not free to re-distribute source or object libraries
+ under a different license.
+
+If you release a modified, derived, or forked version, the author
+Aaron Smith must be notified by email at gngrwzrd@gmail.com. The
+new version must contain the above copyright notice.
+
+Commercial and non-commercial executable software must contain
+the above copyright notice in a user accessible window, help, or
+about notice.
+
+Aaron Smith is not liable for damage resulting from this code.

@@ -1,0 +1,111 @@
+#ifndef GW_SHARED_CONFIG_H
+#define GW_SHARED_CONFIG_H
+
+//machine order
+#define BIG_ENDIAN ${BIG_ENDIAN}
+
+//platform
+#cmakedefine PLATFORM_DARWIN
+#cmakedefine PLATFORM_LINUX
+#cmakedefine PLATFORM_FREEBSD
+#cmakedefine PLATFORM_SUN
+#cmakedefine PLATFORM_WINDOWS
+
+//headers
+#cmakedefine HAVE_ASSERT_H
+#cmakedefine HAVE_ERRNO_H
+#cmakedefine HAVE_FCNTL_H
+#cmakedefine HAVE_LIMITS_H
+#cmakedefine HAVE_MATH_H
+#cmakedefine HAVE_STDBOOL_H
+#cmakedefine HAVE_STDINT_H
+#cmakedefine HAVE_STDIO_H
+#cmakedefine HAVE_STDLIB_H
+#cmakedefine HAVE_STRING_H
+#cmakedefine HAVE_STRINGS_H
+#cmakedefine HAVE_TIME_H
+#cmakedefine HAVE_SYS_TIME_H
+#cmakedefine HAVE_SYS_TYPES_H
+#cmakedefine HAVE_SYS_UIO_H
+#cmakedefine HAVE_UNISTD_H
+#cmakedefine HAVE_ARPA_INET_H
+#cmakedefine HAVE_NETINET_IN_H
+#cmakedefine HAVE_NET_ROUTE_H
+#cmakedefine HAVE_NETDB_H
+#cmakedefine HAVE_SYS_SOCKET_H
+#cmakedefine HAVE_SYS_SYSCTL_H
+#cmakedefine HAVE_WINBASE_H
+#cmakedefine HAVE_WINDOWS_H
+#cmakedefine HAVE_WINSOCK2_H
+#cmakedefine HAVE_PTHREAD_H
+
+//types
+#cmakedefine HAVE_BOOL
+#cmakedefine HAVE_SIZE_T
+#cmakedefine HAVE_SSIZE_T
+#cmakedefine HAVE_INT8_T
+#cmakedefine HAVE_INT16_T
+#cmakedefine HAVE_INT32_T
+#cmakedefine HAVE_INT64_T
+#cmakedefine HAVE_UINT8_T
+#cmakedefine HAVE_UINT16_T
+#cmakedefine HAVE_UINT32_T
+#cmakedefine HAVE_UINT64_T
+#cmakedefine HAVE_SOCKLEN_T
+#cmakedefine HAVE__SOCKLEN_T
+#cmakedefine HAVE_SA_FAMILY_T
+#cmakedefine HAVE__SA_FAMILY_T
+#cmakedefine HAVE_WS_ADDRESS_FAMILY
+
+//structures
+#cmakedefine HAVE_STRUCT_TIMEVAL
+#cmakedefine HAVE_STRUCT_TIMESPEC
+#cmakedefine HAVE_STRUCT_SOCKADDR_STORAGE
+
+//functions or macros
+#cmakedefine HAVE_FCNTL
+#cmakedefine HAVE_KQUEUE
+#cmakedefine HAVE_EPOLL
+#cmakedefine HAVE_POLL
+#cmakedefine HAVE_SELECT
+#cmakedefine HAVE_SYSCTL
+#cmakedefine HAVE_BZERO
+#cmakedefine HAVE_GETTIMEOFDAY
+
+//whether or not a backend was found in configure
+#cmakedefine HAVE_BACKEND
+
+//backends
+#cmakedefine GWRL_KQUEUE_KEVENT_COUNT @GWRL_KQUEUE_KEVENT_COUNT@
+#cmakedefine GWRL_EPOLL_EVENT_COUNT @GWRL_EPOLL_EVENT_COUNT@
+#cmakedefine GWRL_POLLFD_COUNT @GWRL_POLLFD_COUNT@
+#cmakedefine KQUEUE_BACKEND
+#cmakedefine USING_KQUEUE_BACKEND
+#cmakedefine EPOLL_BACKEND
+#cmakedefine USING_EPOLL_BACKEND
+#cmakedefine POLL_BACKEND
+#cmakedefine USING_POLL_BACKEND
+#cmakedefine SELECT_BACKEND
+#cmakedefine USING_SELECT_BACKEND
+#cmakedefine IOCP_BACKEND
+#cmakedefine USING_IOCP_BACKEND
+
+//reactor
+#cmakedefine GWRL_SRC_TYPES_COUNT @GWRL_SRC_TYPES_COUNT@
+#cmakedefine GWRL_EVENT_CACHE_MAX @GWRL_EVENT_CACHE_MAX@
+#cmakedefine GWRL_GATHER_FUNCS_MAX @GWRL_GATHER_FUNCS_MAX@
+#cmakedefine GWRL_REDISPATCH_MAX @GWRL_REDISPATCH_MAX@
+
+//proactor
+#cmakedefine USING_PROACTOR
+#cmakedefine GWPR_WRQUEUE_CACHE_MAX @GWPR_WRQUEUE_CACHE_MAX@
+#cmakedefine GWPR_MAX_ACCEPT @GWPR_MAX_ACCEPT@
+#cmakedefine GWPR_TRY_SYNCHRONOUS_WRITE_UNIX
+#cmakedefine GWPR_SYNCHRONOUS_WRITE_MAX_BYTES @GWPR_SYNCHRONOUS_WRITE_MAX_BYTES@
+#cmakedefine GWPR_FILTERS_MAX @GWPR_FILTERS_MAX@
+
+//memory allocation
+#cmakedefine gwrl_mem_calloc(n,s) (@gwrl_mem_calloc@)
+#cmakedefine gwrl_mem_free(mm) (@gwrl_mem_free@)
+
+#endif
