@@ -70,8 +70,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 				TRY_READFILTERS
 				if(pdata->didreadcb) pdata->didreadcb(pr,&ioinfo);
 				if(src->flags & GWRL_RD) {
-					gwprbuf * buf = gwpr_buf_get(pr,pdata->rdbufsize);
-					while(!buf) buf = gwpr_buf_get(pr,pdata->rdbufsize);
+					gwprbuf * buf = gwpr_buf_getp(pr,pdata->rdbufsize);
 					if(ovlp->op == gwpr_ovlp_op_read) gwpr_read(pr,ioinfo.src,buf);
 					else if(ovlp->op == gwpr_ovlp_op_recv) gwpr_recv(pr,ioinfo.src,buf);
 				}
@@ -87,8 +86,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			TRY_READFILTERS
 			if(pdata->didreadcb) pdata->didreadcb(pr,&ioinfo);
 			if(src->flags & GWRL_RD) {
-				gwprbuf * buf = gwpr_buf_get(pr,pdata->rdbufsize);
-				while(!buf) buf = gwpr_buf_get(pr,pdata->rdbufsize);
+				gwprbuf * buf = gwpr_buf_getp(pr,pdata->rdbufsize);
 				gwpr_recvfrom(pr,ioinfo.src,buf);
 			}
 			break;
@@ -136,8 +134,7 @@ gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 		ovlp->op = gwpr_ovlp_op_accept;
 		ovlp->pr = pr;
 		ovlp->src = fsrc;
-		ovlp->buf = gwpr_buf_get(pr,256);
-		while(!ovlp->buf) ovlp->buf = gwpr_buf_get(pr,128);
+		ovlp->buf = gwpr_buf_getp(pr,256);
 		ovlp->acceptsock = (fileid_t)acceptsock;
 		res = iobkd->AcceptEx((SOCKET)fsrc->fd,acceptsock,ovlp->buf->buf,0,128,128,NULL,(LPOVERLAPPED)ovlp);
 		if(res == true) continue;

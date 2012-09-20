@@ -213,6 +213,23 @@ gwpr_buf_get(gwpr * pr, size_t size) {
 }
 
 gwprbuf *
+gwpr_buf_getp(gwpr * pr, size_t size) {
+	gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));
+	while(!data) {
+		gwerr("(Erl3F) calloc error");
+		data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));
+	}
+	data->buf = (char *)gwrl_mem_calloc(1,size);
+	while(!data->buf) {
+		gwerr("(RF4Hk) calloc error");
+		data->buf = (char *)gwrl_mem_calloc(1,size);
+	}
+	data->buf = data->buf;
+	data->bufsize = size;
+	return data;
+}
+
+gwprbuf *
 gwpr_buf_get_tagged(gwpr * pr, size_t size, int tag) {
 	gwprbuf * buf = gwpr_buf_get(pr,size);
 	if(buf) buf->tag = tag;
