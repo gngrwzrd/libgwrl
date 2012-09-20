@@ -12,8 +12,8 @@ img { border: 0; }
 form { margin: 0; }
 input { margin: 2px; }
 
-a {color:#000;}
-a:visited {color:#000;}
+a {color:black;}
+a:visited {color:black;}
 td {margin:0;padding:0;}
 div {border-width:0;}
 
@@ -113,28 +113,28 @@ div.pod > ul > li > ul > li > ul > li {
 
 h1 {
   margin-top: 5ex;
-  font-size: 180%;
+  font-size: 280%;
   font-weight: bold;
   border-bottom: 2px solid #BBB;
   padding-bottom: 0px;
 }
 
 h2 {
-  font-size: 120%;
+  font-size: 175%;
   margin-top: 3ex;
   border-bottom: 2px solid #BBB;
   padding-bottom: 0;
 }
 
 h3 {
-  font-size: 100%;
+  font-size: 95%;
   margin-top: 3ex;
   border-bottom: 2px solid #BBB;
   padding-bottom: 0;
 }
 
 h4 {
-  font-size: 85%;
+  font-size: 80%;
   margin-top: 3ex;
   border-bottom: 2px solid #BBB;
   padding-bottom: 0;
