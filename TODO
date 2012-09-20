@@ -1,5 +1,6 @@
 
 PROACTOR:
+-gwpr_free
 -Windows error handling?
 
 DOCS:
@@ -7,7 +8,6 @@ DOCS:
 -Storing Reactors and Proactors with Thread Specific Data
 
 TESTS:
--reactor_del_pers_timeouts2
 -test re-dispatching and max
 -test proactor filters
 -test gwpr_stop_read
