@@ -32,20 +32,23 @@ target_link_libraries(proactor_buf gwrl)
 add_executable(reactor_timeout_rearm reactor_timeout_rearm.c)
 target_link_libraries(reactor_timeout_rearm gwrl)
 
-add_executable(event_free1 event_free1.c)
-target_link_libraries(event_free1 gwrl)
+add_executable(reactor_free1 reactor_free1.c)
+target_link_libraries(reactor_free1 gwrl)
 
-add_executable(event_free2 event_free2.c)
-target_link_libraries(event_free2 gwrl)
+add_executable(reactor_free2 reactor_free2.c)
+target_link_libraries(reactor_free2 gwrl)
 
-add_executable(event_free3 event_free3.c)
-target_link_libraries(event_free3 gwrl)
+add_executable(reactor_free3 reactor_free3.c)
+target_link_libraries(reactor_free3 gwrl)
 
 add_executable(reactor_del_pers_timeouts reactor_del_pers_timeouts.c)
 target_link_libraries(reactor_del_pers_timeouts gwrl)
 
 add_executable(reactor_del_pers_timeouts2 reactor_del_pers_timeouts2.c)
 target_link_libraries(reactor_del_pers_timeouts2 gwrl)
+
+add_executable(reactor_del_pers_timeouts3 reactor_del_pers_timeouts3.c)
+target_link_libraries(reactor_del_pers_timeouts3 gwrl)
 
 add_executable(proactor_filters proactor_filters.c)
 target_link_libraries(proactor_filters gwrl)
