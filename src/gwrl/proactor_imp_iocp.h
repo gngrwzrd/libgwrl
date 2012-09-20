@@ -58,3 +58,5 @@ typedef struct gwprdata {
 
 gwpr_ovlp * gwpr_ovlp_get(gwpr * pr);
 void gwpr_ovlp_free(gwpr * pr, gwpr_ovlp * ovlp);
+int gwpr_asynchronous_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, gwpr_ovlp_op op);
+int gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * peer, socklen_t peerlen, gwpr_ovlp_op op);

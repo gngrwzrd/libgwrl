@@ -9,18 +9,54 @@ extern "C" {
 void
 gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 	if(evt->src->type == GWRL_SRC_TYPE_FILE && evt->flags & GWRL_IOCP) {
-		gwpr_io_op_id op;
+		gwpr_io_op_id op = (gwpr_io_op_id)0;
 		gwpr * pr = _gwpr(rl->pr);
 		gwpr_ovlp * ovlp = _gwprovlp(evt->userdata);
+		OVERLAPPED * _ovlp = (OVERLAPPED *)ovlp;
 		gwrlsrc_file * fsrc = _gwrlsrcf(evt->src);
 		gwrlsrc * src = evt->src;
 		gwprdata * pdata = _gwprdata(fsrc->pdata);
+		gwprbuf * buf = NULL;
 		gwpr_io_info ioinfo;
 		gwpr_error_info errinfo;
-		gwprbuf * buf = NULL;
 		DWORD numBytes = 0;
-		bool ovlpres = GetOverlappedResult(fsrc->fd,(LPOVERLAPPED)ovlp,&numBytes,TRUE);
-		
+		DWORD flags = 0;
+		bool ovlpres = false;
+		int errnm = 0;
+
+		if(ovlp->op == gwpr_ovlp_op_read) op = gwpr_read_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_write) op = gwpr_write_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_recvfrom) op = gwpr_recvfrom_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_sendto) op = gwpr_sendto_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_recv) op = gwpr_recv_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_send) op = gwpr_send_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_recvmsg) op = gwpr_recvmsg_op_id;
+		else if(ovlp->op == gwpr_ovlp_op_sendmsg) op = gwpr_sendmsg_op_id;
+
+		bzero(&ioinfo,sizeof(ioinfo));
+		bzero(&errinfo,sizeof(errinfo));
+		ioinfo.buf = ovlp->buf;
+		ioinfo.src = fsrc;
+		ioinfo.op = op;
+
+		if(op == gwpr_read_op_id || op == gwpr_write_op_id) {
+			ovlpres = GetOverlappedResult(fsrc->fd,(LPOVERLAPPED)ovlp,&numBytes,TRUE);
+			if(!ovlpres) {
+				errinfo.errnm = GetLastError();
+				errinfo.src = fsrc;
+				errinfo.buf = ovlp->buf;
+				errinfo.op = op;
+			}
+		} else {
+			ovlpres = WSAGetOverlappedResult((SOCKET)fsrc->fd,(LPOVERLAPPED)ovlp,&numBytes,TRUE,&flags);
+			if(!ovlpres) {
+				errinfo.errnm = WSAGetLastError();
+				errinfo.src = fsrc;
+				errinfo.buf = ovlp->buf;
+				errinfo.op = op;
+			}
+		}
+
 		#define TRY_READFILTERS \
 			if(pdata->rdfilters && pdata->rdfilters[0] != NULL) {\
 				int i = 0;\
@@ -30,13 +66,9 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 				}\
 			}\
 		
-		bzero(&ioinfo,sizeof(ioinfo));
-		bzero(&errinfo,sizeof(errinfo));
-		
 		switch(ovlp->op) {
 		case gwpr_ovlp_op_accept:
 			if(pdata->acceptcb) {
-				ioinfo.src = _gwrlsrcf(evt->src);
 				ioinfo.peersrc = _gwrlsrcf(gwrl_src_file_create(ovlp->acceptsock,0,NULL,NULL));
 				ioinfo.peerlen = sizeof(ioinfo.peer);
 				getpeername((SOCKET)ovlp->acceptsock,_sockaddr(&ioinfo.peer),&ovlp->peerlen);
@@ -48,7 +80,6 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 		
 		case gwpr_ovlp_op_connect:
 			if(pdata->connectcb) {
-				ioinfo.src = _gwrlsrcf(evt->src);
 				ioinfo.peerlen = ovlp->peerlen;
 				memcpy(&ioinfo.peer,&ovlp->peer,ovlp->peerlen);
 				pdata->connectcb(pr,&ioinfo);
@@ -57,55 +88,59 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 		
 		case gwpr_ovlp_op_read:
 		case gwpr_ovlp_op_recv:
-			if(ovlp->op == gwpr_ovlp_op_read) op = gwpr_read_op_id;
-			if(ovlp->op == gwpr_ovlp_op_recv) op = gwpr_recv_op_id;
-			ioinfo.buf = ovlp->buf;
-			ioinfo.src = fsrc;
-			ioinfo.op = op;
-			if(!ovlpres && GetLastError() == ERROR_HANDLE_EOF) {
-				if(pdata->closedcb) pdata->closedcb(pr,&ioinfo);
-			} else if((ovlp->op == gwpr_ovlp_op_read || ovlp->op == gwpr_ovlp_op_recv) && numBytes == 0) {
+			if(!ovlpres) {
+				if(op == gwpr_read_op_id) memcpy(errinfo.fnc,"ReadFile\0",9);
+				else if(op == gwpr_recv_op_id) memcpy(errinfo.fnc,"WSARecv\0",8);
+				if(pdata->errorcb) pdata->errorcb(pr,&errinfo);
+			} else if(ovlpres && (ovlp->op == gwpr_ovlp_op_read || ovlp->op == gwpr_ovlp_op_recv) && numBytes == 0) {
 				if(pdata->closedcb) pdata->closedcb(pr,&ioinfo);
 			} else {
 				TRY_READFILTERS
 				if(pdata->didreadcb) pdata->didreadcb(pr,&ioinfo);
 				if(src->flags & GWRL_RD) {
 					gwprbuf * buf = gwpr_buf_getp(pr,pdata->rdbufsize);
-					if(ovlp->op == gwpr_ovlp_op_read) gwpr_read(pr,ioinfo.src,buf);
-					else if(ovlp->op == gwpr_ovlp_op_recv) gwpr_recv(pr,ioinfo.src,buf);
+					gwpr_asynchronous_read(pr,fsrc,buf,(gwpr_ovlp_op)ovlp->op);
 				}
 			}
 			break;
 			
 		case gwpr_ovlp_op_recvfrom:
-			ioinfo.op = gwpr_recvfrom_op_id;
-			ioinfo.buf = ovlp->buf;
-			ioinfo.src = fsrc;
-			ioinfo.peerlen = ovlp->peerlen;
-			memcpy(&ioinfo.peer,&ovlp->peer,ovlp->peerlen);
-			TRY_READFILTERS
-			if(pdata->didreadcb) pdata->didreadcb(pr,&ioinfo);
-			if(src->flags & GWRL_RD) {
-				gwprbuf * buf = gwpr_buf_getp(pr,pdata->rdbufsize);
-				gwpr_recvfrom(pr,ioinfo.src,buf);
+			if(!ovlpres) {
+				memcpy(errinfo.fnc,"WSARecvFrom\0",12);
+				if(pdata->errorcb) pdata->errorcb(pr,&errinfo);
+			} else {
+				ioinfo.peerlen = ovlp->peerlen;
+				memcpy(&ioinfo.peer,&ovlp->peer,ovlp->peerlen);
+				TRY_READFILTERS
+				if(pdata->didreadcb) pdata->didreadcb(pr,&ioinfo);
+				if(src->flags & GWRL_RD) {
+					gwprbuf * buf = gwpr_buf_getp(pr,pdata->rdbufsize);
+					gwpr_asynchronous_read(pr,fsrc,buf,(gwpr_ovlp_op)ovlp->op);
+				}
 			}
+
 			break;
 		
 		case gwpr_ovlp_op_write:
 		case gwpr_ovlp_op_send:
-			ioinfo.op = gwpr_write_op_id;
-			ioinfo.buf = ovlp->buf;
-			ioinfo.src = _gwrlsrcf(evt->src);
-			if(pdata->didwritecb) pdata->didwritecb(pr,&ioinfo);
+			if(!ovlpres) {
+				if(op == gwpr_write_op_id) memcpy(errinfo.fnc,"WriteFile\0",10);
+				else if(op == gwpr_send_op_id) memcpy(errinfo.fnc,"WSASend\0",8);
+				if(pdata->errorcb) pdata->errorcb(pr,&errinfo);
+			} else {
+				if(pdata->didwritecb) pdata->didwritecb(pr,&ioinfo);
+			}
 			break;
 		
 		case gwpr_ovlp_op_sendto:
-			ioinfo.op = gwpr_sendto_op_id;
-			ioinfo.buf = ovlp->buf;
-			ioinfo.src = _gwrlsrcf(evt->src);
-			ioinfo.peerlen = ovlp->peerlen;
-			memcpy(&ioinfo.peer,&ovlp->peer,sizeof(ioinfo.peer));
-			if(pdata->didwritecb) pdata->didwritecb(pr,&ioinfo);
+			if(!ovlpres) {
+				memcpy(errinfo.fnc,"WSASendTo\0",10);
+				if(pdata->errorcb) pdata->errorcb(pr,&errinfo);
+			} else {
+				ioinfo.peerlen = ovlp->peerlen;
+				memcpy(&ioinfo.peer,&ovlp->peer,sizeof(ioinfo.peer));
+				if(pdata->didwritecb) pdata->didwritecb(pr,&ioinfo);
+			}
 			break;
 		}
 		
