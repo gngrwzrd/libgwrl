@@ -1,13 +1,17 @@
+MEMORY:
+-valgrind tests
 
 PROACTOR:
 -gwpr_free
--Windows error handling?
+-Need another pair of eyes on windows error logic
 
 DOCS:
 -Making connections pod
 -Storing Reactors and Proactors with Thread Specific Data
 
 TESTS:
+-tcp and udp test utility, test all the read/write methods in proactor
+-thread specific data
 -test re-dispatching and max
 -test proactor filters
 -test gwpr_stop_read

@@ -1525,51 +1525,63 @@ need access to the reactor or proactor associated with the current thread.</p>
  #include &quot;gwrl/proactor.h&quot;
  #include &lt;pthread.h&gt;
  
- typedef thrdata {
+ pthread_t th1;
+ pthread_key_t th1key;
+ 
+ typedef struct thdata {
      gwrl * rl;
      gwpr * pr;
- } thrdata;
+ } thdata;
  
- pthread_t thread1;
- pthread_key_t thread1Key;
- 
- void stdin_did_read(gwpr * pr, gwpr_io_info * info) {
-     printf(&quot;did read stdin!\n&quot;);
-     gwpr_buf_free(info-&gt;buf);
+ void stdin_read(gwpr * pr, gwpr_io_info * info) {
+     printf(&quot;did read!\n&quot;);
+     gwpr_buf_free(pr,info-&gt;buf);
+     thdata * data = (thdata *)pthread_getspecific(th1key);
+     gwrl * rl = data-&gt;rl;
+     gwrl_stop(rl);
  }
  
- void myThreadSetupReactor(gwrl * rl, gwrlevt * evt) {
-     thrdata * thrdata = (thrdata *)pthread_getspecific(thread1Key);
-     gwrlsrc_file * stdin_src = gwpr_add_fd(thrdata-&gt;pr,STDIN_FILENO,NULL);
-     gwpr_set_cb(thdata-&gt;pr,stdin_src,&amp;stdin_did_read);
+ void testThreadSpecificData() {
+     thdata * data = (thdata *)pthread_getspecific(th1key);
+     gwpr * pr = data-&gt;pr;
+     gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
+     gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&amp;stdin_read);
+     gwpr_read(pr,fsrc, gwpr_buf_get(pr,128));
  }
  
- void myThreadTeardownReactor(gwrl * rl, gwpr * pr) {
-     gwpr_free(pr);
-     gwrl_free(rl,NULL);
+ void setupReactor(gwrl * rl, gwrlevt * evt) {
+     testThreadSpecificData();
  }
  
- void * myThread(void * arg) {
+ void teardown_reactor(gwrl * rl) {
+     gwrlsrc * src = NULL;
+     gwrlsrc * hsrc = NULL;
+     gwrl_free(rl,&amp;hsrc);
+     src = hsrc;
+     while(src) {
+         if(src-&gt;type == GWRL_SRC_TYPE_FILE) close(_gwrlsrcf(src)-&gt;fd);
+         src = src-&gt;next;
+     }
+     gwrl_free(NULL,&amp;hsrc);
+ }
+ 
+ void * threadMain(void * arg) {
      gwrl * rl = gwrl_create();
      gwpr * pr = gwpr_create(rl);
-     
-     thrdata * thdata = malloc(sizeof(thrdata));
-     thdata-&gt;rl = rl;
-     thdata-&gt;pr = pr;
-     
-     pthread_key_create(&amp;thread1Key,NULL);
-     pthread_setspecific(thread1Key,thrdata);
-     
-     gwrl_post_function(rl,&amp;myThreadSetupReactor,NULL);
+     thdata * data = malloc(sizeof(thdata));
+     data-&gt;rl = rl;
+     data-&gt;pr = pr;
+     pthread_key_create(&amp;th1key,NULL);
+     pthread_setspecific(th1key,data);
+     gwrl_post_function(rl,&amp;setupReactor,NULL);
      gwrl_run(rl);
-     myThreadTeardownReactor(rl,pr);
-     pthread_setspecitif(thread1Key,NULL);
-     free(thdata);
+     teardown_reactor(rl);
+     return NULL;
  }
  
  int main(int argc, char ** argv) {
-     pthread_create(&amp;thread1,NULL,&amp;myThread,NULL);
-     pthread_join(thread1,NULL);
+     pthread_create(&amp;th1,NULL,&amp;threadMain,NULL);
+     pthread_join(th1,NULL);
      return 0;
  }</pre>
 <p>
