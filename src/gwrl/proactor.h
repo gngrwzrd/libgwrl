@@ -188,7 +188,7 @@ int gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 void gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc);
 
 //write data asynchronously from the provided buffer. Unlike the read functions
-//above, writes will only happen while there's data. Once all the write data
+//above, writes will only happen while there's data to write. After all the write data
 //is written write events will be shut off for the input source until you initiate
 //more writes.
 int gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);

@@ -1376,11 +1376,66 @@ reactor belonging to the current thread.
 =head2 Storing Reactors and Proactors with Thread Specific Data
 
 If each thread has it's own reactor or proactor, then it's probably a good
-idea to use thread specific data to store them, and retrieve them at any
+idea to use thread specific data to store them and retrieve them at any
 time - unless of course your program is in one file.
 
 Using thread specific data makes it simpler to write larger programs that
 need access to the reactor or proactor associated with the current thread.
+
+Pthread Example:
+
+ #include "gwrl/proactor.h"
+ #include <pthread.h>
+ 
+ typedef thrdata {
+     gwrl * rl;
+     gwpr * pr;
+ } thrdata;
+ 
+ pthread_t thread1;
+ pthread_key_t thread1Key;
+ 
+ void stdin_did_read(gwpr * pr, gwpr_io_info * info) {
+     printf("did read stdin!\n");
+     gwpr_buf_free(info->buf);
+ }
+ 
+ void myThreadSetupReactor(gwrl * rl, gwrlevt * evt) {
+     thrdata * thrdata = (thrdata *)pthread_getspecific(thread1Key);
+     gwpr * pr = thrdata->pr;
+     gwrlsrc_file * stdin_src = gwpr_add_fd(pr,STDIN_FILENO,NULL);
+     gwpr_set_cb(pr,stdin_src,gwpr_did_read_cb_id,&stdin_did_read);
+     gwpr_read(pr,stdin_src);
+ }
+ 
+ void myThreadTeardownReactor(gwrl * rl, gwpr * pr) {
+     gwpr_free(pr);
+     gwrl_free(rl,NULL);
+ }
+ 
+ void * myThread(void * arg) {
+     gwrl * rl = gwrl_create();
+     gwpr * pr = gwpr_create(rl);
+     
+     thrdata * thdata = malloc(sizeof(thrdata));
+     thdata->rl = rl;
+     thdata->pr = pr;
+     
+     pthread_key_create(&thread1Key,NULL);
+     pthread_setspecific(thread1Key,thrdata);
+     
+     gwrl_post_function(rl,&myThreadSetupReactor,NULL);
+     gwrl_run(rl);
+     myThreadTeardownReactor(rl,pr);
+     pthread_setspecitif(thread1Key,NULL);
+     free(thdata);
+ }
+ 
+ int main(int argc, char ** argv) {
+     pthread_create(&thread1,NULL,&myThread,NULL);
+     pthread_join(thread1,NULL);
+     return 0;
+ }
 
 =head1 WORKER THREADS
 
