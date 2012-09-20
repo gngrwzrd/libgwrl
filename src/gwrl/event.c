@@ -416,40 +416,36 @@ gwrl_src_remove(gwrl * rl, gwrlsrc * src) {
 void
 gwrl_del_persistent_timeouts(gwrl * rl) {
 	gwrlsrc * src = rl->sources[GWRL_SRC_TYPE_TIME];
-	gwrlsrc * thead = NULL;
-	gwrlsrc * dhead = NULL;
-	gwrlsrc * dtmp = NULL;
+	gwrlsrc * shead = src;
+	gwrlsrc * phead = NULL;
 	gwrlsrc * psrc = NULL;
+	gwrlsrc * del = NULL;
+	gwrlsrc * deltmp = NULL;
 	rl->sources[GWRL_SRC_TYPE_TIME] = NULL;
 
 	//first gather all the ones to free, and
-	//take them out of the source list.
+	//take them out of the source list
 	while(src) {
 		if(src->flags & GWRL_PERSIST) {
-			if(!psrc) thead = src->next;
-			else if(psrc) psrc->next = src->next;
-			if(!dhead) {
-				dhead = src;
-				dtmp = dhead;
-				dhead->next = NULL;
-			} else {
-				dtmp->next = src;
-				dtmp = src;
-			}
+			del = src;
+			if(src == shead) shead = shead->next;
+			if(psrc) psrc->next = src->next;
+			if(!phead) phead = del;
+			else phead->next = del, phead = del;
 		}
 		psrc = src;
 		src = src->next;
 	}
 
-	//now delete the persistent ones
-	while(dhead) {
-		dtmp = dhead->next;
-		free(dhead);
-		dhead = dtmp;
+	//delete the persistent ones
+	while(phead) {
+		deltmp = phead->next;
+		free(phead);
+		phead = deltmp;
 	}
 
 	//replace time input sources with updated list
-	rl->sources[GWRL_SRC_TYPE_TIME] = thead;
+	rl->sources[GWRL_SRC_TYPE_TIME] = shead;
 }
 
 void
