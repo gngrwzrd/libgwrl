@@ -13,13 +13,13 @@ target_link_libraries(reactor_gatherfunc gwrl)
 add_executable(reactor_events reactor_events.c)
 target_link_libraries(reactor_events gwrl)
 
-#if(NOT ${WIN32})
+if(NOT PLATFORM_WINDOWS)
 	add_executable(reactor_wake_pipe reactor_wake_pipe.c)
 	target_link_libraries(reactor_wake_pipe gwrl pthread)
 	
 	add_executable(proactor_wrq proactor_wrq.c)
 	target_link_libraries(proactor_wrq gwrl)
-#endif()
+endif()
 
 if(${WIN32})
 	add_executable(event_wake_iocp event_wake_iocp.c)
