@@ -1,8 +1,8 @@
 include_directories("${gwrl_BINARY_DIR}")
 include_directories("${gwrl_SOURCE_DIR}/src")
 
-add_executable(time time.c)
-target_link_libraries(time gwrl)
+add_executable(time_fncs time_fncs.c)
+target_link_libraries(time_fncs gwrl)
 
 add_executable(reactor_src reactor_src.c)
 target_link_libraries(reactor_src gwrl)
@@ -13,12 +13,24 @@ target_link_libraries(reactor_gatherfunc gwrl)
 add_executable(reactor_events reactor_events.c)
 target_link_libraries(reactor_events gwrl)
 
+add_executable(reactor_options reactor_options.c)
+target_link_libraries(reactor_options gwrl)
+
+add_executable(reactor_timers reactor_timers.c)
+target_link_libraries(reactor_timers gwrl)
+
+add_executable(reactor_custom_gathering reactor_custom_gathering.c)
+target_link_libraries(reactor_custom_gathering gwrl)
+
 if(NOT PLATFORM_WINDOWS)
 	add_executable(reactor_wake_pipe reactor_wake_pipe.c)
 	target_link_libraries(reactor_wake_pipe gwrl pthread)
 	
 	add_executable(proactor_wrq proactor_wrq.c)
 	target_link_libraries(proactor_wrq gwrl)
+
+	add_executable(proactor_thread_specific_nix proactor_thread_specific_nix.c)
+	target_link_libraries(proactor_thread_specific_nix gwrl pthread)
 endif()
 
 if(${WIN32})
@@ -52,3 +64,6 @@ target_link_libraries(reactor_del_pers_timeouts3 gwrl)
 
 add_executable(proactor_filters proactor_filters.c)
 target_link_libraries(proactor_filters gwrl)
+
+add_executable(proactor_free1 proactor_free1.c)
+target_link_libraries(proactor_free1 gwrl)

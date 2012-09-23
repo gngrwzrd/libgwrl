@@ -1,4 +1,3 @@
-
 include(CheckCSourceCompiles)
 include(CheckStructHasMember)
 include(CheckFunctionExists)
