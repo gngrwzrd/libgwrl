@@ -1,3 +1,10 @@
+-remove those test_var1 vars
+-tests can't sleep, need to test socketpair so I can automate read/write testing
+-make sure that if gwrl_free is called before gwpr_free it doesn't crash
+-gwrl_wake_activity and gwrl_wake can be called less frequently. see
+ kcachegrind with data from test/reactor_events.
+-add global variables to use for asserting tests.
+
 MEMORY:
 -valgrind tests
 
@@ -6,12 +13,12 @@ PROACTOR:
 -Need another pair of eyes on windows error logic
 
 DOCS:
+-freeing a proactor
 -Making connections pod
--Storing Reactors and Proactors with Thread Specific Data
 
 TESTS:
+-test the _safely methods
 -tcp and udp test utility, test all the read/write methods in proactor
--thread specific data
 -test re-dispatching and max
 -test proactor filters
 -test gwpr_stop_read

@@ -5,6 +5,12 @@
 extern "C" {
 #endif
 
+#if !defined(NDEBUG)
+int test_var1;
+int test_var2;
+int test_var3;
+#endif
+
 gwrl *
 gwrl_create() {
 	gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));
@@ -167,17 +173,29 @@ gwrl_post_function_safely(gwrl * rl, gwrlevt_cb * cb, void * userdata) {
 void
 gwrl_set_options(gwrl * rl, gwrl_options * opts) {
 	if(opts->gwrl_gather_funcs_max > rl->options.gwrl_gather_funcs_max) {
+	  #ifndef NDEBUG
+		test_var1 = 1;
+	  #endif
 		int orig = rl->options.gwrl_gather_funcs_max;
 		int diff = opts->gwrl_gather_funcs_max - orig;
 		void * tmp = NULL;
 		if(rl->options.gwrl_gather_funcs_max < 1) {
+		  #ifndef NDEBUG
+			test_var2 = 1;
+		  #endif
 			tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
 			while(!tmp) tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
 		} else {
+		  #ifndef NDEBUG
+			test_var3 = 1;
+		  #endif
 			tmp = gwrl_mem_realloc(rl->gatherfncs,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
 			while(!tmp) tmp = gwrl_mem_realloc(rl->gatherfncs,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
 		}
 		if(diff > 0 && orig > 0) {
+		  #ifndef NDEBUG
+			test_var1 = 2;
+		  #endif
 			char * buf = (char *)tmp;
 			buf += (sizeof(gwrl_gather_fnc *) * orig);
 			bzero(buf,sizeof(gwrl_gather_fnc *) * diff);
@@ -207,8 +225,10 @@ gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
 
 void
 gwrl_reset_gather_fncs(gwrl * rl, gwrl_gather_fnc * fnc) {
-	bzero(rl->gatherfncs,sizeof(gwrl_gather_fnc*) *
-		rl->options.gwrl_gather_funcs_max);
+	if(rl->options.gwrl_gather_funcs_max > 0) {
+		bzero(rl->gatherfncs,sizeof(gwrl_gather_fnc*)*
+			rl->options.gwrl_gather_funcs_max);
+	}
 }
 
 void

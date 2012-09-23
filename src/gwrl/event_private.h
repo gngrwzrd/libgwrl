@@ -1,4 +1,12 @@
 
+#if !defined(NDEBUG)
+//these are only used for unit tests that validates that
+//certain logic is called and tested.
+extern int test_var1;
+extern int test_var2;
+extern int test_var3;
+#endif
+
 //(runloop flag) indicates a break in the runloop
 #define GWRL_STOP (1 << 0)
 

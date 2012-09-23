@@ -148,6 +148,7 @@ void gwpr_buf_free(gwpr * pr, gwprbuf * buf);
 
 //create a new proactor
 gwpr * gwpr_create(gwrl * rl);
+void gwpr_free(gwpr * pr);
 
 //shortcut for gwpr_src_add
 gwrlsrc_file * gwpr_set_fd(gwpr * pr, fileid_t fd, void * userdata);

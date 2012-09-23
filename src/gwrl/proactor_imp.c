@@ -330,6 +330,31 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 }
 
 void
+gwpr_free(gwpr * pr) {
+	int i = 0;
+	gwrlsrc * src = NULL;
+	gwrlsrc_file * fsrc = NULL;
+	for(; i<GWRL_SRC_TYPES_COUNT; i++) {
+		src = pr->rl->sources[i];
+		while(src) {
+			if(src->type == GWRL_SRC_TYPE_FILE) {
+				gwrl_src_disable(pr->rl,src);
+				fsrc = _gwrlsrcf(src);
+				src->callback = NULL;
+				if(fsrc->pdata) {
+					free(fsrc->pdata);
+					fsrc->pdata = NULL;
+				}
+			}
+			src = src->next;
+		}
+	}
+	pr->rl->pr = NULL;
+	pr->rl = NULL;
+	free(pr);
+}
+
+void
 gwpr_write_buffer(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen,
 size_t * written, int * errnm) {
