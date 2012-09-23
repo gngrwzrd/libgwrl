@@ -146,6 +146,7 @@
 
 		<li><a href="#accepting_connections">Accepting Connections</a></li>
 		<li><a href="#making_connections">Making Connections</a></li>
+		<li><a href="#freeing_a_proactor">Freeing a Proactor</a></li>
 		<li><a href="#proactor_cmake_compile_time_options">Proactor CMAKE Compile-Time Options</a></li>
 		<ul>
 
@@ -188,13 +189,13 @@
 
 	</ul>
 
-	<li><a href="#threading_model">THREADING MODEL</a></li>
+	<li><a href="#threading_rules">THREADING RULES</a></li>
 	<ul>
 
 		<li><a href="#input_sources_are_owned">Input Sources are Owned</a></li>
 		<li><a href="#file_io_on_the_same_thread">File IO on the Same Thread</a></li>
 		<li><a href="#all_events_on_the_same_reactor">All Events on the Same Reactor</a></li>
-		<li><a href="#storing_reactors_and_proactors_with_thread_specific_data">Storing Reactors and Proactors with Thread Specific Data</a></li>
+		<li><a href="#use_thread_specific_data">Use Thread Specific Data</a></li>
 	</ul>
 
 	<li><a href="#worker_threads">WORKER THREADS</a></li>
@@ -340,7 +341,7 @@ Here's how to generate a Makefile on Linux or Mac:</p>
 </p>
 <h2><a name="cmake_output">CMake Output</a></h2>
 <p>By default CMake is configured to create a static .a archive and a dyld
-for Linux and Max. Windows will create a .lib file and .dll.</p>
+for Linux and Mac. On Windows CMake creates a .lib file and .dll.</p>
 <p>
 </p>
 <hr />
@@ -1332,6 +1333,21 @@ to accept as many as it can.</p>
 <h2><a name="making_connections">Making Connections</a></h2>
 <p>
 </p>
+<h2><a name="freeing_a_proactor">Freeing a Proactor</a></h2>
+<p>Freeing a proactor only frees the internal resources the proactor requires,
+it does not free the file input sources you added to it, or any of the reactor
+resources internally. It does however disable all file input sources that were
+added to the proactor specifically.</p>
+<p>Because the proactor uses a reactor internally, the file input sources are left untouched,
+but disabled with the reactor. Leaving
+it up to you to use gwrl_free to finish freeing the rest of the resources, and
+cleaning up the file input sources. See the &quot;Freeing a Reactor&quot; section
+described earlier.</p>
+<p>Free a proactor with:</p>
+<pre>
+ void gwpr_free(gwpr * pr);</pre>
+<p>
+</p>
 <h2><a name="proactor_cmake_compile_time_options">Proactor CMAKE Compile-Time Options</a></h2>
 <p>The proactor uses some configurable compile time options that may effect performance.</p>
 <p>
@@ -1474,7 +1490,7 @@ callback - you're still responsible for freeing that buffer object at some point
 <p>
 </p>
 <hr />
-<h1><a name="threading_model">THREADING MODEL</a></h1>
+<h1><a name="threading_rules">THREADING RULES</a></h1>
 <p>GWRL is technically not thread-safe, but provides a few thread safe functions when
 thread safety is important. These methods are thread safe:</p>
 <pre>
@@ -1514,7 +1530,7 @@ section below.</p>
 reactor belonging to the current thread.</p>
 <p>
 </p>
-<h2><a name="storing_reactors_and_proactors_with_thread_specific_data">Storing Reactors and Proactors with Thread Specific Data</a></h2>
+<h2><a name="use_thread_specific_data">Use Thread Specific Data</a></h2>
 <p>If each thread has it's own reactor or proactor, then it's probably a good
 idea to use thread specific data to store them and retrieve them at any
 time - unless of course your program is in one file.</p>

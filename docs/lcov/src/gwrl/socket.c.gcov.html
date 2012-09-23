@@ -1,0 +1,489 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - all.info - src/gwrl/socket.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/gwrl</a> - socket.c<span style="font-size: 80%;"> (source / <a href="socket.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">206</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">88</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : </a>
+<span class="lineNum">       2 </span>                :            : #include &quot;gwrl/socket.h&quot;
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">       5 </span>                :            : extern &quot;C&quot; {
+<a name="6"><span class="lineNum">       6 </span>                :            : #endif</a>
+<span class="lineNum">       7 </span>                :            : 
+<span class="lineNum">       8 </span>                :<span class="lineNoCov">          0 : socklen_t gwsk_sockaddr_size(struct sockaddr_storage * addr) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineNoCov">          0 :         sa_family_t fam = addr-&gt;ss_family;</span>
+<span class="lineNum">      10 </span>                :<span class="lineNoCov">          0 :         if(fam == AF_INET) return sizeof(struct sockaddr_in);</span>
+<span class="lineNum">      11 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         else if(fam == AF_INET6) return sizeof(struct sockaddr_in6);</span>
+<span class="lineNum">      12 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<a name="13"><span class="lineNum">      13 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      14 </span>                :            : 
+<span class="lineNum">      15 </span>                :<span class="lineNoCov">          0 : int gwsk_sockaddr_port(struct sockaddr_storage * addr) {</span>
+<span class="lineNum">      16 </span>                :<span class="lineNoCov">          0 :         sa_family_t fam = addr-&gt;ss_family;</span>
+<span class="lineNum">      17 </span>                :<span class="lineNoCov">          0 :         if(fam == AF_INET) return ntohs(((struct sockaddr_in *)addr)-&gt;sin_port);</span>
+<span class="lineNum">      18 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         else if(fam == AF_INET6) return ntohs(((struct sockaddr_in6 *)addr)-&gt;sin6_port);</span>
+<span class="lineNum">      19 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<a name="20"><span class="lineNum">      20 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      21 </span>                :            : 
+<span class="lineNum">      22 </span>                :<span class="lineNoCov">          0 : void gwsk_sockaddr_print(struct sockaddr_storage * addr) {</span>
+<span class="lineNum">      23 </span>                :<span class="lineNoCov">          0 :         void * naddr = NULL;</span>
+<span class="lineNum">      24 </span>                :<span class="lineNoCov">          0 :         char buf[INET6_ADDRSTRLEN];</span>
+<span class="lineNum">      25 </span>                :<span class="lineNoCov">          0 :         sa_family_t fam = addr-&gt;ss_family;</span>
+<span class="lineNum">      26 </span>                :<span class="lineNoCov">          0 :         if(fam == AF_INET) naddr = &amp;(((struct sockaddr_in *)addr)-&gt;sin_addr);</span>
+<span class="lineNum">      27 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         else if(fam == AF_INET6) naddr = &amp;(((struct sockaddr_in6 *)addr)-&gt;sin6_addr);</span>
+<span class="lineNum">      28 </span>                :<span class="lineNoCov">          0 :         inet_ntop(fam,naddr,buf,INET6_ADDRSTRLEN);</span>
+<span class="lineNum">      29 </span>                :<span class="lineNoCov">          0 :         fprintf(stdout,&quot;gwsk_sockaddr_print: %s:%i\n&quot;,buf,gwsk_sockaddr_port(addr));</span>
+<a name="30"><span class="lineNum">      30 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      31 </span>                :            : 
+<span class="lineNum">      32 </span>                :<span class="lineNoCov">          0 : void gwsk_addrinfo_print(struct addrinfo * addr) {</span>
+<span class="lineNum">      33 </span>                :<span class="lineNoCov">          0 :         gwsk_sockaddr_print((struct sockaddr_storage *)addr-&gt;ai_addr);</span>
+<a name="34"><span class="lineNum">      34 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      35 </span>                :            : 
+<span class="lineNum">      36 </span>                :            : bool gwsk_startup() {
+<span class="lineNum">      37 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      38 </span>                :            :                 WSADATA WsaData;
+<span class="lineNum">      39 </span>                :            :                 return (WSAStartup(MAKEWORD(2,2),&amp;WsaData) == 0);
+<span class="lineNum">      40 </span>                :            :         #endif
+<span class="lineNum">      41 </span>                :<span class="lineNoCov">          0 :         return true;</span>
+<a name="42"><span class="lineNum">      42 </span>                :            : }</a>
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :            : bool gwsk_cleanup() {
+<span class="lineNum">      45 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      46 </span>                :            :                 return (WSACleanup() == 0);
+<span class="lineNum">      47 </span>                :            :         #endif
+<span class="lineNum">      48 </span>                :<span class="lineNoCov">          0 :         return true;</span>
+<a name="49"><span class="lineNum">      49 </span>                :            : }</a>
+<span class="lineNum">      50 </span>                :            : 
+<span class="lineNum">      51 </span>                :<span class="lineNoCov">          0 : int gwsk_connect(sockid_t sockfd, struct sockaddr_storage * addr) {</span>
+<span class="lineNum">      52 </span>                :<span class="lineNoCov">          0 :         int res = 0;</span>
+<span class="lineNum">      53 </span>                :            :         
+<span class="lineNum">      54 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      55 </span>                :            :                 int errnm = 0;
+<span class="lineNum">      56 </span>                :            :         #endif
+<span class="lineNum">      57 </span>                :            :         
+<span class="lineNum">      58 </span>                :<span class="lineNoCov">          0 :         while(1) {</span>
+<span class="lineNum">      59 </span>                :<span class="lineNoCov">          0 :                 errno = 0;</span>
+<span class="lineNum">      60 </span>                :<span class="lineNoCov">          0 :                 res = connect(sockfd,(struct sockaddr *)addr,gwsk_sockaddr_size(addr));</span>
+<span class="lineNum">      61 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(res == 0) break;</span>
+<span class="lineNum">      62 </span>                :            :                 #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      63 </span>                :            :                         if(res == SOCKET_ERROR) {
+<span class="lineNum">      64 </span>                :            :                                 res = -1;
+<span class="lineNum">      65 </span>                :            :                                 errnm = WSAGetLastError();
+<span class="lineNum">      66 </span>                :            :                                 if(errnm == WSAEWOULDBLOCK) break;
+<span class="lineNum">      67 </span>                :            :                                 if(errnm == WSAEINTR) continue;
+<span class="lineNum">      68 </span>                :            :                         }
+<span class="lineNum">      69 </span>                :            :                 #else
+<span class="lineNum">      70 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(errno == EINTR) continue;</span>
+<span class="lineNum">      71 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(errno == EINPROGRESS) break;</span>
+<span class="lineNum">      72 </span>                :            :                 #endif
+<span class="lineNum">      73 </span>                :<span class="lineNoCov">          0 :         };</span>
+<span class="lineNum">      74 </span>                :            : 
+<span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :         return res;</span>
+<a name="76"><span class="lineNum">      76 </span>                :            : }</a>
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :<span class="lineNoCov">          0 : sockid_t gwsk_accept(sockid_t sockfd, struct sockaddr_storage * addr, socklen_t * asize) {</span>
+<span class="lineNum">      79 </span>                :<span class="lineNoCov">          0 :         sockid_t res = 0;</span>
+<span class="lineNum">      80 </span>                :            :         
+<span class="lineNum">      81 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      82 </span>                :            :         int errnm = 0;
+<span class="lineNum">      83 </span>                :            :         #endif
+<span class="lineNum">      84 </span>                :            :         
+<span class="lineNum">      85 </span>                :<span class="lineNoCov">          0 :         while(1) {</span>
+<span class="lineNum">      86 </span>                :<span class="lineNoCov">          0 :                 errno = 0;</span>
+<span class="lineNum">      87 </span>                :<span class="lineNoCov">          0 :                 res = accept(sockfd,(struct sockaddr *)addr,asize);</span>
+<span class="lineNum">      88 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(res == 0) break;</span>
+<span class="lineNum">      89 </span>                :            :                 
+<span class="lineNum">      90 </span>                :            :                 #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">      91 </span>                :            :                         if(res == INVALID_SOCKET) {
+<span class="lineNum">      92 </span>                :            :                                 res = -1;
+<span class="lineNum">      93 </span>                :            :                                 errnm = WSAGetLastError();
+<span class="lineNum">      94 </span>                :            :                                 if(errnm == WSAEINTR) continue;
+<span class="lineNum">      95 </span>                :            :                         }
+<span class="lineNum">      96 </span>                :            :                 #else
+<span class="lineNum">      97 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(errno == EINTR) continue;</span>
+<span class="lineNum">      98 </span>                :            :                 #endif
+<span class="lineNum">      99 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     100 </span>                :            : 
+<span class="lineNum">     101 </span>                :<span class="lineNoCov">          0 :         return res;</span>
+<a name="102"><span class="lineNum">     102 </span>                :            : }</a>
+<span class="lineNum">     103 </span>                :            : 
+<span class="lineNum">     104 </span>                :<span class="lineNoCov">          0 : void gwsk_close(sockid_t sockfd) {</span>
+<span class="lineNum">     105 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     106 </span>                :            :                 closesocket(sockfd);
+<span class="lineNum">     107 </span>                :            :         #else
+<span class="lineNum">     108 </span>                :<span class="lineNoCov">          0 :                 close(sockfd);</span>
+<span class="lineNum">     109 </span>                :            :         #endif
+<a name="110"><span class="lineNum">     110 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     111 </span>                :            : 
+<span class="lineNum">     112 </span>                :<span class="lineNoCov">          0 : int gwsk_nonblock(sockid_t sockfd, int onoff) {</span>
+<span class="lineNum">     113 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     114 </span>                :            :                 DWORD nonBlocking = 1;
+<span class="lineNum">     115 </span>                :            :                 return ioctlsocket(sockfd,FIONBIO,&amp;nonBlocking);
+<span class="lineNum">     116 </span>                :            :         #else
+<span class="lineNum">     117 </span>                :<span class="lineNoCov">          0 :                 return fcntl(sockfd,F_SETFL,O_NONBLOCK,&amp;onoff);</span>
+<span class="lineNum">     118 </span>                :            :         #endif
+<a name="119"><span class="lineNum">     119 </span>                :            : }</a>
+<span class="lineNum">     120 </span>                :            : 
+<span class="lineNum">     121 </span>                :<span class="lineNoCov">          0 : int gwsk_reuseaddr(sockid_t sockfd, int onoff) {</span>
+<span class="lineNum">     122 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     123 </span>                :            :                 return setsockopt(sockfd,SOL_SOCKET,SO_REUSEADDR,(const char*)&amp;onoff,sizeof(onoff));
+<span class="lineNum">     124 </span>                :            :         #else
+<span class="lineNum">     125 </span>                :<span class="lineNoCov">          0 :                 return setsockopt(sockfd,SOL_SOCKET,SO_REUSEADDR,&amp;onoff,sizeof(onoff));</span>
+<span class="lineNum">     126 </span>                :            :         #endif
+<a name="127"><span class="lineNum">     127 </span>                :            : }</a>
+<span class="lineNum">     128 </span>                :            : 
+<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 : void skctlinfo_free(skctlinfo * info, bool freeinfo) {</span>
+<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :         if(info-&gt;list) freeaddrinfo(info-&gt;list);</span>
+<span class="lineNum">     131 </span>                :<span class="lineNoCov">          0 :         info-&gt;list = NULL;</span>
+<span class="lineNum">     132 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(freeinfo) free(info);</span>
+<a name="133"><span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     134 </span>                :            : 
+<span class="lineNum">     135 </span>                :<span class="lineNoCov">          0 : char * skctl_str_for_flag(int flag) {</span>
+<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :         if(flag == SKCTL_GETADDRINFO) {</span>
+<span class="lineNum">     137 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_GETADDRINFO&quot;;</span>
+<span class="lineNum">     138 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_SOCKET) {</span>
+<span class="lineNum">     139 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_SOCKET&quot;;</span>
+<span class="lineNum">     140 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_CONNECT) {</span>
+<span class="lineNum">     141 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_CONNECT&quot;;</span>
+<span class="lineNum">     142 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_BIND) {</span>
+<span class="lineNum">     143 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_BIND&quot;;</span>
+<span class="lineNum">     144 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_LISTEN) {</span>
+<span class="lineNum">     145 </span>                :<span class="lineNoCov">          0 :                 return &quot;SOCKCNTL_LIST&quot;;</span>
+<span class="lineNum">     146 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_REUSE_ADDR) {</span>
+<span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_REUSE_ADDR&quot;;</span>
+<span class="lineNum">     148 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_PRINTADDR) {</span>
+<span class="lineNum">     149 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_PRINTADDR&quot;;</span>
+<span class="lineNum">     150 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         } else if(flag == SKCTL_NOBLOCK) {</span>
+<span class="lineNum">     151 </span>                :<span class="lineNoCov">          0 :                 return &quot;SKCTL_NOBLOCK&quot;;</span>
+<span class="lineNum">     152 </span>                :            :         }
+<span class="lineNum">     153 </span>                :<span class="lineNoCov">          0 :         return &quot;Unknown flag&quot;;</span>
+<a name="154"><span class="lineNum">     154 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     155 </span>                :            : 
+<span class="lineNum">     156 </span>                :<span class="lineNoCov">          0 : int skctl(skctlinfo * arg) {</span>
+<span class="lineNum">     157 </span>                :<span class="lineNoCov">          0 :         bool addr_existed = false;</span>
+<span class="lineNum">     158 </span>                :<span class="lineNoCov">          0 :         int res = 0;</span>
+<span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :         struct addrinfo * ap = NULL;</span>
+<span class="lineNum">     160 </span>                :<span class="lineNoCov">          0 :         struct addrinfo * info = NULL;</span>
+<span class="lineNum">     161 </span>                :            : 
+<span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :         if(arg-&gt;flags == 0) {</span>
+<span class="lineNum">     163 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;serrno = 0;</span>
+<span class="lineNum">     164 </span>                :<span class="lineNoCov">          0 :                 fprintf(stderr,&quot;skctl error: arg-&gt;flags is 0.\n&quot;);</span>
+<span class="lineNum">     165 </span>                :<span class="lineNoCov">          0 :                 return -1;</span>
+<span class="lineNum">     166 </span>                :            :         }
+<span class="lineNum">     167 </span>                :            : 
+<span class="lineNum">     168 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(arg-&gt;backlog &lt;= 0) arg-&gt;backlog = 25;</span>
+<span class="lineNum">     169 </span>                :            : 
+<span class="lineNum">     170 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(arg-&gt;used) {</span>
+<span class="lineNum">     171 </span>                :<span class="lineNoCov">          0 :                 ap = arg-&gt;used;</span>
+<span class="lineNum">     172 </span>                :<span class="lineNoCov">          0 :                 addr_existed = true;</span>
+<span class="lineNum">     173 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     174 </span>                :            : 
+<span class="lineNum">     175 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!addr_existed &amp;&amp; (arg-&gt;flags &amp; SKCTL_GETADDRINFO)) {</span>
+<span class="lineNum">     176 </span>                :<span class="lineNoCov">          0 :                 while(1) {</span>
+<span class="lineNum">     177 </span>                :<span class="lineNoCov">          0 :                         arg-&gt;serrnoflag = 0;</span>
+<span class="lineNum">     178 </span>                :<span class="lineNoCov">          0 :                         arg-&gt;serrno = 0;</span>
+<span class="lineNum">     179 </span>                :<span class="lineNoCov">          0 :                         res = getaddrinfo(arg-&gt;node,arg-&gt;service,&amp;(arg-&gt;hints),&amp;info);</span>
+<span class="lineNum">     180 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(res == 0) break;</span>
+<span class="lineNum">     181 </span>                :            : 
+<span class="lineNum">     182 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     183 </span>                :            :                                 if(res == WSATRY_AGAIN) continue;
+<span class="lineNum">     184 </span>                :            :                         #else
+<span class="lineNum">     185 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(res == EAI_AGAIN) continue;</span>
+<span class="lineNum">     186 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(res == EAI_SYSTEM &amp;&amp; errno == EINTR) continue;</span>
+<span class="lineNum">     187 </span>                :            :                         #endif
+<span class="lineNum">     188 </span>                :            : 
+<span class="lineNum">     189 </span>                :<span class="lineNoCov">          0 :                         fprintf(stderr,&quot;skctl: getaddrinfo error: %s\n&quot;,gai_strerror(res));</span>
+<span class="lineNum">     190 </span>                :<span class="lineNoCov">          0 :                         arg-&gt;serrno = res;</span>
+<span class="lineNum">     191 </span>                :<span class="lineNoCov">          0 :                         arg-&gt;serrnoflag = SKCTL_GETADDRINFO;</span>
+<span class="lineNum">     192 </span>                :<span class="lineNoCov">          0 :                         return -1;</span>
+<span class="lineNum">     193 </span>                :            :                 }
+<span class="lineNum">     194 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;list = info;</span>
+<span class="lineNum">     195 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     196 </span>                :            : 
+<span class="lineNum">     197 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!arg-&gt;list) {</span>
+<span class="lineNum">     198 </span>                :<span class="lineNoCov">          0 :                 fprintf(stderr,&quot;skctl error: no addrinfo list.&quot;);</span>
+<span class="lineNum">     199 </span>                :<span class="lineNoCov">          0 :                 return -1;</span>
+<span class="lineNum">     200 </span>                :            :         }
+<span class="lineNum">     201 </span>                :            : 
+<span class="lineNum">     202 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!ap) ap = info;</span>
+<span class="lineNum">     203 </span>                :            : 
+<span class="lineNum">     204 </span>                :            :         #if !defined(PLATFORM_WINDOWS)
+<span class="lineNum">     205 </span>                :            :                 #define LOOP_ENTRY_CLOSE(flag)\
+<span class="lineNum">     206 </span>                :            :                         if(res &lt; 0) {\
+<span class="lineNum">     207 </span>                :            :                                 gwsk_close(arg-&gt;sockfd);\
+<span class="lineNum">     208 </span>                :            :                                 arg-&gt;sockfd = -1;\
+<span class="lineNum">     209 </span>                :            :                                 arg-&gt;serrno = errno;\
+<span class="lineNum">     210 </span>                :            :                                 arg-&gt;serrnoflag = flag;\
+<span class="lineNum">     211 </span>                :            :                                 goto nextap;\
+<span class="lineNum">     212 </span>                :            :                         }\
+<span class="lineNum">     213 </span>                :            : 
+<span class="lineNum">     214 </span>                :            :         #endif
+<span class="lineNum">     215 </span>                :            : 
+<span class="lineNum">     216 </span>                :            :         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     217 </span>                :            :                 #define LOOP_ENTRY_CLOSE_WINDOWS(flag)\
+<span class="lineNum">     218 </span>                :            :                         if(res == SOCKET_ERROR) {\
+<span class="lineNum">     219 </span>                :            :                                 gwsk_close(arg-&gt;sockfd);\
+<span class="lineNum">     220 </span>                :            :                                 arg-&gt;sockfd = 0;\
+<span class="lineNum">     221 </span>                :            :                                 arg-&gt;serrno = WSAGetLastError();\
+<span class="lineNum">     222 </span>                :            :                                 arg-&gt;serrnoflag = flag;\
+<span class="lineNum">     223 </span>                :            :                                 res = -1;\
+<span class="lineNum">     224 </span>                :            :                                 goto nextap;\
+<span class="lineNum">     225 </span>                :            :                         }\
+<span class="lineNum">     226 </span>                :            : 
+<span class="lineNum">     227 </span>                :            :         #endif
+<span class="lineNum">     228 </span>                :            : 
+<span class="lineNum">     229 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while(ap != NULL) {</span>
+<span class="lineNum">     230 </span>                :            :                 //res = 0;
+<span class="lineNum">     231 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;serrnoflag = 0;</span>
+<span class="lineNum">     232 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;serrno = 0;</span>
+<span class="lineNum">     233 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;used = NULL;</span>
+<span class="lineNum">     234 </span>                :            :                 
+<span class="lineNum">     235 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_PRINTADDR) {</span>
+<span class="lineNum">     236 </span>                :<span class="lineNoCov">          0 :                         gwsk_addrinfo_print(ap);</span>
+<span class="lineNum">     237 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     238 </span>                :            :                 
+<span class="lineNum">     239 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_SOCKET) {</span>
+<span class="lineNum">     240 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     241 </span>                :            :                                 if(arg-&gt;flags &amp; SKCTL_NOBLOCK) {
+<span class="lineNum">     242 </span>                :            :                                         //socket() by default on windows creates non-blocking sockets.
+<span class="lineNum">     243 </span>                :            :                                         arg-&gt;sockfd = socket(ap-&gt;ai_family,ap-&gt;ai_socktype,ap-&gt;ai_protocol);
+<span class="lineNum">     244 </span>                :            :                                 } else {
+<span class="lineNum">     245 </span>                :            :                                         //have to use WSASocket() to get a blocking socket.
+<span class="lineNum">     246 </span>                :            :                                         arg-&gt;sockfd = WSASocket(ap-&gt;ai_family,ap-&gt;ai_socktype,ap-&gt;ai_protocol,NULL,0,0);
+<span class="lineNum">     247 </span>                :            :                                 }
+<span class="lineNum">     248 </span>                :            :                         #else
+<span class="lineNum">     249 </span>                :<span class="lineNoCov">          0 :                                 arg-&gt;sockfd = socket(ap-&gt;ai_family,ap-&gt;ai_socktype,ap-&gt;ai_protocol);</span>
+<span class="lineNum">     250 </span>                :            :                         #endif
+<span class="lineNum">     251 </span>                :            :                         
+<span class="lineNum">     252 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     253 </span>                :            :                                 if(arg-&gt;sockfd == INVALID_SOCKET) {
+<span class="lineNum">     254 </span>                :            :                                         res = -1;
+<span class="lineNum">     255 </span>                :            :                                         arg-&gt;serrno = WSAGetLastError();
+<span class="lineNum">     256 </span>                :            :                                         arg-&gt;serrnoflag = SKCTL_SOCKET;
+<span class="lineNum">     257 </span>                :            :                                         goto nextap;
+<span class="lineNum">     258 </span>                :            :                                 }
+<span class="lineNum">     259 </span>                :            :                         #else
+<span class="lineNum">     260 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(arg-&gt;sockfd &lt; 0) {</span>
+<span class="lineNum">     261 </span>                :<span class="lineNoCov">          0 :                                         res = -1;</span>
+<span class="lineNum">     262 </span>                :<span class="lineNoCov">          0 :                                         arg-&gt;serrno = errno;</span>
+<span class="lineNum">     263 </span>                :<span class="lineNoCov">          0 :                                         arg-&gt;serrnoflag = SKCTL_SOCKET;</span>
+<span class="lineNum">     264 </span>                :<span class="lineNoCov">          0 :                                         goto nextap;</span>
+<span class="lineNum">     265 </span>                :            :                                 }
+<span class="lineNum">     266 </span>                :            :                         #endif
+<span class="lineNum">     267 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     268 </span>                :            :                 
+<span class="lineNum">     269 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_NOBLOCK) {</span>
+<span class="lineNum">     270 </span>                :            :                         #if !defined(PLATFORM_WINDOWS)
+<span class="lineNum">     271 </span>                :<span class="lineNoCov">          0 :                                 res = gwsk_nonblock(arg-&gt;sockfd,1);</span>
+<span class="lineNum">     272 </span>                :            :                                 #if !defined(PLATFORM_WINDOWS)
+<span class="lineNum">     273 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         LOOP_ENTRY_CLOSE(SKCTL_NOBLOCK);</span>
+<span class="lineNum">     274 </span>                :            :                                 #endif
+<span class="lineNum">     275 </span>                :            :                         #endif
+<span class="lineNum">     276 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     277 </span>                :            :                 
+<span class="lineNum">     278 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_REUSE_ADDR) {</span>
+<span class="lineNum">     279 </span>                :<span class="lineNoCov">          0 :                         res = gwsk_reuseaddr(arg-&gt;sockfd,1);</span>
+<span class="lineNum">     280 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     281 </span>                :            :                                 LOOP_ENTRY_CLOSE_WINDOWS(SKCTL_REUSE_ADDR)
+<span class="lineNum">     282 </span>                :            :                         #else
+<span class="lineNum">     283 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 LOOP_ENTRY_CLOSE(SKCTL_REUSE_ADDR);</span>
+<span class="lineNum">     284 </span>                :            :                         #endif
+<span class="lineNum">     285 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     286 </span>                :            : 
+<span class="lineNum">     287 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_BIND) {</span>
+<span class="lineNum">     288 </span>                :<span class="lineNoCov">          0 :                         res = bind(arg-&gt;sockfd,ap-&gt;ai_addr,gwsk_sockaddr_size((struct sockaddr_storage *)ap-&gt;ai_addr));</span>
+<span class="lineNum">     289 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     290 </span>                :            :                                 LOOP_ENTRY_CLOSE_WINDOWS(SKCTL_BIND);
+<span class="lineNum">     291 </span>                :            :                         #else
+<span class="lineNum">     292 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 LOOP_ENTRY_CLOSE(SKCTL_BIND);</span>
+<span class="lineNum">     293 </span>                :            :                         #endif
+<span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     295 </span>                :            : 
+<span class="lineNum">     296 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_LISTEN) {</span>
+<span class="lineNum">     297 </span>                :<span class="lineNoCov">          0 :                         res = listen(arg-&gt;sockfd,arg-&gt;backlog);</span>
+<span class="lineNum">     298 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     299 </span>                :            :                                 LOOP_ENTRY_CLOSE_WINDOWS(SKCTL_LISTEN);
+<span class="lineNum">     300 </span>                :            :                         #else
+<span class="lineNum">     301 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 LOOP_ENTRY_CLOSE(SKCTL_LISTEN);</span>
+<span class="lineNum">     302 </span>                :            :                         #endif
+<span class="lineNum">     303 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     304 </span>                :            : 
+<span class="lineNum">     305 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(arg-&gt;flags &amp; SKCTL_CONNECT) {</span>
+<span class="lineNum">     306 </span>                :<span class="lineNoCov">          0 :                         res = gwsk_connect(arg-&gt;sockfd,(struct sockaddr_storage *)ap-&gt;ai_addr);</span>
+<span class="lineNum">     307 </span>                :            :                         #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     308 </span>                :            :                                 if(res == SOCKET_ERROR) {
+<span class="lineNum">     309 </span>                :            :                                         int errnm = WSAGetLastError();
+<span class="lineNum">     310 </span>                :            :                                         if(errnm != WSAEWOULDBLOCK) {
+<span class="lineNum">     311 </span>                :            :                                                 LOOP_ENTRY_CLOSE_WINDOWS(SKCTL_CONNECT);
+<span class="lineNum">     312 </span>                :            :                                         }
+<span class="lineNum">     313 </span>                :            :                                 }
+<span class="lineNum">     314 </span>                :            :                         #else
+<span class="lineNum">     315 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(res &lt; 0 &amp;&amp; errno != EINPROGRESS) {</span>
+<span class="lineNum">     316 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         LOOP_ENTRY_CLOSE(SKCTL_CONNECT);</span>
+<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     318 </span>                :            :                         #endif
+<span class="lineNum">     319 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     320 </span>                :            : 
+<span class="lineNum">     321 </span>                :<span class="lineNoCov">          0 :                 res = 0;</span>
+<span class="lineNum">     322 </span>                :<span class="lineNoCov">          0 :                 arg-&gt;used = ap;</span>
+<span class="lineNum">     323 </span>                :<span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     324 </span>                :            : 
+<span class="lineNum">     325 </span>                :            :         nextap:
+<span class="lineNum">     326 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(addr_existed) {</span>
+<span class="lineNum">     327 </span>                :<span class="lineNoCov">          0 :                         arg-&gt;used = ap;</span>
+<span class="lineNum">     328 </span>                :<span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     329 </span>                :            :                 }
+<span class="lineNum">     330 </span>                :<span class="lineNoCov">          0 :                 ap = ap-&gt;ai_next;</span>
+<span class="lineNum">     331 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     332 </span>                :            :         
+<span class="lineNum">     333 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(res &lt; 0) {</span>
+<span class="lineNum">     334 </span>                :            :                 #if defined(PLATFORM_WINDOWS)
+<span class="lineNum">     335 </span>                :            :                         gwprintsyserr(&quot;skctl error&quot;,arg-&gt;serrno);
+<span class="lineNum">     336 </span>                :            :                 #else
+<span class="lineNum">     337 </span>                :<span class="lineNoCov">          0 :                         gwprintsyserr(&quot;skctl error&quot;,arg-&gt;serrno);</span>
+<span class="lineNum">     338 </span>                :            :                 #endif
+<span class="lineNum">     339 </span>                :<span class="lineNoCov">          0 :                 fprintf(stderr,&quot;skctlinfo flag that caused the error: %s\n&quot;,skctl_str_for_flag(arg-&gt;serrnoflag));</span>
+<span class="lineNum">     340 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     341 </span>                :            : 
+<span class="lineNum">     342 </span>                :<span class="lineNoCov">          0 :         return res;</span>
+<a name="343"><span class="lineNum">     343 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     344 </span>                :            : 
+<span class="lineNum">     345 </span>                :<span class="lineNoCov">          0 : int skctl_tcp_server(skctlinfo * info, char * node, char * service, int ipfamily, bool noblock) {</span>
+<span class="lineNum">     346 </span>                :<span class="lineNoCov">          0 :         info-&gt;node = node;</span>
+<span class="lineNum">     347 </span>                :<span class="lineNoCov">          0 :         info-&gt;service = service;</span>
+<span class="lineNum">     348 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_family = ipfamily;</span>
+<span class="lineNum">     349 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_protocol = IPPROTO_TCP;</span>
+<span class="lineNum">     350 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_flags = AI_PASSIVE;</span>
+<span class="lineNum">     351 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_socktype = SOCK_STREAM;</span>
+<span class="lineNum">     352 </span>                :<span class="lineNoCov">          0 :         info-&gt;flags = SKCTL_TCP_SERVER;</span>
+<span class="lineNum">     353 </span>                :<span class="lineNoCov">          0 :         if(noblock) info-&gt;flags |= SKCTL_NOBLOCK;</span>
+<span class="lineNum">     354 </span>                :<span class="lineNoCov">          0 :         return skctl(info);</span>
+<a name="355"><span class="lineNum">     355 </span>                :            : }</a>
+<span class="lineNum">     356 </span>                :            : 
+<span class="lineNum">     357 </span>                :<span class="lineNoCov">          0 : int skctl_udp_server(skctlinfo * info, char * node, char * service, int ipfamily, bool noblock) {</span>
+<span class="lineNum">     358 </span>                :<span class="lineNoCov">          0 :         info-&gt;node = node;</span>
+<span class="lineNum">     359 </span>                :<span class="lineNoCov">          0 :         info-&gt;service = service;</span>
+<span class="lineNum">     360 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_family = ipfamily;</span>
+<span class="lineNum">     361 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_protocol = IPPROTO_UDP;</span>
+<span class="lineNum">     362 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_flags = AI_PASSIVE;</span>
+<span class="lineNum">     363 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_socktype = SOCK_DGRAM;</span>
+<span class="lineNum">     364 </span>                :<span class="lineNoCov">          0 :         info-&gt;flags = SKCTL_UDP_SERVER;</span>
+<span class="lineNum">     365 </span>                :<span class="lineNoCov">          0 :         if(noblock) info-&gt;flags |= SKCTL_NOBLOCK;</span>
+<span class="lineNum">     366 </span>                :<span class="lineNoCov">          0 :         return skctl(info);</span>
+<a name="367"><span class="lineNum">     367 </span>                :            : }</a>
+<span class="lineNum">     368 </span>                :            : 
+<span class="lineNum">     369 </span>                :<span class="lineNoCov">          0 : int skctl_tcp_client(skctlinfo * info, char * node, char * service, int ipfamily, bool noblock) {</span>
+<span class="lineNum">     370 </span>                :<span class="lineNoCov">          0 :         info-&gt;node = node;</span>
+<span class="lineNum">     371 </span>                :<span class="lineNoCov">          0 :         info-&gt;service = service;</span>
+<span class="lineNum">     372 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_family = ipfamily;</span>
+<span class="lineNum">     373 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_protocol = IPPROTO_TCP;</span>
+<span class="lineNum">     374 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_socktype = SOCK_STREAM;</span>
+<span class="lineNum">     375 </span>                :<span class="lineNoCov">          0 :         info-&gt;flags = SKCTL_TCP_CLIENT;</span>
+<span class="lineNum">     376 </span>                :<span class="lineNoCov">          0 :         if(noblock) info-&gt;flags |= SKCTL_NOBLOCK;</span>
+<span class="lineNum">     377 </span>                :<span class="lineNoCov">          0 :         return skctl(info);</span>
+<a name="378"><span class="lineNum">     378 </span>                :            : }</a>
+<span class="lineNum">     379 </span>                :            : 
+<span class="lineNum">     380 </span>                :<span class="lineNoCov">          0 : int skctl_udp_client(skctlinfo * info, char * node, char * service, int ipfamily, bool noblock) {</span>
+<span class="lineNum">     381 </span>                :<span class="lineNoCov">          0 :         info-&gt;node = node;</span>
+<span class="lineNum">     382 </span>                :<span class="lineNoCov">          0 :         info-&gt;service = service;</span>
+<span class="lineNum">     383 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_family = ipfamily;</span>
+<span class="lineNum">     384 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_protocol = IPPROTO_UDP;</span>
+<span class="lineNum">     385 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_socktype = SOCK_DGRAM;</span>
+<span class="lineNum">     386 </span>                :<span class="lineNoCov">          0 :         info-&gt;flags = SKCTL_UDP_CLIENT;</span>
+<span class="lineNum">     387 </span>                :<span class="lineNoCov">          0 :         if(noblock) info-&gt;flags |= SKCTL_NOBLOCK;</span>
+<span class="lineNum">     388 </span>                :<span class="lineNoCov">          0 :         return skctl(info);</span>
+<a name="389"><span class="lineNum">     389 </span>                :            : }</a>
+<span class="lineNum">     390 </span>                :            : 
+<span class="lineNum">     391 </span>                :<span class="lineNoCov">          0 : int skctl_udp_connected_client(skctlinfo * info, char * node, char * service, int ipfamily, bool noblock) {</span>
+<span class="lineNum">     392 </span>                :<span class="lineNoCov">          0 :         info-&gt;node = node;</span>
+<span class="lineNum">     393 </span>                :<span class="lineNoCov">          0 :         info-&gt;service = service;</span>
+<span class="lineNum">     394 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_family = ipfamily;</span>
+<span class="lineNum">     395 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_protocol = IPPROTO_UDP;</span>
+<span class="lineNum">     396 </span>                :<span class="lineNoCov">          0 :         info-&gt;hints.ai_socktype = SOCK_DGRAM;</span>
+<span class="lineNum">     397 </span>                :<span class="lineNoCov">          0 :         info-&gt;flags = SKCTL_UDP_CONNECTED_CLIENT;</span>
+<span class="lineNum">     398 </span>                :<span class="lineNoCov">          0 :         if(noblock) info-&gt;flags |= SKCTL_NOBLOCK;</span>
+<span class="lineNum">     399 </span>                :<span class="lineNoCov">          0 :         return skctl(info);</span>
+<span class="lineNum">     400 </span>                :            : }
+<span class="lineNum">     401 </span>                :            : 
+<span class="lineNum">     402 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     403 </span>                :            : }
+<span class="lineNum">     404 </span>                :            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

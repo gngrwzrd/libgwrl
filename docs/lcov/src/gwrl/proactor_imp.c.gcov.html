@@ -1,0 +1,894 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - all.info - src/gwrl/proactor_imp.c</title>
+  <link rel="stylesheet" type="text/css" href="../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../index.html">top level</a> - <a href="index.html">src/gwrl</a> - proactor_imp.c<span style="font-size: 80%;"> (source / <a href="proactor_imp.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">all.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">90</td>
+            <td class="headerCovTableEntry">554</td>
+            <td class="headerCovTableEntryLo">16.2 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-23</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">22</td>
+            <td class="headerCovTableEntryLo">31.8 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntry">322</td>
+            <td class="headerCovTableEntryLo">5.6 %</td>
+          </tr>
+          <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : </a>
+<span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">       5 </span>                :            : extern &quot;C&quot; {
+<span class="lineNum">       6 </span>                :            : #endif
+<a name="7"><span class="lineNum">       7 </span>                :            : </a>
+<span class="lineNum">       8 </span>                :            : void
+<span class="lineNum">       9 </span>                :<span class="lineNoCov">          0 : io_activity(gwpr * pr, gwpr_io_info * info) {</span>
+<span class="lineNum">      10 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="11"><span class="lineNum">      11 </span>                :            : </a>
+<span class="lineNum">      12 </span>                :            : void 
+<span class="lineNum">      13 </span>                :<span class="lineNoCov">          0 : gwpr_src_activity(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      14 </span>                :<span class="lineNoCov">          0 :         if(evt-&gt;src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">      15 </span>                :<span class="lineNoCov">          0 :                 char errfnc[16];</span>
+<span class="lineNum">      16 </span>                :<span class="lineNoCov">          0 :                 gwpr * pr = _gwpr(rl-&gt;pr);</span>
+<span class="lineNum">      17 </span>                :<span class="lineNoCov">          0 :                 gwrlsrc * src = evt-&gt;src;</span>
+<span class="lineNum">      18 </span>                :<span class="lineNoCov">          0 :                 gwrlsrc_file * fsrc = _gwrlsrcf(evt-&gt;src);</span>
+<span class="lineNum">      19 </span>                :<span class="lineNoCov">          0 :                 gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">      20 </span>                :<span class="lineNoCov">          0 :                 gwpr_error_info errinfo = {0};</span>
+<span class="lineNum">      21 </span>                :<span class="lineNoCov">          0 :                 gwpr_io_info ioinfo = {0};</span>
+<span class="lineNum">      22 </span>                :<span class="lineNoCov">          0 :                 bzero(errfnc,sizeof(errfnc));</span>
+<span class="lineNum">      23 </span>                :            :                 
+<span class="lineNum">      24 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(evt-&gt;flags &amp; GWRL_RD) {</span>
+<span class="lineNum">      25 </span>                :<span class="lineNoCov">          0 :                         int i = 0;</span>
+<span class="lineNum">      26 </span>                :<span class="lineNoCov">          0 :                         ssize_t res = 0;</span>
+<span class="lineNum">      27 </span>                :<span class="lineNoCov">          0 :                         gwprbuf * rd = NULL;</span>
+<span class="lineNum">      28 </span>                :            : 
+<span class="lineNum">      29 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;acceptcb) {</span>
+<span class="lineNum">      30 </span>                :            :                                 //an accept callback is set, assume they want us to
+<span class="lineNum">      31 </span>                :            :                                 //try and accept as many clients up to gwpr_max_accept.
+<span class="lineNum">      32 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">      33 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 for(; i&lt;pr-&gt;options.gwpr_max_accept; i++) {</span>
+<span class="lineNum">      34 </span>                :<span class="lineNoCov">          0 :                                         res = accept(evt-&gt;fd,_sockaddr(&amp;(ioinfo.peer)),&amp;(ioinfo.peerlen));</span>
+<span class="lineNum">      35 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(res &gt; -1) {</span>
+<span class="lineNum">      36 </span>                :<span class="lineNoCov">          0 :                                                 ioinfo.peersrc = _gwrlsrcf(gwrl_src_file_create(res,0,NULL,NULL));</span>
+<span class="lineNum">      37 </span>                :<span class="lineNoCov">          0 :                                                 pdata-&gt;acceptcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">      38 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         } else if(res &lt; 0) {</span>
+<span class="lineNum">      39 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 if(errno != EWOULDBLOCK) {</span>
+<span class="lineNum">      40 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                         if(pdata-&gt;errorcb) {</span>
+<span class="lineNum">      41 </span>                :<span class="lineNoCov">          0 :                                                                 errinfo.src = fsrc;</span>
+<span class="lineNum">      42 </span>                :<span class="lineNoCov">          0 :                                                                 errinfo.errnm = errno;</span>
+<span class="lineNum">      43 </span>                :<span class="lineNoCov">          0 :                                                                 memcpy(errinfo.fnc,&quot;accept\0&quot;,7);</span>
+<span class="lineNum">      44 </span>                :<span class="lineNoCov">          0 :                                                                 pdata-&gt;errorcb(pr,&amp;errinfo);</span>
+<span class="lineNum">      45 </span>                :<span class="lineNoCov">          0 :                                                         } else {</span>
+<span class="lineNum">      46 </span>                :<span class="lineNoCov">          0 :                                                                 gwprintsyserr(&quot;(09F6R) accept() error occured with no error callback.&quot;,errno);</span>
+<span class="lineNum">      47 </span>                :            :                                                         }
+<span class="lineNum">      48 </span>                :<span class="lineNoCov">          0 :                                                 }</span>
+<span class="lineNum">      49 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">      50 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">      51 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">      52 </span>                :            :                         
+<span class="lineNum">      53 </span>                :            :                         //clear info objects from past use
+<span class="lineNum">      54 </span>                :<span class="lineNoCov">          0 :                         bzero(&amp;ioinfo,sizeof(ioinfo));</span>
+<span class="lineNum">      55 </span>                :<span class="lineNoCov">          0 :                         bzero(&amp;errinfo,sizeof(errinfo));</span>
+<span class="lineNum">      56 </span>                :            : 
+<span class="lineNum">      57 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;didreadcb) {</span>
+<span class="lineNum">      58 </span>                :            :                                 //did read callback is set so let's try and read data.
+<span class="lineNum">      59 </span>                :            : 
+<span class="lineNum">      60 </span>                :            :                                 //get or create a read buffer.
+<span class="lineNum">      61 </span>                :<span class="lineNoCov">          0 :                                 rd = pdata-&gt;rdbuf;</span>
+<span class="lineNum">      62 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 while(!rd) rd = gwpr_buf_get(pr,pdata-&gt;rdbufsize);</span>
+<span class="lineNum">      63 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;rdbuf = NULL;</span>
+<span class="lineNum">      64 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">      65 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.buf = rd;</span>
+<span class="lineNum">      66 </span>                :            : 
+<span class="lineNum">      67 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(pdata-&gt;rdop == gwpr_read_op_id) {</span>
+<span class="lineNum">      68 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.op = gwpr_read_op_id;</span>
+<span class="lineNum">      69 </span>                :<span class="lineNoCov">          0 :                                         memcpy(errfnc,&quot;read\0&quot;,5);</span>
+<span class="lineNum">      70 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while((res=read(fsrc-&gt;fd,rd-&gt;buf,rd-&gt;bufsize)) &lt; 0 &amp;&amp; errno==EINTR);</span>
+<span class="lineNum">      71 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">      72 </span>                :            :                                 
+<span class="lineNum">      73 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(pdata-&gt;rdop == gwpr_recvfrom_op_id) {</span>
+<span class="lineNum">      74 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.op = gwpr_recvfrom_op_id;</span>
+<span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :                                         memcpy(errfnc,&quot;recvfrom\0&quot;,9);</span>
+<span class="lineNum">      76 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.peerlen = sizeof(ioinfo.peer);</span>
+<span class="lineNum">      77 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while((res=recvfrom(fsrc-&gt;fd,rd-&gt;buf,rd-&gt;bufsize,0,</span>
+<span class="lineNum">      78 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 _sockaddr(&amp;ioinfo.peer),&amp;ioinfo.peerlen)) &lt; 0 &amp;&amp; errno == EINTR);</span>
+<span class="lineNum">      79 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">      80 </span>                :            :                                 
+<span class="lineNum">      81 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(pdata-&gt;rdop == gwpr_recv_op_id) {</span>
+<span class="lineNum">      82 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.op = gwpr_recv_op_id;</span>
+<span class="lineNum">      83 </span>                :<span class="lineNoCov">          0 :                                         memcpy(errfnc,&quot;recv\0&quot;,5);</span>
+<span class="lineNum">      84 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while((res=recv(fsrc-&gt;fd,rd-&gt;buf,rd-&gt;bufsize,0)) &lt; 0 &amp;&amp; errno == EINTR);</span>
+<span class="lineNum">      85 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">      86 </span>                :            :                                 
+<span class="lineNum">      87 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(pdata-&gt;rdop == gwpr_recvmsg_op_id) {</span>
+<span class="lineNum">      88 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.op = gwpr_recvmsg_op_id;</span>
+<span class="lineNum">      89 </span>                :<span class="lineNoCov">          0 :                                         memcpy(errfnc,&quot;recvmsg\0&quot;,8);</span>
+<span class="lineNum">      90 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while((res=recvmsg(fsrc-&gt;fd,(struct msghdr *)rd-&gt;buf,0)) &lt; 0 &amp;&amp; errno == EINTR);</span>
+<span class="lineNum">      91 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">      92 </span>                :            : 
+<span class="lineNum">      93 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(res &gt; 0) {</span>
+<span class="lineNum">      94 </span>                :            :                                         //good read, call rd filters and did_read callback.
+<span class="lineNum">      95 </span>                :            :                                         
+<span class="lineNum">      96 </span>                :<span class="lineNoCov">          0 :                                         rd-&gt;len = res;</span>
+<span class="lineNum">      97 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(pdata-&gt;rdfilters &amp;&amp; pdata-&gt;rdfilters[0] != NULL) {</span>
+<span class="lineNum">      98 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 for(i=0; i&lt;GWPR_FILTERS_MAX; i++) {</span>
+<span class="lineNum">      99 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                         if(!pdata-&gt;rdfilters[i]) break;</span>
+<span class="lineNum">     100 </span>                :<span class="lineNoCov">          0 :                                                         pdata-&gt;rdfilters[i](pr,&amp;ioinfo);</span>
+<span class="lineNum">     101 </span>                :<span class="lineNoCov">          0 :                                                 }</span>
+<span class="lineNum">     102 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">     103 </span>                :            :                                         
+<span class="lineNum">     104 </span>                :<span class="lineNoCov">          0 :                                         pdata-&gt;didreadcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     105 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     106 </span>                :            :                                 
+<span class="lineNum">     107 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(res == 0 &amp;&amp; pdata-&gt;closedcb) {</span>
+<span class="lineNum">     108 </span>                :            :                                         //closed socket or eof from file
+<span class="lineNum">     109 </span>                :<span class="lineNoCov">          0 :                                         pdata-&gt;closedcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     110 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     111 </span>                :            :                                 
+<span class="lineNum">     112 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(res &lt; 0 &amp;&amp; (errno == ECONNRESET || errno == EPIPE)</span>
+<span class="lineNum">         </span>[<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>][<span class="branchNoExec" title="Branch 6 was not executed"> # </span><span class="branchNoExec" title="Branch 7 was not executed"> # </span>]
+<span class="lineNum">     113 </span>                :            :                                         &amp;&amp; pdata-&gt;closedcb) {
+<span class="lineNum">     114 </span>                :            :                                         //closed socket or pipe error
+<span class="lineNum">     115 </span>                :<span class="lineNoCov">          0 :                                         pdata-&gt;closedcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     116 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     117 </span>                :            :                                 
+<span class="lineNum">     118 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(res &lt; 0 &amp;&amp; (errno == EAGAIN || errno == EWOULDBLOCK)) {</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     119 </span>                :            :                                         //socket or file marked as non blocking,
+<span class="lineNum">     120 </span>                :            :                                         //no data to read, nothing to do.
+<span class="lineNum">     121 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     122 </span>                :            :                                 
+<span class="lineNum">     123 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(res &lt; 0 &amp;&amp; pdata-&gt;errorcb) {</span>
+<span class="lineNum">     124 </span>                :            :                                         //error we don't want to handle, pass to users.
+<span class="lineNum">     125 </span>                :<span class="lineNoCov">          0 :                                         errinfo.errnm = errno;</span>
+<span class="lineNum">     126 </span>                :<span class="lineNoCov">          0 :                                         errinfo.src = fsrc;</span>
+<span class="lineNum">     127 </span>                :<span class="lineNoCov">          0 :                                         errinfo.op = ioinfo.op;</span>
+<span class="lineNum">     128 </span>                :<span class="lineNoCov">          0 :                                         memcpy(errinfo.fnc,errfnc,sizeof(errfnc));</span>
+<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :                                         pdata-&gt;errorcb(pr,&amp;errinfo);</span>
+<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     131 </span>                :            : 
+<span class="lineNum">     132 </span>                :            :                                 else {
+<span class="lineNum">     133 </span>                :<span class="lineNoCov">          0 :                                         gwprintsyserr(&quot;(OKL4F) proactor read error with no error callback&quot;,errno);</span>
+<span class="lineNum">     134 </span>                :            :                                 }
+<span class="lineNum">     135 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         } else if(!pdata-&gt;didreadcb &amp;&amp; !pdata-&gt;acceptcb) {</span>
+<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 :                                 gwerr(&quot;(4FL9KF) proactor can read data but there's no read callback set.&quot;);</span>
+<span class="lineNum">     137 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     138 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     139 </span>                :            :                 
+<span class="lineNum">     140 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(evt-&gt;flags &amp; GWRL_WR) {</span>
+<span class="lineNum">     141 </span>                :            :                         //writable activity
+<span class="lineNum">     142 </span>                :            :                         
+<span class="lineNum">     143 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;connectcb) {</span>
+<span class="lineNum">     144 </span>                :            :                                 //the user wanted to know when a socket is writable after
+<span class="lineNum">     145 </span>                :            :                                 //calling connect(), call it here and disable the connectcb.
+<span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :                                 bzero(&amp;ioinfo,sizeof(ioinfo));</span>
+<span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :                                 bzero(&amp;errinfo,sizeof(errinfo));</span>
+<span class="lineNum">     148 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">     149 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.peerlen = sizeof(ioinfo.peer);</span>
+<span class="lineNum">     150 </span>                :<span class="lineNoCov">          0 :                                 getpeername(fsrc-&gt;fd,_sockaddr(&amp;ioinfo.peer),&amp;ioinfo.peerlen);</span>
+<span class="lineNum">     151 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;connectcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     152 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;connectcb = NULL;</span>
+<span class="lineNum">     153 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     154 </span>                :            :                         
+<span class="lineNum">     155 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;didwritecb) {</span>
+<span class="lineNum">     156 </span>                :            :                                 //write callback is set, let's try and write some data.
+<span class="lineNum">     157 </span>                :<span class="lineNoCov">          0 :                                 int errnm = 0;</span>
+<span class="lineNum">     158 </span>                :<span class="lineNoCov">          0 :                                 bool stopwrite = false;</span>
+<span class="lineNum">     159 </span>                :<span class="lineNoCov">          0 :                                 bool freebuf = false;</span>
+<span class="lineNum">     160 </span>                :<span class="lineNoCov">          0 :                                 size_t written = 0;</span>
+<span class="lineNum">     161 </span>                :<span class="lineNoCov">          0 :                                 gwprwrq * q = pdata-&gt;wrq;</span>
+<span class="lineNum">     162 </span>                :<span class="lineNoCov">          0 :                                 gwprwrq * qn = NULL;</span>
+<span class="lineNum">     163 </span>                :<span class="lineNoCov">          0 :                                 gwprbuf * rembuf = NULL;</span>
+<span class="lineNum">     164 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;wrq = NULL;</span>
+<span class="lineNum">     165 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(pdata-&gt;didwritecb == &amp;io_activity) freebuf = true;</span>
+<span class="lineNum">     166 </span>                :<span class="lineNoCov">          0 :                                 bzero(&amp;ioinfo,sizeof(ioinfo));</span>
+<span class="lineNum">     167 </span>                :<span class="lineNoCov">          0 :                                 bzero(&amp;errinfo,sizeof(errinfo));</span>
+<span class="lineNum">     168 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">     169 </span>                :            :                                 
+<span class="lineNum">     170 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 while(q) {</span>
+<span class="lineNum">     171 </span>                :            :                                         //loop over the gwprwrq objects associated with the file
+<span class="lineNum">     172 </span>                :            :                                         //input source - this is all the data queued for writing.
+<span class="lineNum">     173 </span>                :            :                                         
+<span class="lineNum">     174 </span>                :<span class="lineNoCov">          0 :                                         qn = q-&gt;next;</span>
+<span class="lineNum">     175 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.op = q-&gt;wrop;</span>
+<span class="lineNum">     176 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.buf = q-&gt;buf;</span>
+<span class="lineNum">     177 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(q-&gt;wrop == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     178 </span>                :<span class="lineNoCov">          0 :                                                 ioinfo.peerlen = q-&gt;peerlen;</span>
+<span class="lineNum">     179 </span>                :<span class="lineNoCov">          0 :                                                 memcpy(&amp;ioinfo.peer,&amp;q-&gt;peer,q-&gt;peerlen);</span>
+<span class="lineNum">     180 </span>                :<span class="lineNoCov">          0 :                                         } else {</span>
+<span class="lineNum">     181 </span>                :<span class="lineNoCov">          0 :                                                 ioinfo.peerlen = 0;</span>
+<span class="lineNum">     182 </span>                :<span class="lineNoCov">          0 :                                                 bzero(&amp;ioinfo.peer,sizeof(ioinfo.peer));</span>
+<span class="lineNum">     183 </span>                :            :                                         }
+<span class="lineNum">     184 </span>                :            :                                         
+<span class="lineNum">     185 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(pdata-&gt;wrfilters &amp;&amp; pdata-&gt;wrfilters[0] != NULL) {</span>
+<span class="lineNum">     186 </span>                :            :                                                 //call write filters before we send the data.
+<span class="lineNum">     187 </span>                :<span class="lineNoCov">          0 :                                                 int i = 0;</span>
+<span class="lineNum">     188 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 for(; i&lt; GWPR_FILTERS_MAX; i++) {</span>
+<span class="lineNum">     189 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                         if(!pdata-&gt;wrfilters[i]) break;</span>
+<span class="lineNum">     190 </span>                :<span class="lineNoCov">          0 :                                                         pdata-&gt;wrfilters[i](pr,&amp;ioinfo);</span>
+<span class="lineNum">     191 </span>                :<span class="lineNoCov">          0 :                                                 }</span>
+<span class="lineNum">     192 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">     193 </span>                :            :                                         
+<span class="lineNum">     194 </span>                :            :                                         //update the error fnc in case we need it.
+<span class="lineNum">     195 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(q-&gt;wrop == gwpr_write_op_id) memcpy(errfnc,&quot;write\0&quot;,6);</span>
+<span class="lineNum">     196 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(q-&gt;wrop == gwpr_sendto_op_id) memcpy(errfnc,&quot;sendto\0&quot;,7);</span>
+<span class="lineNum">     197 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(q-&gt;wrop == gwpr_send_op_id) memcpy(errfnc,&quot;send\0&quot;,5);</span>
+<span class="lineNum">     198 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(q-&gt;wrop == gwpr_sendmsg_op_id) memcpy(errfnc,&quot;sendmsg\0&quot;,8);</span>
+<span class="lineNum">     199 </span>                :            :                                         
+<span class="lineNum">     200 </span>                :            :                                         //perform the write.
+<span class="lineNum">     201 </span>                :<span class="lineNoCov">          0 :                                         gwpr_write_buffer(pr,fsrc,q-&gt;buf,q-&gt;wrop,&amp;q-&gt;peer,q-&gt;peerlen,&amp;written,&amp;errnm);</span>
+<span class="lineNum">     202 </span>                :            :                                         
+<span class="lineNum">     203 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(written == q-&gt;buf-&gt;len) {</span>
+<span class="lineNum">     204 </span>                :            :                                                 //successfully wrote all data.
+<span class="lineNum">     205 </span>                :<span class="lineNoCov">          0 :                                                 pdata-&gt;didwritecb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     206 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">     207 </span>                :            :                                         
+<span class="lineNum">     208 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(written &lt; q-&gt;buf-&gt;len) {</span>
+<span class="lineNum">     209 </span>                :            :                                                 //partial write. the unwritten data is copied to a new
+<span class="lineNum">     210 </span>                :            :                                                 //buffer to put back in the write queue. notify the user
+<span class="lineNum">     211 </span>                :            :                                                 //of the partial write - only the written data is reported.
+<span class="lineNum">     212 </span>                :<span class="lineNoCov">          0 :                                                 size_t remain = q-&gt;buf-&gt;len - written;</span>
+<span class="lineNum">     213 </span>                :<span class="lineNoCov">          0 :                                                 rembuf = gwpr_buf_get(pr,remain);</span>
+<span class="lineNum">     214 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 while(!rembuf) rembuf = gwpr_buf_get(pr,remain);</span>
+<span class="lineNum">     215 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 memcpy(rembuf-&gt;buf,q-&gt;buf-&gt;buf+written,remain);</span>
+<span class="lineNum">     216 </span>                :<span class="lineNoCov">          0 :                                                 q-&gt;buf-&gt;len = written;</span>
+<span class="lineNum">     217 </span>                :<span class="lineNoCov">          0 :                                                 pdata-&gt;didwritecb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     218 </span>                :            :                                                 
+<span class="lineNum">     219 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     220 </span>                :            :                                                         //all is ok, but since it's a partial write the
+<span class="lineNum">     221 </span>                :            :                                                         //queue has to be put back for writing again later
+<span class="lineNum">     222 </span>                :<span class="lineNoCov">          0 :                                                         gwprwrq * rembufq = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">     223 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                         memcpy(&amp;rembufq-&gt;peer,&amp;q-&gt;peer,sizeof(rembufq-&gt;peer));</span>
+<span class="lineNum">     224 </span>                :<span class="lineNoCov">          0 :                                                         rembufq-&gt;peerlen = q-&gt;peerlen;</span>
+<span class="lineNum">     225 </span>                :<span class="lineNoCov">          0 :                                                         rembufq-&gt;buf = rembuf;</span>
+<span class="lineNum">     226 </span>                :<span class="lineNoCov">          0 :                                                         rembufq-&gt;wrop = q-&gt;wrop;</span>
+<span class="lineNum">     227 </span>                :<span class="lineNoCov">          0 :                                                         rembufq-&gt;next = q-&gt;next;</span>
+<span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :                                                         gwprwrq_putback(pr,fsrc,rembufq);</span>
+<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :                                                         break;</span>
+<span class="lineNum">     230 </span>                :            :                                                 }
+<span class="lineNum">     231 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">     232 </span>                :            : 
+<span class="lineNum">     233 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(errnm == ECONNRESET || errnm == EPIPE) {</span>
+<span class="lineNum">     234 </span>                :            :                                                 //closed connection or pipe write with no read side connected.
+<span class="lineNum">     235 </span>                :            :                                                 //buf is nulled out because we should only give the user data
+<span class="lineNum">     236 </span>                :            :                                                 //that had been unwritten in the case of errors or closed fd.
+<span class="lineNum">     237 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 if(written &gt; 0) ioinfo.buf = rembuf;</span>
+<span class="lineNum">     238 </span>                :<span class="lineNoCov">          0 :                                                 else ioinfo.buf = NULL;</span>
+<span class="lineNum">     239 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 if(pdata-&gt;closedcb) pdata-&gt;closedcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     240 </span>                :<span class="lineNoCov">          0 :                                                 break;</span>
+<span class="lineNum">     241 </span>                :            :                                         }
+<span class="lineNum">     242 </span>                :            : 
+<span class="lineNum">     243 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(written == 0 &amp;&amp; (errnm == EWOULDBLOCK || errnm == EAGAIN)) {</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     244 </span>                :            :                                                 //socket or file is non blocking and this would block.
+<span class="lineNum">     245 </span>                :            :                                                 //the socket or file is not-writable so restore the write
+<span class="lineNum">     246 </span>                :            :                                                 //queue starting from this q object for writing later.
+<span class="lineNum">     247 </span>                :<span class="lineNoCov">          0 :                                                 gwprwrq_putback(pr,fsrc,q);</span>
+<span class="lineNum">     248 </span>                :<span class="lineNoCov">          0 :                                                 break;</span>
+<span class="lineNum">     249 </span>                :            :                                         }
+<span class="lineNum">     250 </span>                :            : 
+<span class="lineNum">     251 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         else if(errnm != 0 &amp;&amp; pdata-&gt;errorcb) {</span>
+<span class="lineNum">     252 </span>                :            :                                                 //error we don't want to handle. pass to the user.
+<span class="lineNum">     253 </span>                :<span class="lineNoCov">          0 :                                                 errinfo.errnm = errno;</span>
+<span class="lineNum">     254 </span>                :<span class="lineNoCov">          0 :                                                 errinfo.src = fsrc;</span>
+<span class="lineNum">     255 </span>                :<span class="lineNoCov">          0 :                                                 errinfo.op = q-&gt;wrop;</span>
+<span class="lineNum">     256 </span>                :<span class="lineNoCov">          0 :                                                 errinfo.buf = q-&gt;buf;</span>
+<span class="lineNum">     257 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                                 if(written &gt; 0) errinfo.buf = rembuf;</span>
+<span class="lineNum">     258 </span>                :<span class="lineNoCov">          0 :                                                 memcpy(errinfo.fnc,errfnc,sizeof(errfnc));</span>
+<span class="lineNum">     259 </span>                :<span class="lineNoCov">          0 :                                                 pdata-&gt;errorcb(pr,&amp;errinfo);</span>
+<span class="lineNum">     260 </span>                :<span class="lineNoCov">          0 :                                                 stopwrite = true;</span>
+<span class="lineNum">     261 </span>                :<span class="lineNoCov">          0 :                                                 gwprwrq_putback(pr,fsrc,q);</span>
+<span class="lineNum">     262 </span>                :<span class="lineNoCov">          0 :                                                 break;</span>
+<span class="lineNum">     263 </span>                :            :                                         }
+<span class="lineNum">     264 </span>                :            :                                         
+<span class="lineNum">     265 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         if(freebuf) {</span>
+<span class="lineNum">     266 </span>                :            :                                                 //there was no user provided did_write callback set, so
+<span class="lineNum">     267 </span>                :            :                                                 //the buffer that's associated with a write queue item will
+<span class="lineNum">     268 </span>                :            :                                                 //get lost unless freed here.
+<span class="lineNum">     269 </span>                :<span class="lineNoCov">          0 :                                                 gwpr_buf_free(pr,q-&gt;buf);</span>
+<span class="lineNum">     270 </span>                :<span class="lineNoCov">          0 :                                         }</span>
+<span class="lineNum">     271 </span>                :            : 
+<span class="lineNum">     272 </span>                :            :                                         //give back the gwprwrq
+<span class="lineNum">     273 </span>                :<span class="lineNoCov">          0 :                                         gwprwrq_free(pr,fsrc,q);</span>
+<span class="lineNum">     274 </span>                :<span class="lineNoCov">          0 :                                         q = qn;</span>
+<span class="lineNum">     275 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     276 </span>                :            :                                 
+<span class="lineNum">     277 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(!pdata-&gt;wrq || stopwrite) {</span>
+<span class="lineNum">     278 </span>                :            :                                         //stop write events since there's nothing in the queue
+<span class="lineNum">     279 </span>                :<span class="lineNoCov">          0 :                                         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     280 </span>                :<span class="lineNoCov">          0 :                                         flclr(flags,GWRL_WR);</span>
+<span class="lineNum">     281 </span>                :<span class="lineNoCov">          0 :                                         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     282 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     283 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     284 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     285 </span>                :            :                 
+<span class="lineNum">     286 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 else if(evt-&gt;flags &amp; GWRL_SYNC_WRITE) {</span>
+<span class="lineNum">     287 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;didwritecb) {</span>
+<span class="lineNum">     288 </span>                :            :                                 //a synchronous write completed, notify the user here.
+<span class="lineNum">     289 </span>                :<span class="lineNoCov">          0 :                                 gwprwrq * q = (gwprwrq *)evt-&gt;userdata;</span>
+<span class="lineNum">     290 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">     291 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.buf = q-&gt;buf;</span>
+<span class="lineNum">     292 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.op = q-&gt;wrop;</span>
+<span class="lineNum">     293 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(q-&gt;wrop == gwpr_write_op_id) {</span>
+<span class="lineNum">     294 </span>                :<span class="lineNoCov">          0 :                                         memcpy(&amp;ioinfo.peer,&amp;q-&gt;peer,sizeof(ioinfo.peer));</span>
+<span class="lineNum">     295 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.peerlen = q-&gt;peerlen;</span>
+<span class="lineNum">     296 </span>                :<span class="lineNoCov">          0 :                                 } else {</span>
+<span class="lineNum">     297 </span>                :<span class="lineNoCov">          0 :                                         bzero(&amp;ioinfo.peer,sizeof(ioinfo.peer));</span>
+<span class="lineNum">     298 </span>                :<span class="lineNoCov">          0 :                                         ioinfo.peerlen = 0;</span>
+<span class="lineNum">     299 </span>                :            :                                 }
+<span class="lineNum">     300 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;didwritecb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     301 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(pdata-&gt;didwritecb == &amp;io_activity) gwpr_buf_free(pr,ioinfo.buf);</span>
+<span class="lineNum">     302 </span>                :<span class="lineNoCov">          0 :                                 gwprwrq_free(pr,fsrc,q);</span>
+<span class="lineNum">     303 </span>                :<span class="lineNoCov">          0 :                         } else {</span>
+<span class="lineNum">     304 </span>                :<span class="lineNoCov">          0 :                                 gwerr(&quot;(38FG7) proactor synchronous write completed with no did_write callback set.&quot;);</span>
+<span class="lineNum">     305 </span>                :            :                         }
+<span class="lineNum">     306 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     307 </span>                :            :                 
+<span class="lineNum">     308 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(evt-&gt;flags &amp; GWRL_SYNC_CLOSE) {</span>
+<span class="lineNum">     309 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;closedcb) {</span>
+<span class="lineNum">     310 </span>                :            :                                 //a synchronous write discovered socket or file close.
+<span class="lineNum">     311 </span>                :<span class="lineNoCov">          0 :                                 bzero(&amp;ioinfo,sizeof(ioinfo));</span>
+<span class="lineNum">     312 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.src = fsrc;</span>
+<span class="lineNum">     313 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;closedcb(pr,&amp;ioinfo);</span>
+<span class="lineNum">     314 </span>                :<span class="lineNoCov">          0 :                         } else {</span>
+<span class="lineNum">     315 </span>                :<span class="lineNoCov">          0 :                                 gwerr(&quot;(7GK9F) proactor detected a closed socket or file with no closed callback set.&quot;);</span>
+<span class="lineNum">     316 </span>                :            :                         }
+<span class="lineNum">     317 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     318 </span>                :            :                 
+<span class="lineNum">     319 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 else if(evt-&gt;flags &amp; GWRL_SYNC_ERROR) {</span>
+<span class="lineNum">     320 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(pdata-&gt;errorcb) {</span>
+<span class="lineNum">     321 </span>                :            :                                 //a synchronous write had an error.
+<span class="lineNum">     322 </span>                :<span class="lineNoCov">          0 :                                 gwpr_error_info * errinfo = (gwpr_error_info *)evt-&gt;userdata;</span>
+<span class="lineNum">     323 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;errorcb(pr,errinfo);</span>
+<span class="lineNum">     324 </span>                :<span class="lineNoCov">          0 :                                 free(errinfo);</span>
+<span class="lineNum">     325 </span>                :<span class="lineNoCov">          0 :                         } else {</span>
+<span class="lineNum">     326 </span>                :<span class="lineNoCov">          0 :                                 gwerr(&quot;(0LOP4) proactor encountered a synchronous write error with no error callback set.&quot;);</span>
+<span class="lineNum">     327 </span>                :            :                         }
+<span class="lineNum">     328 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     329 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     330 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="331"><span class="lineNum">     331 </span>                :            : </a>
+<span class="lineNum">     332 </span>                :            : void
+<span class="lineNum">     333 </span>                :<span class="lineCov">          1 : gwpr_free(gwpr * pr) {</span>
+<span class="lineNum">     334 </span>                :<span class="lineCov">          1 :         int i = 0;</span>
+<span class="lineNum">     335 </span>                :<span class="lineCov">          1 :         gwrlsrc * src = NULL;</span>
+<span class="lineNum">     336 </span>                :<span class="lineCov">          1 :         gwrlsrc_file * fsrc = NULL;</span>
+<span class="lineNum">     337 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          4 :         for(; i&lt;GWRL_SRC_TYPES_COUNT; i++) {</span>
+<span class="lineNum">     338 </span>                :<span class="lineCov">          3 :                 src = pr-&gt;rl-&gt;sources[i];</span>
+<span class="lineNum">     339 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          5 :                 while(src) {</span>
+<span class="lineNum">     340 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :                         if(src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">     341 </span>                :<span class="lineCov">          2 :                                 gwrl_src_disable(pr-&gt;rl,src);</span>
+<span class="lineNum">     342 </span>                :<span class="lineCov">          2 :                                 fsrc = _gwrlsrcf(src);</span>
+<span class="lineNum">     343 </span>                :<span class="lineCov">          2 :                                 src-&gt;callback = NULL;</span>
+<span class="lineNum">     344 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          2 :                                 if(fsrc-&gt;pdata) {</span>
+<span class="lineNum">     345 </span>                :<span class="lineCov">          1 :                                         free(fsrc-&gt;pdata);</span>
+<span class="lineNum">     346 </span>                :<span class="lineCov">          1 :                                         fsrc-&gt;pdata = NULL;</span>
+<span class="lineNum">     347 </span>                :<span class="lineCov">          1 :                                 }</span>
+<span class="lineNum">     348 </span>                :<span class="lineCov">          2 :                         }</span>
+<span class="lineNum">     349 </span>                :<span class="lineCov">          2 :                         src = src-&gt;next;</span>
+<span class="lineNum">     350 </span>                :<span class="lineCov">          2 :                 }</span>
+<span class="lineNum">     351 </span>                :<span class="lineCov">          3 :         }</span>
+<span class="lineNum">     352 </span>                :<span class="lineCov">          1 :         pr-&gt;rl-&gt;pr = NULL;</span>
+<span class="lineNum">     353 </span>                :<span class="lineCov">          1 :         pr-&gt;rl = NULL;</span>
+<span class="lineNum">     354 </span>                :<span class="lineCov">          1 :         free(pr);</span>
+<span class="lineNum">     355 </span>                :<span class="lineCov">          1 : }</span>
+<a name="356"><span class="lineNum">     356 </span>                :            : </a>
+<span class="lineNum">     357 </span>                :            : void
+<span class="lineNum">     358 </span>                :<span class="lineNoCov">          0 : gwpr_write_buffer(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,</span>
+<span class="lineNum">     359 </span>                :<span class="lineNoCov">          0 : gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen,</span>
+<span class="lineNum">     360 </span>                :<span class="lineNoCov">          0 : size_t * written, int * errnm) {</span>
+<span class="lineNum">     361 </span>                :<span class="lineNoCov">          0 :         ssize_t didwrite = 0;</span>
+<span class="lineNum">     362 </span>                :<span class="lineNoCov">          0 :         size_t towrite = buf-&gt;len;</span>
+<span class="lineNum">     363 </span>                :<span class="lineNoCov">          0 :         char * _buf = buf-&gt;buf;</span>
+<span class="lineNum">     364 </span>                :            :         
+<span class="lineNum">     365 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while(towrite &gt; 0) {</span>
+<span class="lineNum">     366 </span>                :<span class="lineNoCov">          0 :                 *errnm = 0;</span>
+<span class="lineNum">     367 </span>                :            :                 
+<span class="lineNum">     368 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(op == gwpr_write_op_id) {</span>
+<span class="lineNum">     369 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while((didwrite=write(fsrc-&gt;fd,_buf,towrite)) &amp;&amp; didwrite &lt; 0 &amp;&amp; (errno == EINTR));</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     370 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 } else if(op == gwpr_send_op_id) {</span>
+<span class="lineNum">     371 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while((didwrite=send(fsrc-&gt;fd,_buf,towrite,0)) &amp;&amp; didwrite &lt; 0 &amp;&amp; (errno == EINTR));</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     372 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 } else if(op == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     373 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while((didwrite=sendto(fsrc-&gt;fd,_buf,towrite,0, _sockaddr(peer),peerlen)) &amp;&amp; didwrite &lt; 0 &amp;&amp; (errno == EINTR));</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     374 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 } else if(op == gwpr_sendmsg_op_id) {</span>
+<span class="lineNum">     375 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while((didwrite=sendmsg(fsrc-&gt;fd,(struct msghdr *)_buf,0)) &amp;&amp; didwrite &lt; 0 &amp;&amp; (errno == EINTR));</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     376 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     377 </span>                :            :                 
+<span class="lineNum">     378 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(didwrite &gt; 0) {</span>
+<span class="lineNum">     379 </span>                :<span class="lineNoCov">          0 :                         *written += didwrite;</span>
+<span class="lineNum">     380 </span>                :<span class="lineNoCov">          0 :                         towrite -= didwrite;</span>
+<span class="lineNum">     381 </span>                :<span class="lineNoCov">          0 :                         _buf += didwrite;</span>
+<span class="lineNum">     382 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 } else if(didwrite &lt; 0) {</span>
+<span class="lineNum">     383 </span>                :<span class="lineNoCov">          0 :                         *errnm = errno;</span>
+<span class="lineNum">     384 </span>                :<span class="lineNoCov">          0 :                         break;</span>
+<span class="lineNum">     385 </span>                :            :                 }
+<span class="lineNum">     386 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     387 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="388"><span class="lineNum">     388 </span>                :            : </a>
+<span class="lineNum">     389 </span>                :            : bool
+<span class="lineNum">     390 </span>                :<span class="lineNoCov">          0 : gwpr_synchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,</span>
+<span class="lineNum">     391 </span>                :<span class="lineNoCov">          0 : gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {</span>
+<span class="lineNum">     392 </span>                :<span class="lineNoCov">          0 :         bool didwr = false;</span>
+<span class="lineNum">     393 </span>                :            :         
+<span class="lineNum">     394 </span>                :            :         #if defined(GWPR_TRY_SYNCHRONOUS_WRITE_UNIX)
+<span class="lineNum">     395 </span>                :            :         
+<span class="lineNum">     396 </span>                :<span class="lineNoCov">          0 :         if(buf-&gt;len &lt;= GWPR_SYNCHRONOUS_WRITE_MAX_BYTES) {</span>
+<span class="lineNum">     397 </span>                :            :                 //the buffer requested is smaller than the maximum allowed
+<span class="lineNum">     398 </span>                :            :                 //bytes to allow synchronous writes with, so give it a shot.
+<span class="lineNum">     399 </span>                :            : 
+<span class="lineNum">     400 </span>                :            :                 //setup vars
+<span class="lineNum">     401 </span>                :<span class="lineNoCov">          0 :                 gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     402 </span>                :<span class="lineNoCov">          0 :                 gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     403 </span>                :<span class="lineNoCov">          0 :                 gwprbuf * usedbuf = buf;</span>
+<span class="lineNum">     404 </span>                :<span class="lineNoCov">          0 :                 gwprbuf * rembuf = NULL;</span>
+<span class="lineNum">     405 </span>                :<span class="lineNoCov">          0 :                 gwprwrq * q = NULL;</span>
+<span class="lineNum">     406 </span>                :<span class="lineNoCov">          0 :                 gwrlevt * evt = NULL;</span>
+<span class="lineNum">     407 </span>                :            : 
+<span class="lineNum">     408 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(pdata-&gt;wrfilters &amp;&amp; pdata-&gt;wrfilters[0] != NULL) {</span>
+<span class="lineNum">     409 </span>                :            :                         //call write filters
+<span class="lineNum">     410 </span>                :            : 
+<span class="lineNum">     411 </span>                :            :                         //copy buffer before calling write filters, this is in case
+<span class="lineNum">     412 </span>                :            :                         //everything fails and we need to queue writing for later.
+<span class="lineNum">     413 </span>                :<span class="lineNoCov">          0 :                         gwprbuf * bfcp = gwpr_buf_get(pr,buf-&gt;bufsize);</span>
+<span class="lineNum">     414 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!bfcp) bfcp = gwpr_buf_get(pr,buf-&gt;bufsize);</span>
+<span class="lineNum">     415 </span>                :<span class="lineNoCov">          0 :                         bfcp-&gt;len = buf-&gt;len;</span>
+<span class="lineNum">     416 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         memcpy(bfcp-&gt;buf,buf-&gt;buf,buf-&gt;len);</span>
+<span class="lineNum">     417 </span>                :<span class="lineNoCov">          0 :                         usedbuf = bfcp;</span>
+<span class="lineNum">     418 </span>                :            : 
+<span class="lineNum">     419 </span>                :            :                         //setup ioinfo for write filter
+<span class="lineNum">     420 </span>                :<span class="lineNoCov">          0 :                         gwpr_io_info ioinfo = {0};</span>
+<span class="lineNum">     421 </span>                :<span class="lineNoCov">          0 :                         ioinfo.src = fsrc;</span>
+<span class="lineNum">     422 </span>                :<span class="lineNoCov">          0 :                         ioinfo.buf = usedbuf;</span>
+<span class="lineNum">     423 </span>                :<span class="lineNoCov">          0 :                         ioinfo.op = op;</span>
+<span class="lineNum">     424 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(op == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     425 </span>                :<span class="lineNoCov">          0 :                                 ioinfo.peerlen = peerlen;</span>
+<span class="lineNum">     426 </span>                :<span class="lineNoCov">          0 :                                 memcpy(&amp;ioinfo.peer,peer,sizeof(ioinfo.peer));</span>
+<span class="lineNum">     427 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     428 </span>                :            :                         
+<span class="lineNum">     429 </span>                :            :                         //call filters
+<span class="lineNum">     430 </span>                :<span class="lineNoCov">          0 :                         int i = 0;</span>
+<span class="lineNum">     431 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         for(; i&lt;GWPR_FILTERS_MAX; i++) {</span>
+<span class="lineNum">     432 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 if(!pdata-&gt;wrfilters[i]) break;</span>
+<span class="lineNum">     433 </span>                :<span class="lineNoCov">          0 :                                 pdata-&gt;wrfilters[i](pr,&amp;ioinfo);</span>
+<span class="lineNum">     434 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     435 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     436 </span>                :            :                 
+<span class="lineNum">     437 </span>                :            :                 //write the buffer
+<span class="lineNum">     438 </span>                :<span class="lineNoCov">          0 :                 int errnm = 0;</span>
+<span class="lineNum">     439 </span>                :<span class="lineNoCov">          0 :                 size_t written = 0;</span>
+<span class="lineNum">     440 </span>                :<span class="lineNoCov">          0 :                 gwpr_write_buffer(pr,fsrc,usedbuf,gwpr_write_op_id,peer,peerlen,&amp;written,&amp;errnm);</span>
+<span class="lineNum">     441 </span>                :            :                 
+<span class="lineNum">     442 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(written == usedbuf-&gt;len) {</span>
+<span class="lineNum">     443 </span>                :            :                         //fullwrite success
+<span class="lineNum">     444 </span>                :            : 
+<span class="lineNum">     445 </span>                :            :                         //get a wrq for the event userdata
+<span class="lineNum">     446 </span>                :<span class="lineNoCov">          0 :                         q = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">     447 </span>                :            : 
+<span class="lineNum">     448 </span>                :            :                         //get an event to post
+<span class="lineNum">     449 </span>                :<span class="lineNoCov">          0 :                         evt = gwrl_evt_create(pr-&gt;rl,src,&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_WRITE);</span>
+<span class="lineNum">     450 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!evt) evt = gwrl_evt_create(pr-&gt;rl,src,&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_WRITE);</span>
+<span class="lineNum">     451 </span>                :            : 
+<span class="lineNum">     452 </span>                :            :                         //post the event back to the proactor to catch.
+<span class="lineNum">     453 </span>                :<span class="lineNoCov">          0 :                         q-&gt;buf = usedbuf;</span>
+<span class="lineNum">     454 </span>                :<span class="lineNoCov">          0 :                         q-&gt;wrop = op;</span>
+<span class="lineNum">     455 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(op == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     456 </span>                :<span class="lineNoCov">          0 :                                 q-&gt;peerlen = peerlen;</span>
+<span class="lineNum">     457 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 memcpy(&amp;q-&gt;peer,peer,sizeof(q-&gt;peer));</span>
+<span class="lineNum">     458 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     459 </span>                :<span class="lineNoCov">          0 :                         gwrl_post_evt(pr-&gt;rl,evt);</span>
+<span class="lineNum">     460 </span>                :            :                         
+<span class="lineNum">     461 </span>                :            :                         //set result
+<span class="lineNum">     462 </span>                :<span class="lineNoCov">          0 :                         didwr = true;</span>
+<span class="lineNum">     463 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 } else if(written &lt; usedbuf-&gt;len) {</span>
+<span class="lineNum">     464 </span>                :            :                         //partial write, copy the unwritten data to a new buffer.
+<span class="lineNum">     465 </span>                :            :                         //post a write event back to the proactor and queue the
+<span class="lineNum">     466 </span>                :            :                         //remaining data buffer for writing.
+<span class="lineNum">     467 </span>                :            :                         
+<span class="lineNum">     468 </span>                :            :                         //copy the remaining buffer data that hasn't been
+<span class="lineNum">     469 </span>                :            :                         //written to requeue later.
+<span class="lineNum">     470 </span>                :<span class="lineNoCov">          0 :                         size_t remaining = usedbuf-&gt;len - written;</span>
+<span class="lineNum">     471 </span>                :<span class="lineNoCov">          0 :                         rembuf = gwpr_buf_get(pr,remaining);</span>
+<span class="lineNum">     472 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!rembuf) rembuf = gwpr_buf_get(pr,remaining);</span>
+<span class="lineNum">     473 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         memcpy(rembuf-&gt;buf,usedbuf-&gt;buf + written,remaining);</span>
+<span class="lineNum">     474 </span>                :            : 
+<span class="lineNum">     475 </span>                :            :                         //get a wrq for the user data
+<span class="lineNum">     476 </span>                :<span class="lineNoCov">          0 :                         gwprwrq * q = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">     477 </span>                :<span class="lineNoCov">          0 :                         q-&gt;buf = usedbuf;</span>
+<span class="lineNum">     478 </span>                :<span class="lineNoCov">          0 :                         q-&gt;wrop = op;</span>
+<span class="lineNum">     479 </span>                :            : 
+<span class="lineNum">     480 </span>                :            :                         //update the used buffer to reflect what was actually written.
+<span class="lineNum">     481 </span>                :            :                         //even though the remaining unwritten buffer data is still in
+<span class="lineNum">     482 </span>                :            :                         //the buffer it won't matter. users should only use what's in
+<span class="lineNum">     483 </span>                :            :                         //the len property.
+<span class="lineNum">     484 </span>                :<span class="lineNoCov">          0 :                         usedbuf-&gt;len = written;</span>
+<span class="lineNum">     485 </span>                :            : 
+<span class="lineNum">     486 </span>                :            :                         //update wrq for udp
+<span class="lineNum">     487 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(op == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     488 </span>                :<span class="lineNoCov">          0 :                                 q-&gt;peerlen = peerlen;</span>
+<span class="lineNum">     489 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 memcpy(&amp;q-&gt;peer,peer,sizeof(q-&gt;peer));</span>
+<span class="lineNum">     490 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     491 </span>                :            : 
+<span class="lineNum">     492 </span>                :            :                         //get event and post it
+<span class="lineNum">     493 </span>                :<span class="lineNoCov">          0 :                         gwrlevt * evt = gwrl_evt_create(pr-&gt;rl,_gwrlsrc(fsrc),&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_WRITE);</span>
+<span class="lineNum">     494 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!evt) evt = gwrl_evt_create(pr-&gt;rl,_gwrlsrc(fsrc),&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_WRITE);</span>
+<span class="lineNum">     495 </span>                :<span class="lineNoCov">          0 :                         gwrl_post_evt(pr-&gt;rl,evt);</span>
+<span class="lineNum">     496 </span>                :            :                         
+<span class="lineNum">     497 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     498 </span>                :            :                                 //either no errors, or the partial write errored out by
+<span class="lineNum">     499 </span>                :            :                                 //the kernel telling us there's no more room to write.
+<span class="lineNum">     500 </span>                :            :                                 //post the remaining buffer data to the write queue for later.
+<span class="lineNum">     501 </span>                :            : 
+<span class="lineNum">     502 </span>                :<span class="lineNoCov">          0 :                                 gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);</span>
+<span class="lineNum">     503 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">     504 </span>                :            :                         
+<span class="lineNum">     505 </span>                :            :                         //set result
+<span class="lineNum">     506 </span>                :<span class="lineNoCov">          0 :                         didwr =  true;</span>
+<span class="lineNum">     507 </span>                :<span class="lineNoCov">          0 :                 } else {</span>
+<span class="lineNum">     508 </span>                :<span class="lineNoCov">          0 :                         didwr = false;</span>
+<span class="lineNum">     509 </span>                :            :                 }
+<span class="lineNum">     510 </span>                :            : 
+<span class="lineNum">     511 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(errnm == ECONNRESET || errnm == EPIPE) {</span>
+<span class="lineNum">     512 </span>                :            :                         //closed file descriptor or eof, post close event back to
+<span class="lineNum">     513 </span>                :            :                         //proactor. for dispatching to the user. If there was a partial
+<span class="lineNum">     514 </span>                :            :                         //write eariler we pass back the remaining data buffer in
+<span class="lineNum">     515 </span>                :            :                         //case the user needs to handle it.
+<span class="lineNum">     516 </span>                :            : 
+<span class="lineNum">     517 </span>                :            :                         //get a wrq for user data
+<span class="lineNum">     518 </span>                :<span class="lineNoCov">          0 :                         q = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">     519 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(written &gt; 0) q-&gt;buf = rembuf;</span>
+<span class="lineNum">     520 </span>                :<span class="lineNoCov">          0 :                         q-&gt;wrop = op;</span>
+<span class="lineNum">     521 </span>                :            : 
+<span class="lineNum">     522 </span>                :            :                         //get event and post it
+<span class="lineNum">     523 </span>                :<span class="lineNoCov">          0 :                         evt = gwrl_evt_create(pr-&gt;rl,_gwrlsrc(fsrc),&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_CLOSE);</span>
+<span class="lineNum">     524 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!evt) evt = gwrl_evt_create(pr-&gt;rl,_gwrlsrc(fsrc),&amp;gwpr_src_activity,q,fsrc-&gt;fd,GWRL_SYNC_CLOSE);</span>
+<span class="lineNum">     525 </span>                :<span class="lineNoCov">          0 :                         gwrl_post_evt(pr-&gt;rl,evt);</span>
+<span class="lineNum">     526 </span>                :            : 
+<span class="lineNum">     527 </span>                :            :                         //set result
+<span class="lineNum">     528 </span>                :<span class="lineNoCov">          0 :                         didwr = true;</span>
+<span class="lineNum">     529 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     530 </span>                :            : 
+<span class="lineNum">     531 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 else if(written == 0 &amp;&amp; (errnm == EWOULDBLOCK || errnm == EAGAIN)) {</span>
+<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
+<span class="lineNum">     532 </span>                :            :                         //socket or fd is marked as non-blocking and no data could
+<span class="lineNum">     533 </span>                :            :                         //be written without blocking, post it all in the queue for
+<span class="lineNum">     534 </span>                :            :                         //writing later when the file descriptor is writable.
+<span class="lineNum">     535 </span>                :<span class="lineNoCov">          0 :                         gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);</span>
+<span class="lineNum">     536 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     537 </span>                :            : 
+<span class="lineNum">     538 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 else if(errnm != 0) {</span>
+<span class="lineNum">     539 </span>                :            :                         //other error we don't want to handle. post this back
+<span class="lineNum">     540 </span>                :            :                         //to the proactor for dispatching to the user.
+<span class="lineNum">     541 </span>                :            : 
+<span class="lineNum">     542 </span>                :            :                         //create err info for the event.
+<span class="lineNum">     543 </span>                :<span class="lineNoCov">          0 :                         gwpr_error_info * errinfo = calloc(1,sizeof(gwpr_error_info));</span>
+<span class="lineNum">     544 </span>                :<span class="lineNoCov">          0 :                         errinfo-&gt;errnm = errnm;</span>
+<span class="lineNum">     545 </span>                :<span class="lineNoCov">          0 :                         errinfo-&gt;src = fsrc;</span>
+<span class="lineNum">     546 </span>                :<span class="lineNoCov">          0 :                         errinfo-&gt;op = op;</span>
+<span class="lineNum">     547 </span>                :<span class="lineNoCov">          0 :                         errinfo-&gt;buf = buf;</span>
+<span class="lineNum">     548 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(written &gt; 0) errinfo-&gt;buf = rembuf;</span>
+<span class="lineNum">     549 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(op == gwpr_write_op_id) memcpy(errinfo-&gt;fnc,&quot;write\0&quot;,6);</span>
+<span class="lineNum">     550 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         else if(op == gwpr_send_op_id) memcpy(errinfo-&gt;fnc,&quot;send\0&quot;,5);</span>
+<span class="lineNum">     551 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         else if(op == gwpr_sendto_op_id) memcpy(errinfo-&gt;fnc,&quot;sendto\0&quot;,7);</span>
+<span class="lineNum">     552 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         else if(op == gwpr_sendmsg_op_id) memcpy(errinfo-&gt;fnc,&quot;sendmsg\0&quot;,8);</span>
+<span class="lineNum">     553 </span>                :            : 
+<span class="lineNum">     554 </span>                :            :                         //get an event and post it
+<span class="lineNum">     555 </span>                :<span class="lineNoCov">          0 :                         evt = gwrl_evt_create(pr-&gt;rl,src,&amp;gwpr_src_activity,errinfo,fsrc-&gt;fd,GWRL_SYNC_ERROR);</span>
+<span class="lineNum">     556 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         while(!evt) evt = gwrl_evt_create(pr-&gt;rl,src,&amp;gwpr_src_activity,errinfo,fsrc-&gt;fd,GWRL_SYNC_ERROR);</span>
+<span class="lineNum">     557 </span>                :<span class="lineNoCov">          0 :                         gwrl_post_evt(pr-&gt;rl,evt);</span>
+<span class="lineNum">     558 </span>                :<span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     559 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     560 </span>                :            :         
+<span class="lineNum">     561 </span>                :            :         #endif
+<span class="lineNum">     562 </span>                :<span class="lineNoCov">          0 :         return didwr;</span>
+<span class="lineNum">     563 </span>                :            : }
+<a name="564"><span class="lineNum">     564 </span>                :            : </a>
+<span class="lineNum">     565 </span>                :            : void
+<span class="lineNum">     566 </span>                :<span class="lineNoCov">          0 : gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,</span>
+<span class="lineNum">     567 </span>                :<span class="lineNoCov">          0 : gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {</span>
+<span class="lineNum">     568 </span>                :<span class="lineNoCov">          0 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     569 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     570 </span>                :<span class="lineNoCov">          0 :         gwprwrq * q = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">     571 </span>                :<span class="lineNoCov">          0 :         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     572 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;didwritecb) pdata-&gt;didwritecb = &amp;io_activity;</span>
+<span class="lineNum">     573 </span>                :<span class="lineNoCov">          0 :         q-&gt;buf = buf;</span>
+<span class="lineNum">     574 </span>                :<span class="lineNoCov">          0 :         q-&gt;wrop = op;</span>
+<span class="lineNum">     575 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(op == gwpr_sendto_op_id) {</span>
+<span class="lineNum">     576 </span>                :<span class="lineNoCov">          0 :                 q-&gt;peerlen = peerlen;</span>
+<span class="lineNum">     577 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 memcpy(&amp;q-&gt;peer,peer,sizeof(q-&gt;peer));</span>
+<span class="lineNum">     578 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     579 </span>                :<span class="lineNoCov">          0 :         gwprwrq_add(pr,fsrc,q);</span>
+<span class="lineNum">     580 </span>                :<span class="lineNoCov">          0 :         flset(flags,GWRL_ENABLED|GWRL_WR);</span>
+<span class="lineNum">     581 </span>                :<span class="lineNoCov">          0 :         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     582 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="583"><span class="lineNum">     583 </span>                :            : </a>
+<span class="lineNum">     584 </span>                :            : int
+<span class="lineNum">     585 </span>                :<span class="lineNoCov">          0 : gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc) {</span>
+<span class="lineNum">     586 </span>                :<span class="lineNoCov">          0 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     587 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     588 </span>                :<span class="lineNoCov">          0 :         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     589 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;acceptcb) {</span>
+<span class="lineNum">     590 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(6NMC4) cannot call accept without an accept callback set.&quot;);</span>
+<span class="lineNum">     591 </span>                :<span class="lineNoCov">          0 :                 return -1;</span>
+<span class="lineNum">     592 </span>                :            :         }
+<span class="lineNum">     593 </span>                :<span class="lineNoCov">          0 :         flset(flags,GWRL_ENABLED|GWRL_RD);</span>
+<span class="lineNum">     594 </span>                :<span class="lineNoCov">          0 :         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     595 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     596 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="597"><span class="lineNum">     597 </span>                :            : </a>
+<span class="lineNum">     598 </span>                :            : int
+<span class="lineNum">     599 </span>                :<span class="lineNoCov">          0 : gwpr_connect(gwpr * pr, gwrlsrc_file * fsrc,</span>
+<span class="lineNum">     600 </span>                :<span class="lineNoCov">          0 : struct sockaddr_storage * addr) {</span>
+<span class="lineNum">     601 </span>                :<span class="lineNoCov">          0 :         int res = 0;</span>
+<span class="lineNum">     602 </span>                :<span class="lineNoCov">          0 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     603 </span>                :<span class="lineNoCov">          0 :         gwprdata * prdata = (gwprdata *)fsrc-&gt;pdata;</span>
+<span class="lineNum">     604 </span>                :<span class="lineNoCov">          0 :         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     605 </span>                :<span class="lineNoCov">          0 :         if(!prdata-&gt;connectcb) {</span>
+<span class="lineNum">     606 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(8rFG3) cannot call connect without a connect callback set.&quot;);</span>
+<span class="lineNum">     607 </span>                :<span class="lineNoCov">          0 :                 return -1;</span>
+<span class="lineNum">     608 </span>                :            :         }
+<span class="lineNum">     609 </span>                :<span class="lineNoCov">          0 :         gwsk_nonblock(fsrc-&gt;fd,1);</span>
+<span class="lineNum">     610 </span>                :<span class="lineNoCov">          0 :         res = gwsk_connect(fsrc-&gt;fd,addr);</span>
+<span class="lineNum">     611 </span>                :<span class="lineNoCov">          0 :         flset(flags,GWRL_ENABLED|GWRL_WR|GWRL_RD);</span>
+<span class="lineNum">     612 </span>                :<span class="lineNoCov">          0 :         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     613 </span>                :<span class="lineNoCov">          0 :         return res;</span>
+<span class="lineNum">     614 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="615"><span class="lineNum">     615 </span>                :            : </a>
+<span class="lineNum">     616 </span>                :            : int
+<span class="lineNum">     617 </span>                :<span class="lineCov">          1 : gwpr_asynchronous_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,</span>
+<span class="lineNum">     618 </span>                :<span class="lineCov">          1 : gwpr_io_op_id op) {</span>
+<span class="lineNum">     619 </span>                :<span class="lineCov">          1 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     620 </span>                :<span class="lineCov">          1 :         gwprdata * pdata = (gwprdata *)fsrc-&gt;pdata;</span>
+<span class="lineNum">     621 </span>                :<span class="lineCov">          1 :         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     622 </span>                :<span class="lineCov">          1 :         if(!pdata-&gt;didreadcb) {</span>
+<span class="lineNum">     623 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(7GB3H) cannot call recvfrom without a did read callback.&quot;);</span>
+<span class="lineNum">     624 </span>                :<span class="lineNoCov">          0 :                 return -1;</span>
+<span class="lineNum">     625 </span>                :            :         }
+<span class="lineNum">     626 </span>                :<span class="lineCov">          1 :         flset(flags,GWRL_ENABLED|GWRL_RD);</span>
+<span class="lineNum">     627 </span>                :<span class="lineCov">          1 :         pdata-&gt;rdbuf = buf;</span>
+<span class="lineNum">     628 </span>                :<span class="lineCov">          1 :         pdata-&gt;rdbufsize = buf-&gt;bufsize;</span>
+<span class="lineNum">     629 </span>                :<span class="lineCov">          1 :         pdata-&gt;rdop = op;</span>
+<span class="lineNum">     630 </span>                :<span class="lineCov">          1 :         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     631 </span>                :<span class="lineCov">          1 :         return 0;</span>
+<span class="lineNum">     632 </span>                :<span class="lineCov">          1 : }</span>
+<a name="633"><span class="lineNum">     633 </span>                :            : </a>
+<span class="lineNum">     634 </span>                :            : void
+<span class="lineNum">     635 </span>                :<span class="lineNoCov">          0 : gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc) {</span>
+<span class="lineNum">     636 </span>                :<span class="lineNoCov">          0 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     637 </span>                :<span class="lineNoCov">          0 :         gwrlsrc_flags_t flags = src-&gt;flags;</span>
+<span class="lineNum">     638 </span>                :<span class="lineNoCov">          0 :         flclr(flags,GWRL_RD);</span>
+<span class="lineNum">     639 </span>                :<span class="lineNoCov">          0 :         gwrl_src_file_update_flags(pr-&gt;rl,src,flags);</span>
+<span class="lineNum">     640 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="641"><span class="lineNum">     641 </span>                :            : </a>
+<span class="lineNum">     642 </span>                :            : int
+<span class="lineNum">     643 </span>                :<span class="lineCov">          1 : gwpr_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     644 </span>                :<span class="lineCov">          1 :         return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_read_op_id);</span>
+<span class="lineNum">     645 </span>                :            : }
+<a name="646"><span class="lineNum">     646 </span>                :            : </a>
+<span class="lineNum">     647 </span>                :            : int
+<span class="lineNum">     648 </span>                :<span class="lineNoCov">          0 : gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     649 </span>                :<span class="lineNoCov">          0 :         return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recv_op_id);</span>
+<span class="lineNum">     650 </span>                :            : }
+<a name="651"><span class="lineNum">     651 </span>                :            : </a>
+<span class="lineNum">     652 </span>                :            : int
+<span class="lineNum">     653 </span>                :<span class="lineNoCov">          0 : gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     654 </span>                :<span class="lineNoCov">          0 :         return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recvfrom_op_id);</span>
+<span class="lineNum">     655 </span>                :            : }
+<a name="656"><span class="lineNum">     656 </span>                :            : </a>
+<span class="lineNum">     657 </span>                :            : int
+<span class="lineNum">     658 </span>                :<span class="lineNoCov">          0 : gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     659 </span>                :<span class="lineNoCov">          0 :         return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recvmsg_op_id);</span>
+<span class="lineNum">     660 </span>                :            : }
+<a name="661"><span class="lineNum">     661 </span>                :            : </a>
+<span class="lineNum">     662 </span>                :            : int
+<span class="lineNum">     663 </span>                :<span class="lineNoCov">          0 : gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     664 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     665 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;didwritecb) pdata-&gt;didwritecb = &amp;io_activity;</span>
+<span class="lineNum">     666 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(pdata-&gt;wrq) {</span>
+<span class="lineNum">     667 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);</span>
+<span class="lineNum">     668 </span>                :<span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     669 </span>                :            :         }
+<span class="lineNum">     670 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0))) {</span>
+<span class="lineNum">     671 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);</span>
+<span class="lineNum">     672 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     673 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     674 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="675"><span class="lineNum">     675 </span>                :            : </a>
+<span class="lineNum">     676 </span>                :            : int
+<span class="lineNum">     677 </span>                :<span class="lineNoCov">          0 : gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     678 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     679 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;didwritecb) pdata-&gt;didwritecb = &amp;io_activity;</span>
+<span class="lineNum">     680 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(pdata-&gt;wrq) {</span>
+<span class="lineNum">     681 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0);</span>
+<span class="lineNum">     682 </span>                :<span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     683 </span>                :            :         }
+<span class="lineNum">     684 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0))) {</span>
+<span class="lineNum">     685 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0);</span>
+<span class="lineNum">     686 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     687 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     688 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="689"><span class="lineNum">     689 </span>                :            : </a>
+<span class="lineNum">     690 </span>                :            : int
+<span class="lineNum">     691 </span>                :<span class="lineNoCov">          0 : gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,</span>
+<span class="lineNum">     692 </span>                :<span class="lineNoCov">          0 :         struct sockaddr_storage * peer, socklen_t peerlen) {</span>
+<span class="lineNum">     693 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     694 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;didwritecb) pdata-&gt;didwritecb = &amp;io_activity;</span>
+<span class="lineNum">     695 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(pdata-&gt;wrq) {</span>
+<span class="lineNum">     696 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);</span>
+<span class="lineNum">     697 </span>                :<span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     698 </span>                :            :         }
+<span class="lineNum">     699 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen))) {</span>
+<span class="lineNum">     700 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);</span>
+<span class="lineNum">     701 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     702 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     703 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="704"><span class="lineNum">     704 </span>                :            : </a>
+<span class="lineNum">     705 </span>                :            : int
+<span class="lineNum">     706 </span>                :<span class="lineNoCov">          0 : gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {</span>
+<span class="lineNum">     707 </span>                :<span class="lineNoCov">          0 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">     708 </span>                :<span class="lineNoCov">          0 :         if(!pdata-&gt;didwritecb) pdata-&gt;didwritecb = &amp;io_activity;</span>
+<span class="lineNum">     709 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(pdata-&gt;wrq) {</span>
+<span class="lineNum">     710 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0);</span>
+<span class="lineNum">     711 </span>                :<span class="lineNoCov">          0 :                 return 0;</span>
+<span class="lineNum">     712 </span>                :            :         }
+<span class="lineNum">     713 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0))) {</span>
+<span class="lineNum">     714 </span>                :<span class="lineNoCov">          0 :                 gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0);</span>
+<span class="lineNum">     715 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     716 </span>                :<span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     717 </span>                :<span class="lineNoCov">          0 : }</span>
+<a name="718"><span class="lineNum">     718 </span>                :            : </a>
+<span class="lineNum">     719 </span>                :            : gwprwrq *
+<span class="lineNum">     720 </span>                :<span class="lineCov">         60 : gwprwrq_get(gwpr * pr, gwrlsrc_file * fsrc) {</span>
+<span class="lineNum">     721 </span>                :<span class="lineCov">         60 :         gwprwrq * wrq = NULL;</span>
+<span class="lineNum">     722 </span>                :<span class="lineCov">         60 :         if(pr-&gt;wrqcache) {</span>
+<span class="lineNum">     723 </span>                :<span class="lineNoCov">          0 :                 wrq = pr-&gt;wrqcache;</span>
+<span class="lineNum">     724 </span>                :<span class="lineNoCov">          0 :                 pr-&gt;nwrqcache--;</span>
+<span class="lineNum">     725 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(wrq-&gt;next) {</span>
+<span class="lineNum">     726 </span>                :<span class="lineNoCov">          0 :                         pr-&gt;wrqcache = wrq-&gt;next;</span>
+<span class="lineNum">     727 </span>                :<span class="lineNoCov">          0 :                 } else {</span>
+<span class="lineNum">     728 </span>                :<span class="lineNoCov">          0 :                         pr-&gt;wrqcache = NULL;</span>
+<span class="lineNum">     729 </span>                :            :                 }
+<span class="lineNum">     730 </span>                :<span class="lineNoCov">          0 :         } else {</span>
+<span class="lineNum">     731 </span>                :<span class="lineCov">         60 :                 wrq = gwrl_mem_calloc(1,sizeof(gwprwrq));</span>
+<span class="lineNum">     732 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 60 times"> + </span>]:<span class="lineCov">         60 :                 while(!wrq) {</span>
+<span class="lineNum">     733 </span>                :<span class="lineNoCov">          0 :                         gwerr(&quot;(9DXIL) calloc error&quot;);</span>
+<span class="lineNum">     734 </span>                :<span class="lineNoCov">          0 :                         wrq = gwrl_mem_calloc(1,sizeof(gwprwrq));</span>
+<span class="lineNum">     735 </span>                :<span class="lineCov">         60 :                 }</span>
+<span class="lineNum">     736 </span>                :            :         }
+<span class="lineNum">     737 </span>                :<span class="lineCov">         60 :         wrq-&gt;next = NULL;</span>
+<span class="lineNum">     738 </span>                :<span class="lineCov">         60 :         return wrq;</span>
+<span class="lineNum">     739 </span>                :            : }
+<a name="740"><span class="lineNum">     740 </span>                :            : </a>
+<span class="lineNum">     741 </span>                :            : void
+<span class="lineNum">     742 </span>                :<span class="lineCov">         45 : gwprwrq_free(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * wrq) {</span>
+<span class="lineNum">     743 </span>                :<span class="lineCov">         45 :         if(pr-&gt;nwrqcache == pr-&gt;options.gwpr_wrqueue_cache_max) {</span>
+<span class="lineNum">     744 </span>                :<span class="lineNoCov">          0 :                 free(wrq);</span>
+<span class="lineNum">     745 </span>                :<span class="lineNoCov">          0 :         } else {</span>
+<span class="lineNum">     746 </span>                :<span class="lineCov">         45 :                 wrq-&gt;next = NULL;</span>
+<span class="lineNum">     747 </span>                :<span class="lineCov">         45 :                 wrq-&gt;buf = NULL;</span>
+<span class="lineNum">     748 </span>        [<span class="branchCov" title="Branch 0 was taken 30 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         45 :                 if(pr-&gt;wrqcache) wrq-&gt;next = pr-&gt;wrqcache;</span>
+<span class="lineNum">     749 </span>                :<span class="lineCov">         45 :                 pr-&gt;wrqcache = wrq;</span>
+<span class="lineNum">     750 </span>                :<span class="lineCov">         45 :                 pr-&gt;nwrqcache++;</span>
+<span class="lineNum">     751 </span>                :            :         }
+<span class="lineNum">     752 </span>                :<span class="lineCov">         45 : }</span>
+<a name="753"><span class="lineNum">     753 </span>                :            : </a>
+<span class="lineNum">     754 </span>                :            : void
+<span class="lineNum">     755 </span>                :<span class="lineCov">         30 : gwprwrq_putback(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * q) {</span>
+<span class="lineNum">     756 </span>                :<span class="lineCov">         30 :         gwprdata * data = fsrc-&gt;pdata;</span>
+<span class="lineNum">     757 </span>                :<span class="lineCov">         30 :         if(!data-&gt;wrq) {</span>
+<span class="lineNum">     758 </span>                :<span class="lineCov">         15 :                 data-&gt;wrq = q;</span>
+<span class="lineNum">     759 </span>                :<span class="lineCov">         15 :         } else {</span>
+<span class="lineNum">     760 </span>                :<span class="lineCov">         15 :                 gwprwrq * tmpq = data-&gt;wrq;</span>
+<span class="lineNum">     761 </span>                :<span class="lineCov">         15 :                 gwprwrq * tmpqlast = NULL;</span>
+<span class="lineNum">     762 </span>                :<span class="lineCov">         15 :                 data-&gt;wrq = q;</span>
+<span class="lineNum">     763 </span>        [<span class="branchCov" title="Branch 0 was taken 45 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         60 :                 while(q) {</span>
+<span class="lineNum">     764 </span>                :<span class="lineCov">         45 :                         tmpqlast = q;</span>
+<span class="lineNum">     765 </span>                :<span class="lineCov">         45 :                         q = q-&gt;next;</span>
+<span class="lineNum">     766 </span>                :<span class="lineCov">         45 :                 }</span>
+<span class="lineNum">     767 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         15 :                 if(tmpqlast) tmpqlast-&gt;next = tmpq;</span>
+<span class="lineNum">     768 </span>                :<span class="lineCov">         15 :                 q = tmpq;</span>
+<span class="lineNum">     769 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         30 :                 while(q) {</span>
+<span class="lineNum">     770 </span>                :<span class="lineCov">         15 :                         tmpqlast = q;</span>
+<span class="lineNum">     771 </span>                :<span class="lineCov">         15 :                         q = q-&gt;next;</span>
+<span class="lineNum">     772 </span>                :<span class="lineCov">         15 :                 }</span>
+<span class="lineNum">     773 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         15 :                 if(tmpqlast) {</span>
+<span class="lineNum">     774 </span>                :<span class="lineCov">         15 :                         data-&gt;wrqlast = tmpqlast;</span>
+<span class="lineNum">     775 </span>                :<span class="lineCov">         15 :                         data-&gt;wrqlast-&gt;next = NULL;</span>
+<span class="lineNum">     776 </span>                :<span class="lineCov">         15 :                 }</span>
+<span class="lineNum">     777 </span>                :            :         }
+<span class="lineNum">     778 </span>                :<span class="lineCov">         30 : }</span>
+<a name="779"><span class="lineNum">     779 </span>                :            : </a>
+<span class="lineNum">     780 </span>                :            : void
+<span class="lineNum">     781 </span>                :<span class="lineCov">         45 : gwprwrq_add(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * q) {</span>
+<span class="lineNum">     782 </span>                :<span class="lineCov">         45 :         gwprdata * data = fsrc-&gt;pdata;</span>
+<span class="lineNum">     783 </span>                :<span class="lineCov">         45 :         if(!data-&gt;wrq) {</span>
+<span class="lineNum">     784 </span>                :<span class="lineCov">         15 :                 data-&gt;wrq = q;</span>
+<span class="lineNum">     785 </span>                :<span class="lineCov">         15 :                 q-&gt;next = NULL;</span>
+<span class="lineNum">     786 </span>                :<span class="lineCov">         15 :         } else {</span>
+<span class="lineNum">     787 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         30 :                 if(!data-&gt;wrqlast) {</span>
+<span class="lineNum">     788 </span>                :<span class="lineCov">         15 :                         data-&gt;wrqlast = q;</span>
+<span class="lineNum">     789 </span>                :<span class="lineCov">         15 :                         data-&gt;wrq-&gt;next = data-&gt;wrqlast;</span>
+<span class="lineNum">     790 </span>                :<span class="lineCov">         15 :                 } else {</span>
+<span class="lineNum">     791 </span>                :<span class="lineCov">         15 :                         data-&gt;wrqlast-&gt;next = q;</span>
+<span class="lineNum">     792 </span>                :<span class="lineCov">         30 :                         data-&gt;wrqlast = q;</span>
+<span class="lineNum">     793 </span>                :            :                 }
+<span class="lineNum">     794 </span>                :            :         }
+<span class="lineNum">     795 </span>                :<span class="lineCov">         45 : }</span>
+<span class="lineNum">     796 </span>                :            : 
+<span class="lineNum">     797 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     798 </span>                :            : }
+<span class="lineNum">     799 </span>                :            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

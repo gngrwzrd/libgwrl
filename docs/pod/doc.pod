@@ -107,7 +107,7 @@ Here's how to generate a Makefile on Linux or Mac:
 =head2 CMake Output
 
 By default CMake is configured to create a static .a archive and a dyld
-for Linux and Max. Windows will create a .lib file and .dll.
+for Linux and Mac. On Windows CMake creates a .lib file and .dll.
 
 =head1 REACTOR AND PROACTOR
 
@@ -1186,6 +1186,21 @@ Example:
 
 =head2 Making Connections
 
+=head2 Freeing a Proactor
+
+Freeing a proactor only frees the internal resources the proactor requires,
+it does not free the file input sources you added to it, or any of the reactor
+resources internally.
+
+Freeing a proactor disables all file input sources that were added to with the
+proactor API's.
+
+To continue freeing and 
+
+Free a proactor with:
+
+ void gwpr_free(gwpr * pr);
+
 =head2 Proactor CMAKE Compile-Time Options
 
 The proactor uses some configurable compile time options that may effect performance.
@@ -1329,7 +1344,7 @@ that come your way, or any that are created by you. There are cases where a read
 will create a gwprbuf internally and pass it to your did_read
 callback - you're still responsible for freeing that buffer object at some point.
 
-=head1 THREADING MODEL
+=head1 THREADING RULES
 
 GWRL is technically not thread-safe, but provides a few thread safe functions when
 thread safety is important. These methods are thread safe:
@@ -1373,7 +1388,7 @@ section below.
 Anytime you create custom events to post, you I<must> post the event to the
 reactor belonging to the current thread.
 
-=head2 Storing Reactors and Proactors with Thread Specific Data
+=head2 Use Thread Specific Data
 
 If each thread has it's own reactor or proactor, then it's probably a good
 idea to use thread specific data to store them and retrieve them at any
