@@ -13,6 +13,7 @@ PROACTOR:
 -Need another pair of eyes on windows error logic
 
 DOCS:
+-Coverage Testing pod
 -freeing a proactor
 -Making connections pod
 
