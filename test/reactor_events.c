@@ -23,6 +23,7 @@ int main(int argc, char ** argv) {
 	assert(rl->events != NULL);
 	assert(rl->cevents == NULL);
 	assert(rl->ncevents == 0);
+	gwrl_evt_free(rl,evt);
 	
 	while(i < GWRL_EVENT_CACHE_MAX + 100) {
 		i++;
