@@ -1,3 +1,4 @@
+-use lcov --remove to remove kernel specific stuff in lcov reports
 -gwpr_free on Windows
 -gwrl_wake_activity and gwrl_wake can be called less frequently. see
  kcachegrind with data from test/reactor_events.
