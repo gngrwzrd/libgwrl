@@ -776,6 +776,18 @@ gwprwrq_free(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * wrq) {
 }
 
 void
+gwprwrq_free_list_no_cache(gwpr * pr, gwprwrq * wrq) {
+	gwprwrq * _wrq = wrq;
+	gwprwrq * _del = NULL;
+	while(_wrq) {
+		_del = _wrq;
+		_wrq = _wrq->next;
+		gwpr_buf_free(pr,_del->buf);
+		free(_del);
+	}
+}
+
+void
 gwprwrq_putback(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * q) {
 	gwprdata * data = fsrc->pdata;
 	if(!data->wrq) {
