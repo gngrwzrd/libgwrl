@@ -342,12 +342,36 @@ gwpr_free(gwpr * pr) {
 				fsrc = _gwrlsrcf(src);
 				src->callback = NULL;
 				if(fsrc->pdata) {
+					gwprdata * pdata = fsrc->pdata;
+					if(pdata->rdfilters) {
+						free(pdata->rdfilters);
+						pdata->rdfilters = NULL;
+					}
+					if(pdata->wrfilters) {
+						free(pdata->wrfilters);
+						pdata->wrfilters = NULL;
+					}
+					if(pdata->rdbuf) {
+						gwpr_buf_free(pr,pdata->rdbuf);
+						pdata->rdbuf = NULL;
+					}
+					if(pdata->wrq) {
+						gwprwrq_free_list_no_cache(pr,pdata->wrq);
+						pdata->wrq = NULL;
+						pdata->wrqlast = NULL;
+					}
 					free(fsrc->pdata);
 					fsrc->pdata = NULL;
 				}
 			}
 			src = src->next;
 		}
+	}
+	if(pr->wrqcache) {
+		gwprwrq_free_list_no_cache(pr,pr->wrqcache);
+	}
+	if(pr->bufctl) {
+		free(pr->bufctl);
 	}
 	pr->rl->pr = NULL;
 	pr->rl = NULL;
