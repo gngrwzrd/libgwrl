@@ -236,6 +236,15 @@ gwpr_buf_get_tagged(gwpr * pr, size_t size, int tag) {
 	return buf;
 }
 
+gwprbuf *
+gwpr_buf_get_with_data(gwpr * pr, size_t size, char * data, size_t datasize) {
+	if(datasize > size) return NULL;
+	gwprbuf * buf = gwpr_buf_getp(pr,size);
+	memcpy(buf->buf,data,datasize);
+	buf->len = datasize;
+	return buf;
+}
+
 void
 gwpr_buf_free(gwpr * pr, gwprbuf * buf) {
 	gwprbuf_free(pr->bufctl,buf);

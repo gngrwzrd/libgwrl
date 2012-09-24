@@ -144,6 +144,7 @@ typedef struct gwpr_error_info {
 gwprbuf * gwpr_buf_get(gwpr * pr, size_t bufsize);
 gwprbuf * gwpr_buf_get_tagged(gwpr * pr, size_t bufsize, int tag);
 gwprbuf * gwpr_buf_getp(gwpr * pr, size_t bufsize);
+gwprbuf * gwpr_buf_get_with_data(gwpr * pr, size_t size, char * data, size_t datasize);
 void gwpr_buf_free(gwpr * pr, gwprbuf * buf);
 
 //create a new proactor
