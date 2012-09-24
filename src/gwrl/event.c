@@ -223,6 +223,13 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 	gwrlsrc * delsrc = NULL;
 	gwrlsrc * src = NULL;
 
+	//make sure there is no proactor associated with the reactor.
+	if(rl && rl->pr) {
+		gwerr("(RF4L3) gwrl_free error, you can't free a reactor before freeing the proactor.");
+		return;
+	}
+
+	//if rl is NULL, just free all sources passed in
 	if(!rl && sources) {
 		head = *sources;
 		while(head) {
@@ -233,16 +240,18 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		return;
 	}
 
-	//dispatch one last time, if events exist after this
-	//they're ignored and freed.
+	//dispatch one last time, if events exist after
+	//this they're ignored and freed.
 	gwrl_dispatch(rl);
 	evt = rl->events;
 	
+	//no events, set to cached events
 	if(!evt) {
 		evt = rl->cevents;
 		rl->cevents = NULL;
 	}
 	
+	//go through all events and free them
 	while(evt) {
 		del = evt;
 		evt = evt->next;
@@ -253,6 +262,8 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		}
 	}
 	
+	//loop over all input sources for each type. either
+	//assembling the sources list for the user, or freeing them.
 	for(; i<GWRL_SRC_TYPES_COUNT; i++) {
 		src = rl->sources[i];
 		rl->sources[i] = NULL;
@@ -263,7 +274,9 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 				free(delsrc);
 			} else {
 				delsrc->next = NULL;
-				if(!head) head = delsrc;
+				if(!head) {
+					head = delsrc;
+				}
 				if(!last) {
 					last = delsrc;
 				} else {
@@ -274,6 +287,7 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		}
 	}
 	
+	//get and free queued input sources
 	if(rl->_qsrc) {
 		lockid_lock(&rl->_qsrclk);
 		src = rl->_qsrc;
@@ -286,7 +300,9 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 				free(delsrc);
 			} else {
 				delsrc->next = NULL;
-				if(!head) head = delsrc;
+				if(!head) {
+					head = delsrc;
+				}
 				if(!last) {
 					last = delsrc;
 				} else {
@@ -297,6 +313,7 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		}
 	}
 	
+	//get and free all queued events
 	if(rl->_qevt) {
 		lockid_lock(&rl->_qevtlk);
 		evt = rl->_qevt;
@@ -309,7 +326,9 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		}
 	}
 	
-	if(sources) *sources = head;
+	if(sources) {
+		*sources = head;
+	}
 	lockid_free(&rl->_qevtlk);
 	lockid_free(&rl->_qsrclk);
 	gwrl_bkd_free(rl);
