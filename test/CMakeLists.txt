@@ -73,3 +73,6 @@ target_link_libraries(proactor_free1 gwrl)
 
 add_executable(proactor_tcp proactor_tcp.c)
 target_link_libraries(proactor_tcp gwrl)
+
+add_executable(proactor_mem_errors proactor_mem_errors.c)
+target_link_libraries(proactor_mem_errors gwrl)
