@@ -31,9 +31,9 @@
             <td class="headerValue">all.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">113</td>
-            <td class="headerCovTableEntry">160</td>
-            <td class="headerCovTableEntryLo">70.6 %</td>
+            <td class="headerCovTableEntry">119</td>
+            <td class="headerCovTableEntry">164</td>
+            <td class="headerCovTableEntryLo">72.6 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">30</td>
-            <td class="headerCovTableEntry">72</td>
-            <td class="headerCovTableEntryLo">41.7 %</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">74</td>
+            <td class="headerCovTableEntryLo">43.2 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -89,211 +89,219 @@
 <span class="lineNum">      18 </span>                :            : extern &quot;C&quot; {
 <a name="19"><span class="lineNum">      19 </span>                :            : #endif</a>
 <span class="lineNum">      20 </span>                :            : 
-<span class="lineNum">      21 </span>                :<span class="lineCov">         20 : gwrlbkd * gwrl_bkd_init(gwrl * rl) {</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         20 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(gwrl_mem_calloc(1,sizeof(gwrlbkd_kqueue)));</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">         20 :         if(!kbkd) {</span>
-<span class="lineNum">      24 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(3el0L) calloc error&quot;);</span>
-<span class="lineNum">      25 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
-<span class="lineNum">      26 </span>                :            :         }
-<span class="lineNum">      27 </span>                :<span class="lineCov">         20 :         kbkd-&gt;kq = kqueue();</span>
-<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         if(kbkd-&gt;kq &lt; 0) {</span>
-<span class="lineNum">      29 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(1LKdoL) kqueue error&quot;);</span>
-<span class="lineNum">      30 </span>                :<span class="lineNoCov">          0 :                 free(kbkd);</span>
-<span class="lineNum">      31 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
-<span class="lineNum">      32 </span>                :            :         }
-<span class="lineNum">      33 </span>                :<span class="lineCov">         20 :         kbkd-&gt;kevents = gwrl_mem_calloc(1,sizeof(struct kevent)*GWRL_KQUEUE_KEVENT_COUNT);</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         20 :         kbkd-&gt;maxkevents = GWRL_KQUEUE_KEVENT_COUNT;</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">         20 :         rl-&gt;options.gwrl_kqueue_kevent_count = GWRL_KQUEUE_KEVENT_COUNT;</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">         20 :         return _gwrlbkd(kbkd);</span>
-<a name="37"><span class="lineNum">      37 </span>                :<span class="lineCov">         20 : }</span></a>
-<span class="lineNum">      38 </span>                :            : 
-<span class="lineNum">      39 </span>                :<span class="lineCov">          2 : void gwrl_bkd_set_options(gwrl * rl,gwrl_options * opts) {</span>
-<span class="lineNum">      40 </span>                :<span class="lineCov">          2 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">          2 :         if(opts-&gt;gwrl_kqueue_kevent_count &gt; kbkd-&gt;maxkevents) {</span>
-<span class="lineNum">      42 </span>                :<span class="lineNoCov">          0 :                 kbkd-&gt;maxkevents = opts-&gt;gwrl_kqueue_kevent_count;</span>
-<span class="lineNum">      43 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">          2 :         void * tmp = gwrl_mem_realloc(kbkd-&gt;kevents,sizeof(struct kevent) * kbkd-&gt;maxkevents);</span>
-<span class="lineNum">      45 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         while(!tmp) {</span>
-<span class="lineNum">      46 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(54oKD0) realloc error&quot;);</span>
-<span class="lineNum">      47 </span>                :<span class="lineNoCov">          0 :                 tmp = gwrl_mem_realloc(kbkd-&gt;kevents,sizeof(struct kevent) * kbkd-&gt;maxkevents);</span>
-<span class="lineNum">      48 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">          2 :         kbkd-&gt;kevents = (struct kevent *)tmp;</span>
-<a name="50"><span class="lineNum">      50 </span>                :<span class="lineCov">          2 : }</span></a>
-<span class="lineNum">      51 </span>                :            : 
-<span class="lineNum">      52 </span>                :<span class="lineCov">          4 : void gwrl_bkd_free(gwrl * rl) {</span>
-<span class="lineNum">      53 </span>                :<span class="lineCov">          4 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">          4 :         close(kbkd-&gt;kq);</span>
-<span class="lineNum">      55 </span>                :<span class="lineCov">          4 :         free(kbkd-&gt;kevents);</span>
-<span class="lineNum">      56 </span>                :<span class="lineCov">          4 :         free(rl-&gt;backend);</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">          4 :         rl-&gt;backend = NULL;</span>
-<a name="58"><span class="lineNum">      58 </span>                :<span class="lineCov">          4 : }</span></a>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         22 : gwrlbkd * gwrl_bkd_init(gwrl * rl) {</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         22 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(gwrl_mem_calloc(1,sizeof(gwrlbkd_kqueue)));</span>
+<span class="lineNum">      23 </span>                :            :         
+<span class="lineNum">      24 </span>                :            :         #ifndef NDEBUG
+<span class="lineNum">      25 </span>                :<span class="lineCov">         22 :                 if(asserts_var1 == gwrlbkd_init_fail) {</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">          1 :                         free(kbkd);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">          1 :                         kbkd = NULL;</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">          1 :                 }</span>
+<span class="lineNum">      29 </span>                :            :         #endif
+<span class="lineNum">      30 </span>                :            :         
+<span class="lineNum">      31 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         22 :         if(!kbkd) {</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">          1 :                 gwerr(&quot;(3el0L) calloc error&quot;);</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">          1 :                 return NULL;</span>
+<span class="lineNum">      34 </span>                :            :         }
+<span class="lineNum">      35 </span>                :<span class="lineCov">         21 :         kbkd-&gt;kq = kqueue();</span>
+<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :         if(kbkd-&gt;kq &lt; 0) {</span>
+<span class="lineNum">      37 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(1LKdoL) kqueue error&quot;);</span>
+<span class="lineNum">      38 </span>                :<span class="lineNoCov">          0 :                 free(kbkd);</span>
+<span class="lineNum">      39 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
+<span class="lineNum">      40 </span>                :            :         }
+<span class="lineNum">      41 </span>                :<span class="lineCov">         21 :         kbkd-&gt;kevents = gwrl_mem_calloc(1,sizeof(struct kevent)*GWRL_KQUEUE_KEVENT_COUNT);</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         21 :         kbkd-&gt;maxkevents = GWRL_KQUEUE_KEVENT_COUNT;</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">         21 :         rl-&gt;options.gwrl_kqueue_kevent_count = GWRL_KQUEUE_KEVENT_COUNT;</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         21 :         return _gwrlbkd(kbkd);</span>
+<a name="45"><span class="lineNum">      45 </span>                :<span class="lineCov">         22 : }</span></a>
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :<span class="lineCov">          2 : void gwrl_bkd_set_options(gwrl * rl,gwrl_options * opts) {</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">          2 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">          2 :         if(opts-&gt;gwrl_kqueue_kevent_count &gt; kbkd-&gt;maxkevents) {</span>
+<span class="lineNum">      50 </span>                :<span class="lineNoCov">          0 :                 kbkd-&gt;maxkevents = opts-&gt;gwrl_kqueue_kevent_count;</span>
+<span class="lineNum">      51 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">          2 :         void * tmp = gwrl_mem_realloc(kbkd-&gt;kevents,sizeof(struct kevent) * kbkd-&gt;maxkevents);</span>
+<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         while(!tmp) {</span>
+<span class="lineNum">      54 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(54oKD0) realloc error&quot;);</span>
+<span class="lineNum">      55 </span>                :<span class="lineNoCov">          0 :                 tmp = gwrl_mem_realloc(kbkd-&gt;kevents,sizeof(struct kevent) * kbkd-&gt;maxkevents);</span>
+<span class="lineNum">      56 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">          2 :         kbkd-&gt;kevents = (struct kevent *)tmp;</span>
+<a name="58"><span class="lineNum">      58 </span>                :<span class="lineCov">          2 : }</span></a>
 <span class="lineNum">      59 </span>                :            : 
-<span class="lineNum">      60 </span>                :<span class="lineCov">         31 : void gwrl_bkd_kevent(gwrl * rl, gwrlsrc * src, int kflags, int kfilter) {</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">         31 :         int res = 0;</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">         31 :         struct kevent ke;</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">         31 :         struct timespec ts = {0};</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">         31 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">         31 :         bzero(&amp;ke,sizeof(ke));</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">         31 :         ke.ident = _gwrlsrcf(src)-&gt;fd;</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">         31 :         ke.udata = src;</span>
-<span class="lineNum">      68 </span>                :<span class="lineCov">         31 :         ke.flags = kflags;</span>
-<span class="lineNum">      69 </span>                :<span class="lineCov">         31 :         ke.filter = kfilter;</span>
-<span class="lineNum">      70 </span>                :<span class="lineCov">         31 :         res = kevent(kbkd-&gt;kq,&amp;ke,1,NULL,0,&amp;ts);</span>
-<span class="lineNum">      71 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(res &lt; 0 &amp;&amp; errno != EBADF) gwprintsyserr(&quot;(9dlkF) kevent error&quot;,errno);</span>
-<a name="72"><span class="lineNum">      72 </span>                :<span class="lineCov">         31 : }</span></a>
-<span class="lineNum">      73 </span>                :            : 
-<span class="lineNum">      74 </span>                :<span class="lineCov">          2 : void gwrl_src_file_update_flags(gwrl * rl, gwrlsrc * src, gwrlsrc_flags_t flags) {</span>
-<span class="lineNum">      75 </span>                :            :         
-<span class="lineNum">      76 </span>                :            :         //enable read
-<span class="lineNum">      77 </span>                :<span class="lineCov">          2 :         if(flisset(flags,GWRL_RD)) {</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">          2 :                 flset(flags,GWRL_ENABLED);</span>
-<span class="lineNum">      79 </span>                :<span class="lineCov">          2 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_READ);</span>
-<span class="lineNum">      80 </span>                :            : 
-<span class="lineNum">      81 </span>                :            :         //disable read
-<span class="lineNum">      82 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :         } else if(flisset(src-&gt;flags,GWRL_RD) &amp;&amp; !flisset(flags,GWRL_RD)) {</span>
-<span class="lineNum">      83 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_READ);</span>
-<span class="lineNum">      84 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">      85 </span>                :            :         
-<span class="lineNum">      86 </span>                :            :         //enable write
-<span class="lineNum">      87 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(flags,GWRL_WR)) {</span>
-<span class="lineNum">      88 </span>                :<span class="lineNoCov">          0 :                 flset(flags,GWRL_ENABLED);</span>
-<span class="lineNum">      89 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_WRITE);</span>
-<span class="lineNum">      90 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">      91 </span>                :            :         
-<span class="lineNum">      92 </span>                :            :         //disable write
-<span class="lineNum">      93 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :         else if(flisset(src-&gt;flags,GWRL_WR) &amp;&amp; !flisset(flags,GWRL_WR)) {</span>
-<span class="lineNum">      94 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_WRITE);</span>
-<span class="lineNum">      95 </span>                :<span class="lineCov">          2 :         }</span>
-<span class="lineNum">      96 </span>                :            :         
-<span class="lineNum">      97 </span>                :<span class="lineCov">          2 :         src-&gt;flags = flags;</span>
-<a name="98"><span class="lineNum">      98 </span>                :<span class="lineCov">          2 : }</span></a>
-<span class="lineNum">      99 </span>                :            : 
-<span class="lineNum">     100 </span>                :<span class="lineCov">         35 : void gwrl_bkd_src_add(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     101 </span>                :<span class="lineCov">         35 :         int kflags = 0;</span>
-<span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">         35 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">         27 :                 kflags = EV_ADD;</span>
-<span class="lineNum">     105 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         27 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) kflags |= EV_DISABLE;</span>
-<span class="lineNum">     106 </span>                :<span class="lineCov">         27 :                 gwrl_bkd_kevent(rl,src,kflags,EVFILT_READ);</span>
-<span class="lineNum">     107 </span>                :<span class="lineCov">         27 :         }</span>
-<span class="lineNum">     108 </span>                :            :         
-<span class="lineNum">     109 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 35 times"> + </span>]:<span class="lineCov">         35 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
-<span class="lineNum">     110 </span>                :<span class="lineNoCov">          0 :                 kflags = EV_ADD;</span>
-<span class="lineNum">     111 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) kflags |= EV_DISABLE;</span>
-<span class="lineNum">     112 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,kflags,EVFILT_WRITE);</span>
-<span class="lineNum">     113 </span>                :<span class="lineNoCov">          0 :         }</span>
-<a name="114"><span class="lineNum">     114 </span>                :<span class="lineCov">         35 : }</span></a>
-<span class="lineNum">     115 </span>                :            : 
-<span class="lineNum">     116 </span>                :<span class="lineCov">          5 : void gwrl_bkd_del_src(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     117 </span>                :<span class="lineCov">          5 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
-<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DELETE,EVFILT_READ);</span>
-<span class="lineNum">     119 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     120 </span>                :            :         
-<span class="lineNum">     121 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
-<span class="lineNum">     122 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DELETE,EVFILT_WRITE);</span>
-<span class="lineNum">     123 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     124 </span>                :            :         
-<span class="lineNum">     125 </span>                :<span class="lineCov">          5 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
-<a name="126"><span class="lineNum">     126 </span>                :<span class="lineCov">          5 : }</span></a>
-<span class="lineNum">     127 </span>                :            : 
-<span class="lineNum">     128 </span>                :<span class="lineNoCov">          0 : void gwrl_bkd_enable_src(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     129 </span>                :<span class="lineNoCov">          0 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
-<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ENABLE,EVFILT_READ);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">          4 : void gwrl_bkd_free(gwrl * rl) {</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">          4 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">          4 :         close(kbkd-&gt;kq);</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">          4 :         free(kbkd-&gt;kevents);</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">          4 :         free(rl-&gt;backend);</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">          4 :         rl-&gt;backend = NULL;</span>
+<a name="66"><span class="lineNum">      66 </span>                :<span class="lineCov">          4 : }</span></a>
+<span class="lineNum">      67 </span>                :            : 
+<span class="lineNum">      68 </span>                :<span class="lineCov">         32 : void gwrl_bkd_kevent(gwrl * rl, gwrlsrc * src, int kflags, int kfilter) {</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">         32 :         int res = 0;</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">         32 :         struct kevent ke;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">         32 :         struct timespec ts = {0};</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">         32 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         32 :         bzero(&amp;ke,sizeof(ke));</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">         32 :         ke.ident = _gwrlsrcf(src)-&gt;fd;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         32 :         ke.udata = src;</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">         32 :         ke.flags = kflags;</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         32 :         ke.filter = kfilter;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">         32 :         res = kevent(kbkd-&gt;kq,&amp;ke,1,NULL,0,&amp;ts);</span>
+<span class="lineNum">      79 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(res &lt; 0 &amp;&amp; errno != EBADF) gwprintsyserr(&quot;(9dlkF) kevent error&quot;,errno);</span>
+<a name="80"><span class="lineNum">      80 </span>                :<span class="lineCov">         32 : }</span></a>
+<span class="lineNum">      81 </span>                :            : 
+<span class="lineNum">      82 </span>                :<span class="lineCov">          2 : void gwrl_src_file_update_flags(gwrl * rl, gwrlsrc * src, gwrlsrc_flags_t flags) {</span>
+<span class="lineNum">      83 </span>                :            :         
+<span class="lineNum">      84 </span>                :            :         //enable read
+<span class="lineNum">      85 </span>                :<span class="lineCov">          2 :         if(flisset(flags,GWRL_RD)) {</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">          2 :                 flset(flags,GWRL_ENABLED);</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">          2 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_READ);</span>
+<span class="lineNum">      88 </span>                :            : 
+<span class="lineNum">      89 </span>                :            :         //disable read
+<span class="lineNum">      90 </span>[<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :         } else if(flisset(src-&gt;flags,GWRL_RD) &amp;&amp; !flisset(flags,GWRL_RD)) {</span>
+<span class="lineNum">      91 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_READ);</span>
+<span class="lineNum">      92 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      93 </span>                :            :         
+<span class="lineNum">      94 </span>                :            :         //enable write
+<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(flags,GWRL_WR)) {</span>
+<span class="lineNum">      96 </span>                :<span class="lineNoCov">          0 :                 flset(flags,GWRL_ENABLED);</span>
+<span class="lineNum">      97 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_WRITE);</span>
+<span class="lineNum">      98 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      99 </span>                :            :         
+<span class="lineNum">     100 </span>                :            :         //disable write
+<span class="lineNum">     101 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :         else if(flisset(src-&gt;flags,GWRL_WR) &amp;&amp; !flisset(flags,GWRL_WR)) {</span>
+<span class="lineNum">     102 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_WRITE);</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     104 </span>                :            :         
+<span class="lineNum">     105 </span>                :<span class="lineCov">          2 :         src-&gt;flags = flags;</span>
+<a name="106"><span class="lineNum">     106 </span>                :<span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     107 </span>                :            : 
+<span class="lineNum">     108 </span>                :<span class="lineCov">         36 : void gwrl_bkd_src_add(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     109 </span>                :<span class="lineCov">         36 :         int kflags = 0;</span>
+<span class="lineNum">     110 </span>                :            : 
+<span class="lineNum">     111 </span>                :<span class="lineCov">         36 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
+<span class="lineNum">     112 </span>                :<span class="lineCov">         28 :                 kflags = EV_ADD;</span>
+<span class="lineNum">     113 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 23 times"> + </span>]:<span class="lineCov">         28 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) kflags |= EV_DISABLE;</span>
+<span class="lineNum">     114 </span>                :<span class="lineCov">         28 :                 gwrl_bkd_kevent(rl,src,kflags,EVFILT_READ);</span>
+<span class="lineNum">     115 </span>                :<span class="lineCov">         28 :         }</span>
+<span class="lineNum">     116 </span>                :            :         
+<span class="lineNum">     117 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 36 times"> + </span>]:<span class="lineCov">         36 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
+<span class="lineNum">     118 </span>                :<span class="lineNoCov">          0 :                 kflags = EV_ADD;</span>
+<span class="lineNum">     119 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) kflags |= EV_DISABLE;</span>
+<span class="lineNum">     120 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,kflags,EVFILT_WRITE);</span>
+<span class="lineNum">     121 </span>                :<span class="lineNoCov">          0 :         }</span>
+<a name="122"><span class="lineNum">     122 </span>                :<span class="lineCov">         36 : }</span></a>
+<span class="lineNum">     123 </span>                :            : 
+<span class="lineNum">     124 </span>                :<span class="lineCov">          5 : void gwrl_bkd_del_src(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">          5 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
+<span class="lineNum">     126 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DELETE,EVFILT_READ);</span>
+<span class="lineNum">     127 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     128 </span>                :            :         
+<span class="lineNum">     129 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
+<span class="lineNum">     130 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DELETE,EVFILT_WRITE);</span>
 <span class="lineNum">     131 </span>                :<span class="lineNoCov">          0 :         }</span>
 <span class="lineNum">     132 </span>                :            :         
-<span class="lineNum">     133 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
-<span class="lineNum">     134 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ENABLE,EVFILT_WRITE);</span>
-<span class="lineNum">     135 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     136 </span>                :            :         
-<span class="lineNum">     137 </span>                :<span class="lineNoCov">          0 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
-<a name="138"><span class="lineNum">     138 </span>                :<span class="lineNoCov">          0 : }</span></a>
-<span class="lineNum">     139 </span>                :            : 
-<span class="lineNum">     140 </span>                :<span class="lineCov">          2 : void gwrl_bkd_disable_src(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     141 </span>                :<span class="lineCov">          2 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
-<span class="lineNum">     142 </span>                :<span class="lineCov">          2 :                 gwrl_bkd_kevent(rl,src,EV_DISABLE,EVFILT_READ);</span>
-<span class="lineNum">     143 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">          5 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
+<a name="134"><span class="lineNum">     134 </span>                :<span class="lineCov">          5 : }</span></a>
+<span class="lineNum">     135 </span>                :            : 
+<span class="lineNum">     136 </span>                :<span class="lineNoCov">          0 : void gwrl_bkd_enable_src(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     137 </span>                :<span class="lineNoCov">          0 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
+<span class="lineNum">     138 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ENABLE,EVFILT_READ);</span>
+<span class="lineNum">     139 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     140 </span>                :            :         
+<span class="lineNum">     141 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
+<span class="lineNum">     142 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_ENABLE,EVFILT_WRITE);</span>
+<span class="lineNum">     143 </span>                :<span class="lineNoCov">          0 :         }</span>
 <span class="lineNum">     144 </span>                :            :         
-<span class="lineNum">     145 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
-<span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DISABLE,EVFILT_WRITE);</span>
-<span class="lineNum">     147 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     148 </span>                :            :         
-<span class="lineNum">     149 </span>                :<span class="lineCov">          2 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
-<a name="150"><span class="lineNum">     150 </span>                :<span class="lineCov">          2 : }</span></a>
-<span class="lineNum">     151 </span>                :            : 
-<span class="lineNum">     152 </span>                :<span class="lineCov">        172 : void gwrl_bkd_gather(gwrl * rl) {</span>
-<span class="lineNum">     153 </span>                :<span class="lineCov">        172 :         int i = 0;</span>
-<span class="lineNum">     154 </span>                :<span class="lineCov">        172 :         int res = 0;</span>
-<span class="lineNum">     155 </span>                :<span class="lineCov">        172 :         bool postread = false;</span>
-<span class="lineNum">     156 </span>                :<span class="lineCov">        172 :         bool postwrite = false;</span>
-<span class="lineNum">     157 </span>                :<span class="lineCov">        172 :         struct kevent * event;</span>
-<span class="lineNum">     158 </span>                :<span class="lineCov">        172 :         struct timespec * timeout = &amp;rl-&gt;backend-&gt;timeout;</span>
-<span class="lineNum">     159 </span>                :<span class="lineCov">        172 :         gwrlsrc * src = NULL;</span>
-<span class="lineNum">     160 </span>                :<span class="lineCov">        172 :         gwrlevt * evt = NULL;</span>
-<span class="lineNum">     161 </span>                :<span class="lineCov">        172 :         gwrlsrc_file * fsrc = NULL;</span>
-<span class="lineNum">     162 </span>                :<span class="lineCov">        172 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
-<span class="lineNum">     163 </span>                :            :         
-<span class="lineNum">     164 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         13 :         if(timeout-&gt;tv_sec == sec_min &amp;&amp; timeout-&gt;tv_nsec == nsec_min) {</span>
-<span class="lineNum">     165 </span>                :<span class="lineCov">         13 :                 timeout = NULL;</span>
-<span class="lineNum">     166 </span>                :<span class="lineCov">         13 :         }</span>
-<span class="lineNum">     167 </span>                :            :         
-<span class="lineNum">     168 </span>[<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 159 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 11 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">        172 :         if(!timeout &amp;&amp; flisset(rl-&gt;flags,GWRL_NOSLEEP)) {</span>
-<span class="lineNum">     169 </span>                :<span class="lineCov">         11 :                 struct timespec ts = {0};</span>
-<span class="lineNum">     170 </span>                :<span class="lineCov">         11 :                 timeout = &amp;ts;</span>
-<span class="lineNum">     171 </span>                :<span class="lineCov">         11 :         }</span>
-<span class="lineNum">     172 </span>                :            :         
-<span class="lineNum">     173 </span>                :<span class="lineCov">        172 :         flset(rl-&gt;flags,GWRL_SLEEPING);</span>
-<span class="lineNum">     174 </span>                :<span class="lineCov">        172 :         res = kevent(kbkd-&gt;kq,NULL,0,kbkd-&gt;kevents,rl-&gt;options.gwrl_kqueue_kevent_count,timeout);</span>
-<span class="lineNum">     175 </span>                :<span class="lineCov">        172 :         flclr(rl-&gt;flags,GWRL_SLEEPING);</span>
-<span class="lineNum">     176 </span>                :            :         
-<span class="lineNum">     177 </span>        [<span class="branchCov" title="Branch 0 was taken 70 times"> + </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        172 :         if(res == 0) return;</span>
-<span class="lineNum">     178 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        102 :         if(res &lt; 0 &amp;&amp; (errno == EINVAL || errno == EINTR)) return;</span>
+<span class="lineNum">     145 </span>                :<span class="lineNoCov">          0 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
+<a name="146"><span class="lineNum">     146 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">     147 </span>                :            : 
+<span class="lineNum">     148 </span>                :<span class="lineCov">          2 : void gwrl_bkd_disable_src(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">          2 :         if(flisset(src-&gt;flags,GWRL_RD)) {</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">          2 :                 gwrl_bkd_kevent(rl,src,EV_DISABLE,EVFILT_READ);</span>
+<span class="lineNum">     151 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     152 </span>                :            :         
+<span class="lineNum">     153 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(src-&gt;flags,GWRL_WR)) {</span>
+<span class="lineNum">     154 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_kevent(rl,src,EV_DISABLE,EVFILT_WRITE);</span>
+<span class="lineNum">     155 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     156 </span>                :            :         
+<span class="lineNum">     157 </span>                :<span class="lineCov">          2 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
+<a name="158"><span class="lineNum">     158 </span>                :<span class="lineCov">          2 : }</span></a>
+<span class="lineNum">     159 </span>                :            : 
+<span class="lineNum">     160 </span>                :<span class="lineCov">        199 : void gwrl_bkd_gather(gwrl * rl) {</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">        199 :         int i = 0;</span>
+<span class="lineNum">     162 </span>                :<span class="lineCov">        199 :         int res = 0;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">        199 :         bool postread = false;</span>
+<span class="lineNum">     164 </span>                :<span class="lineCov">        199 :         bool postwrite = false;</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">        199 :         struct kevent * event;</span>
+<span class="lineNum">     166 </span>                :<span class="lineCov">        199 :         struct timespec * timeout = &amp;rl-&gt;backend-&gt;timeout;</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">        199 :         gwrlsrc * src = NULL;</span>
+<span class="lineNum">     168 </span>                :<span class="lineCov">        199 :         gwrlevt * evt = NULL;</span>
+<span class="lineNum">     169 </span>                :<span class="lineCov">        199 :         gwrlsrc_file * fsrc = NULL;</span>
+<span class="lineNum">     170 </span>                :<span class="lineCov">        199 :         gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl-&gt;backend);</span>
+<span class="lineNum">     171 </span>                :            :         
+<span class="lineNum">     172 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         13 :         if(timeout-&gt;tv_sec == sec_min &amp;&amp; timeout-&gt;tv_nsec == nsec_min) {</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">         13 :                 timeout = NULL;</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">         13 :         }</span>
+<span class="lineNum">     175 </span>                :            :         
+<span class="lineNum">     176 </span>[<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 186 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 11 times"> + </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">        199 :         if(!timeout &amp;&amp; flisset(rl-&gt;flags,GWRL_NOSLEEP)) {</span>
+<span class="lineNum">     177 </span>                :<span class="lineCov">         11 :                 struct timespec ts = {0};</span>
+<span class="lineNum">     178 </span>                :<span class="lineCov">         11 :                 timeout = &amp;ts;</span>
+<span class="lineNum">     179 </span>                :<span class="lineCov">         11 :         }</span>
+<span class="lineNum">     180 </span>                :            :         
+<span class="lineNum">     181 </span>                :<span class="lineCov">        199 :         flset(rl-&gt;flags,GWRL_SLEEPING);</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">        199 :         res = kevent(kbkd-&gt;kq,NULL,0,kbkd-&gt;kevents,rl-&gt;options.gwrl_kqueue_kevent_count,timeout);</span>
+<span class="lineNum">     183 </span>                :<span class="lineCov">        199 :         flclr(rl-&gt;flags,GWRL_SLEEPING);</span>
+<span class="lineNum">     184 </span>                :            :         
+<span class="lineNum">     185 </span>        [<span class="branchCov" title="Branch 0 was taken 97 times"> + </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        199 :         if(res == 0) return;</span>
+<span class="lineNum">     186 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        102 :         if(res &lt; 0 &amp;&amp; (errno == EINVAL || errno == EINTR)) return;</span>
 <span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
-<span class="lineNum">     179 </span>                :            :         
-<span class="lineNum">     180 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :         if(res &gt; 0) {</span>
-<span class="lineNum">     181 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        204 :                 while(i &lt; res) {</span>
-<span class="lineNum">     182 </span>                :<span class="lineCov">        102 :                         event = &amp;kbkd-&gt;kevents[i];</span>
-<span class="lineNum">     183 </span>                :<span class="lineCov">        102 :                         src = event-&gt;udata;</span>
-<span class="lineNum">     184 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                         if(!flisset(src-&gt;flags,GWRL_ENABLED)) continue;</span>
-<span class="lineNum">     185 </span>                :            :                         
-<span class="lineNum">     186 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :                         if(src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
-<span class="lineNum">     187 </span>                :<span class="lineCov">        102 :                                 fsrc = _gwrlsrcf(src);</span>
-<span class="lineNum">     188 </span>                :            :                                 
-<span class="lineNum">     189 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                 if(event-&gt;flags &amp; EV_ERROR) {</span>
-<span class="lineNum">     190 </span>                :<span class="lineNoCov">          0 :                                         gwrl_src_disable(rl,src);</span>
-<span class="lineNum">     191 </span>                :<span class="lineNoCov">          0 :                                         postread = true;</span>
-<span class="lineNum">     192 </span>                :<span class="lineNoCov">          0 :                                 }</span>
-<span class="lineNum">     193 </span>                :            :                                 
-<span class="lineNum">     194 </span>[<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                 if((src-&gt;flags &amp; GWRL_RD) &amp;&amp; (event-&gt;flags &amp; EV_EOF)) {</span>
-<span class="lineNum">     195 </span>                :<span class="lineNoCov">          0 :                                         postread = true;</span>
-<span class="lineNum">     196 </span>[<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        102 :                                 } else if((src-&gt;flags &amp; GWRL_RD) &amp;&amp; (event-&gt;filter == EVFILT_READ)) {</span>
-<span class="lineNum">     197 </span>                :<span class="lineCov">        102 :                                         postread = true;</span>
-<span class="lineNum">     198 </span>                :<span class="lineCov">        102 :                                 }</span>
-<span class="lineNum">     199 </span>                :            :                                 
-<span class="lineNum">     200 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        102 :                                 if((src-&gt;flags &amp; GWRL_WR) &amp;&amp; (event-&gt;filter == EVFILT_WRITE)) {</span>
-<span class="lineNum">     201 </span>                :<span class="lineNoCov">          0 :                                         postwrite = true;</span>
-<span class="lineNum">     202 </span>                :<span class="lineNoCov">          0 :                                 }</span>
-<span class="lineNum">     203 </span>                :            :                                         
-<span class="lineNum">     204 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :                                 if(postread) {</span>
-<span class="lineNum">     205 </span>                :<span class="lineCov">        102 :                                         evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_RD);</span>
-<span class="lineNum">     206 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_RD);</span>
-<span class="lineNum">     207 </span>                :<span class="lineCov">        102 :                                         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">     208 </span>                :<span class="lineCov">        102 :                                 }</span>
-<span class="lineNum">     209 </span>                :            :                                 
-<span class="lineNum">     210 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(postwrite) {</span>
-<span class="lineNum">     211 </span>                :<span class="lineNoCov">          0 :                                         evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_WR);</span>
-<span class="lineNum">     212 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_WR);</span>
-<span class="lineNum">     213 </span>                :<span class="lineNoCov">          0 :                                         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">     214 </span>                :<span class="lineNoCov">          0 :                                 }</span>
-<span class="lineNum">     215 </span>                :<span class="lineCov">        102 :                         }</span>
-<span class="lineNum">     216 </span>                :            :                         
-<span class="lineNum">     217 </span>                :<span class="lineCov">        102 :                         i++;</span>
-<span class="lineNum">     218 </span>                :<span class="lineCov">        102 :                 }</span>
-<span class="lineNum">     219 </span>                :<span class="lineCov">        102 :         }</span>
-<span class="lineNum">     220 </span>                :<span class="lineCov">        172 : }</span>
-<span class="lineNum">     221 </span>                :            : 
-<span class="lineNum">     222 </span>                :            : #ifdef __cplusplus
-<span class="lineNum">     223 </span>                :            : }
-<span class="lineNum">     224 </span>                :            : #endif
+<span class="lineNum">     187 </span>                :            :         
+<span class="lineNum">     188 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :         if(res &gt; 0) {</span>
+<span class="lineNum">     189 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        204 :                 while(i &lt; res) {</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">        102 :                         event = &amp;kbkd-&gt;kevents[i];</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">        102 :                         src = event-&gt;udata;</span>
+<span class="lineNum">     192 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                         if(!flisset(src-&gt;flags,GWRL_ENABLED)) continue;</span>
+<span class="lineNum">     193 </span>                :            :                         
+<span class="lineNum">     194 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :                         if(src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">        102 :                                 fsrc = _gwrlsrcf(src);</span>
+<span class="lineNum">     196 </span>                :            :                                 
+<span class="lineNum">     197 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                 if(event-&gt;flags &amp; EV_ERROR) {</span>
+<span class="lineNum">     198 </span>                :<span class="lineNoCov">          0 :                                         gwrl_src_disable(rl,src);</span>
+<span class="lineNum">     199 </span>                :<span class="lineNoCov">          0 :                                         postread = true;</span>
+<span class="lineNum">     200 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     201 </span>                :            :                                 
+<span class="lineNum">     202 </span>[<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                 if((src-&gt;flags &amp; GWRL_RD) &amp;&amp; (event-&gt;flags &amp; EV_EOF)) {</span>
+<span class="lineNum">     203 </span>                :<span class="lineNoCov">          0 :                                         postread = true;</span>
+<span class="lineNum">     204 </span>[<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        102 :                                 } else if((src-&gt;flags &amp; GWRL_RD) &amp;&amp; (event-&gt;filter == EVFILT_READ)) {</span>
+<span class="lineNum">     205 </span>                :<span class="lineCov">        102 :                                         postread = true;</span>
+<span class="lineNum">     206 </span>                :<span class="lineCov">        102 :                                 }</span>
+<span class="lineNum">     207 </span>                :            :                                 
+<span class="lineNum">     208 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">        102 :                                 if((src-&gt;flags &amp; GWRL_WR) &amp;&amp; (event-&gt;filter == EVFILT_WRITE)) {</span>
+<span class="lineNum">     209 </span>                :<span class="lineNoCov">          0 :                                         postwrite = true;</span>
+<span class="lineNum">     210 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     211 </span>                :            :                                         
+<span class="lineNum">     212 </span>        [<span class="branchCov" title="Branch 0 was taken 102 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        102 :                                 if(postread) {</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">        102 :                                         evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_RD);</span>
+<span class="lineNum">     214 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 102 times"> + </span>]:<span class="lineCov">        102 :                                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_RD);</span>
+<span class="lineNum">     215 </span>                :<span class="lineCov">        102 :                                         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">        102 :                                 }</span>
+<span class="lineNum">     217 </span>                :            :                                 
+<span class="lineNum">     218 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                 else if(postwrite) {</span>
+<span class="lineNum">     219 </span>                :<span class="lineNoCov">          0 :                                         evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_WR);</span>
+<span class="lineNum">     220 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,fsrc-&gt;fd,GWRL_WR);</span>
+<span class="lineNum">     221 </span>                :<span class="lineNoCov">          0 :                                         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">     222 </span>                :<span class="lineNoCov">          0 :                                 }</span>
+<span class="lineNum">     223 </span>                :<span class="lineCov">        102 :                         }</span>
+<span class="lineNum">     224 </span>                :            :                         
+<span class="lineNum">     225 </span>                :<span class="lineCov">        102 :                         i++;</span>
+<span class="lineNum">     226 </span>                :<span class="lineCov">        102 :                 }</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">        102 :         }</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">        199 : }</span>
+<span class="lineNum">     229 </span>                :            : 
+<span class="lineNum">     230 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     231 </span>                :            : }
+<span class="lineNum">     232 </span>                :            : #endif
 </pre>
       </td>
     </tr>

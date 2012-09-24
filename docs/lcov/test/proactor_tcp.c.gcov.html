@@ -79,48 +79,48 @@
 <span class="lineNum">       8 </span>                :            : int rdcount = 0;
 <a name="9"><span class="lineNum">       9 </span>                :            : int sockets[2];</a>
 <span class="lineNum">      10 </span>                :            : 
-<span class="lineNum">      11 </span>                :<span class="lineCov">       1700 : void didrd(gwpr * pr, gwpr_io_info * info) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">       1700 :         gwpr_buf_free(pr,info-&gt;buf);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">       1700 :         rdcount++;</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">       1700 :         if(rdcount == 100) {</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         17 :                 gwrl_stop(rl);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         17 :         }</span>
-<a name="17"><span class="lineNum">      17 </span>                :<span class="lineCov">       1700 : }</span></a>
+<span class="lineNum">      11 </span>                :<span class="lineCov">       2200 : void didrd(gwpr * pr, gwpr_io_info * info) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">       2200 :         gwpr_buf_free(pr,info-&gt;buf);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">       2200 :         rdcount++;</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">       2200 :         if(rdcount == 100) {</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         22 :                 gwrl_stop(rl);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         }</span>
+<a name="17"><span class="lineNum">      17 </span>                :<span class="lineCov">       2200 : }</span></a>
 <span class="lineNum">      18 </span>                :            : 
-<span class="lineNum">      19 </span>                :<span class="lineCov">       1717 : void didwr(gwpr * pr, gwpr_io_info * info) {</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">       1717 :         gwpr_buf_free(pr,info-&gt;buf);</span>
-<a name="21"><span class="lineNum">      21 </span>                :<span class="lineCov">       1717 : }</span></a>
+<span class="lineNum">      19 </span>                :<span class="lineCov">       2222 : void didwr(gwpr * pr, gwpr_io_info * info) {</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">       2222 :         gwpr_buf_free(pr,info-&gt;buf);</span>
+<a name="21"><span class="lineNum">      21 </span>                :<span class="lineCov">       2222 : }</span></a>
 <span class="lineNum">      22 </span>                :            : 
-<span class="lineNum">      23 </span>                :<span class="lineCov">       1717 : void write_data(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      24 </span>                :<span class="lineCov">       1717 :         gwprbuf * buf = gwpr_buf_get_with_data(pr,12,&quot;hello world&quot;,12);</span>
-<span class="lineNum">      25 </span>                :<span class="lineCov">       1717 :         gwpr_write(pr,wrsrc,buf);</span>
-<a name="26"><span class="lineNum">      26 </span>                :<span class="lineCov">       1717 : }</span></a>
+<span class="lineNum">      23 </span>                :<span class="lineCov">       2222 : void write_data(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      24 </span>                :<span class="lineCov">       2222 :         gwprbuf * buf = gwpr_buf_get_with_data(pr,12,&quot;hello world&quot;,12);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">       2222 :         gwpr_write(pr,wrsrc,buf);</span>
+<a name="26"><span class="lineNum">      26 </span>                :<span class="lineCov">       2222 : }</span></a>
 <span class="lineNum">      27 </span>                :            : 
-<span class="lineNum">      28 </span>                :<span class="lineCov">         17 : void timeout(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">         17 :         assert(rdcount &gt; 0);</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">         17 :         gwrl_stop(rl);</span>
-<a name="31"><span class="lineNum">      31 </span>                :<span class="lineCov">         17 : }</span></a>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         22 : void timeout(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">         22 :         assert(rdcount &gt; 0);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">         22 :         gwrl_stop(rl);</span>
+<a name="31"><span class="lineNum">      31 </span>                :<span class="lineCov">         22 : }</span></a>
 <span class="lineNum">      32 </span>                :            : 
-<span class="lineNum">      33 </span>                :<span class="lineCov">         17 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         17 :         socketpair(AF_UNIX,SOCK_STREAM,0,sockets);</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         22 :         socketpair(AF_UNIX,SOCK_STREAM,0,sockets);</span>
 <span class="lineNum">      35 </span>                :            : 
-<span class="lineNum">      36 </span>                :<span class="lineCov">         17 :         rl = gwrl_create();</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">         17 :         pr = gwpr_create(rl);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         22 :         rl = gwrl_create();</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">         22 :         pr = gwpr_create(rl);</span>
 <span class="lineNum">      38 </span>                :            :         
-<span class="lineNum">      39 </span>                :<span class="lineCov">         17 :         rdsrc = gwpr_set_fd(pr,sockets[0],NULL);</span>
-<span class="lineNum">      40 </span>                :<span class="lineCov">         17 :         wrsrc = gwpr_set_fd(pr,sockets[1],NULL);</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">         22 :         rdsrc = gwpr_set_fd(pr,sockets[0],NULL);</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         22 :         wrsrc = gwpr_set_fd(pr,sockets[1],NULL);</span>
 <span class="lineNum">      41 </span>                :            :         
-<span class="lineNum">      42 </span>                :<span class="lineCov">         17 :         gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&amp;didwr);</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">         17 :         gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&amp;didrd);</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">         17 :         gwpr_read(pr,rdsrc,gwpr_buf_get(pr,128));</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         22 :         gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&amp;didwr);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">         22 :         gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&amp;didrd);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         22 :         gwpr_read(pr,rdsrc,gwpr_buf_get(pr,128));</span>
 <span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>                :<span class="lineCov">         17 :         gwrl_set_interval(rl,0,&amp;write_data,NULL);</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">         17 :         gwrl_set_timeout(rl,10000,false,&amp;timeout,NULL);</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">         17 :         gwrl_run(rl);</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         22 :         gwrl_set_interval(rl,0,&amp;write_data,NULL);</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">         22 :         gwrl_set_timeout(rl,10000,false,&amp;timeout,NULL);</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">         22 :         gwrl_run(rl);</span>
 <span class="lineNum">      49 </span>                :            :         
-<span class="lineNum">      50 </span>                :<span class="lineCov">         17 :         timeout(rl,NULL);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         22 :         timeout(rl,NULL);</span>
 <span class="lineNum">      51 </span>                :            : 
-<span class="lineNum">      52 </span>                :<span class="lineCov">         17 :         return 0;</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">         22 :         return 0;</span>
 <span class="lineNum">      53 </span>                :            : }
 </pre>
       </td>

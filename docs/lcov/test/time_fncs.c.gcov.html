@@ -31,8 +31,8 @@
             <td class="headerValue">all.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">52</td>
-            <td class="headerCovTableEntry">52</td>
+            <td class="headerCovTableEntry">64</td>
+            <td class="headerCovTableEntry">64</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -49,8 +49,8 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">16</td>
-            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">19</td>
+            <td class="headerCovTableEntry">38</td>
             <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -72,73 +72,88 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">          1 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">          1 :         int64_t ms1 = 1345223184123;</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">          1 :         struct timeval tv1;</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">          1 :         struct timeval tv2;</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">          1 :         struct timespec ts1;</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">          1 :         struct timespec ts2;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">          1 :         struct timespec ts3;</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         22 :         int64_t ms1 = 1345223184123;</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         22 :         struct timeval tv1;</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         22 :         struct timeval tv2;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         22 :         struct timespec ts1;</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         22 :         struct timespec ts2;</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         struct timespec ts3;</span>
 <span class="lineNum">      11 </span>                :            : 
-<span class="lineNum">      12 </span>                :<span class="lineCov">          1 :         gwtm_ms_to_timeval(ms1,&amp;tv1);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">          1 :         assert(tv1.tv_sec == 1345223184);</span>
-<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(tv1.tv_usec == 123000);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         22 :         gwtm_ms_to_timeval(ms1,&amp;tv1);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         22 :         assert(tv1.tv_sec == 1345223184);</span>
+<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(tv1.tv_usec == 123000);</span>
 <span class="lineNum">      15 </span>                :            :         
-<span class="lineNum">      16 </span>                :<span class="lineCov">          1 :         gwtm_timeval_to_ms(&amp;tv1,&amp;ms1);</span>
-<span class="lineNum">      17 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ms1 == 1345223184123);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         gwtm_timeval_to_ms(&amp;tv1,&amp;ms1);</span>
+<span class="lineNum">      17 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ms1 == 1345223184123);</span>
 <span class="lineNum">      18 </span>                :            : 
-<span class="lineNum">      19 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">          1 :         memcpy(&amp;ts2,&amp;ts1,sizeof(ts2));</span>
-<span class="lineNum">      21 </span>                :            : 
-<span class="lineNum">      22 </span>                :<span class="lineCov">          1 :         gwtm_timespec_to_ms(&amp;ts1,&amp;ms1);</span>
-<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ms1 &gt;= (ts1.tv_sec*1000));</span>
-<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ms1 &lt; ((int64_t)(ts1.tv_sec+1)*1000));</span>
-<span class="lineNum">      25 </span>                :            : 
-<span class="lineNum">      26 </span>                :<span class="lineCov">          1 :         gwtm_ms_to_timespec(ms1,&amp;ts1);</span>
-<span class="lineNum">      27 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts1.tv_sec == ts2.tv_sec);</span>
-<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts2.tv_nsec &gt;= ts1.tv_nsec);</span>
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts2.tv_nsec &lt; (ts1.tv_nsec+1000000));</span>
-<span class="lineNum">      30 </span>                :            :         
-<span class="lineNum">      31 </span>                :<span class="lineCov">          1 :         gettimeofday(&amp;tv1,NULL);</span>
-<span class="lineNum">      32 </span>                :<span class="lineCov">          1 :         memcpy(&amp;tv2,&amp;tv1,sizeof(tv2));</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">          1 :         gwtm_add_ms_to_timeval(2000,&amp;tv2);</span>
-<span class="lineNum">      34 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(tv2.tv_sec == (tv1.tv_sec+2));</span>
-<span class="lineNum">      35 </span>                :            :         
-<span class="lineNum">      36 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      37 </span>                :<span class="lineCov">          1 :         memcpy(&amp;ts2,&amp;ts1,sizeof(ts2));</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">          1 :         gwtm_add_ms_to_timespec(2000,&amp;ts2);</span>
-<span class="lineNum">      39 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts2.tv_sec == (ts1.tv_sec+2));</span>
-<span class="lineNum">      40 </span>                :            : 
-<span class="lineNum">      41 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">          1 :         sleep(.2);</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
-<span class="lineNum">      44 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert((gwtm_timespec_cmp(&amp;ts1,&amp;ts2) == &amp;ts1));</span>
-<span class="lineNum">      45 </span>                :            : 
-<span class="lineNum">      46 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">          1 :         gwtm_timespec_to_timeval(&amp;ts1,&amp;tv1);</span>
-<span class="lineNum">      48 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(tv1.tv_sec == ts1.tv_sec);</span>
-<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(tv1.tv_usec == ((long)ts1.tv_nsec)/1000);</span>
-<span class="lineNum">      50 </span>                :            : 
-<span class="lineNum">      51 </span>                :<span class="lineCov">          1 :         gettimeofday(&amp;tv1,0);</span>
-<span class="lineNum">      52 </span>                :<span class="lineCov">          1 :         gwtm_timeval_to_timespec(&amp;tv1,&amp;ts1);</span>
-<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(tv1.tv_sec == ts1.tv_sec);</span>
-<span class="lineNum">      54 </span>                :            :         //assert(ts2.tv_nsec == (tv1.tv_usec*1000));
-<span class="lineNum">      55 </span>                :            :         
-<span class="lineNum">      56 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">          1 :         sleep(.2);</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
-<span class="lineNum">      59 </span>                :<span class="lineCov">          1 :         gwtm_timespec_copy_if_smaller(&amp;ts1,&amp;ts2);</span>
-<span class="lineNum">      60 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts1.tv_sec == ts2.tv_sec);</span>
-<span class="lineNum">      61 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(ts1.tv_nsec == ts2.tv_nsec);</span>
-<span class="lineNum">      62 </span>                :            : 
-<span class="lineNum">      63 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">          1 :         sleep(.2);</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">          1 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">          1 :         gwtm_timespec_sub_into(&amp;ts1,&amp;ts2,&amp;ts3);</span>
-<span class="lineNum">      67 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          1 :         assert(gwtm_timespec_is_expired(&amp;ts3));</span>
-<span class="lineNum">      68 </span>                :            : 
-<span class="lineNum">      69 </span>                :<span class="lineCov">          1 :         return 0;</span>
-<span class="lineNum">      70 </span>                :            : }
+<span class="lineNum">      19 </span>                :<span class="lineCov">         22 :         ms1 = 10;</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         22 :         tv1.tv_sec = 0;</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         22 :         tv1.tv_usec = 0;</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         22 :         gwtm_timeval_to_ms(&amp;tv1,&amp;ms1);</span>
+<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ms1 == 0);</span>
+<span class="lineNum">      24 </span>                :            : 
+<span class="lineNum">      25 </span>                :<span class="lineCov">         22 :         ms1 = 10;</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         ts1.tv_sec = 0;</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         22 :         ts1.tv_nsec = 0;</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         22 :         gwtm_timespec_to_ms(&amp;ts1,&amp;ms1);</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ms1 == 0);</span>
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         22 :         memcpy(&amp;ts2,&amp;ts1,sizeof(ts2));</span>
+<span class="lineNum">      33 </span>                :            : 
+<span class="lineNum">      34 </span>                :<span class="lineCov">         22 :         gwtm_timespec_to_ms(&amp;ts1,&amp;ms1);</span>
+<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ms1 &gt;= (ts1.tv_sec*1000));</span>
+<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ms1 &lt; ((int64_t)(ts1.tv_sec+1)*1000));</span>
+<span class="lineNum">      37 </span>                :            : 
+<span class="lineNum">      38 </span>                :<span class="lineCov">         22 :         gwtm_ms_to_timespec(ms1,&amp;ts1);</span>
+<span class="lineNum">      39 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts1.tv_sec == ts2.tv_sec);</span>
+<span class="lineNum">      40 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts2.tv_nsec &gt;= ts1.tv_nsec);</span>
+<span class="lineNum">      41 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts2.tv_nsec &lt; (ts1.tv_nsec+1000000));</span>
+<span class="lineNum">      42 </span>                :            :         
+<span class="lineNum">      43 </span>                :<span class="lineCov">         22 :         gettimeofday(&amp;tv1,NULL);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         22 :         memcpy(&amp;tv2,&amp;tv1,sizeof(tv2));</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">         22 :         gwtm_add_ms_to_timeval(2000,&amp;tv2);</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         22 :         gwtm_add_ms_to_timeval(0,&amp;tv2);</span>
+<span class="lineNum">      47 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(tv2.tv_sec == (tv1.tv_sec+2));</span>
+<span class="lineNum">      48 </span>                :            :         
+<span class="lineNum">      49 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         22 :         memcpy(&amp;ts2,&amp;ts1,sizeof(ts2));</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         22 :         gwtm_add_ms_to_timespec(2000,&amp;ts2);</span>
+<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts2.tv_sec == (ts1.tv_sec+2));</span>
+<span class="lineNum">      53 </span>                :            : 
+<span class="lineNum">      54 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">         22 :         sleep(.2);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
+<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert((gwtm_timespec_cmp(&amp;ts1,&amp;ts2) == &amp;ts1));</span>
+<span class="lineNum">      58 </span>                :            : 
+<span class="lineNum">      59 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">         22 :         gwtm_timespec_to_timeval(&amp;ts1,&amp;tv1);</span>
+<span class="lineNum">      61 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(tv1.tv_sec == ts1.tv_sec);</span>
+<span class="lineNum">      62 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(tv1.tv_usec == ((long)ts1.tv_nsec)/1000);</span>
+<span class="lineNum">      63 </span>                :            : 
+<span class="lineNum">      64 </span>                :<span class="lineCov">         22 :         gettimeofday(&amp;tv1,0);</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">         22 :         gwtm_timeval_to_timespec(&amp;tv1,&amp;ts1);</span>
+<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(tv1.tv_sec == ts1.tv_sec);</span>
+<span class="lineNum">      67 </span>                :            :         //assert(ts2.tv_nsec == (tv1.tv_usec*1000));
+<span class="lineNum">      68 </span>                :            :         
+<span class="lineNum">      69 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">         22 :         sleep(.2);</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
+<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert( gwtm_timespec_copy_if_smaller(&amp;ts2,&amp;ts1) == false);</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         22 :         gwtm_timespec_copy_if_smaller(&amp;ts1,&amp;ts2);</span>
+<span class="lineNum">      74 </span>                :            : 
+<span class="lineNum">      75 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts1.tv_sec == ts2.tv_sec);</span>
+<span class="lineNum">      76 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(ts1.tv_nsec == ts2.tv_nsec);</span>
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts1);</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">         22 :         sleep(.2);</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">         22 :         gwtm_gettimeofday_timespec(&amp;ts2);</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">         22 :         gwtm_timespec_sub_into(&amp;ts1,&amp;ts2,&amp;ts3);</span>
+<span class="lineNum">      82 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(gwtm_timespec_is_expired(&amp;ts3));</span>
+<span class="lineNum">      83 </span>                :            : 
+<span class="lineNum">      84 </span>                :<span class="lineCov">         22 :         return 0;</span>
+<span class="lineNum">      85 </span>                :            : }
 </pre>
       </td>
     </tr>
