@@ -22,5 +22,6 @@ int main(int argc, char ** argv) {
 		sources = sources->next;
 	}
 	gwrl_free(NULL,&sources);
+	stdin_activity(NULL,NULL);
 	return 0;
 }

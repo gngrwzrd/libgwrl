@@ -14,5 +14,6 @@ int main(int argc, char ** argv) {
 	gwrl_set_timeout(rl,100,false,&timeout,NULL);
 	gwrl_run(rl);
 	gwrl_free(rl,NULL);
+	stdin_activity(NULL,NULL);
 	return 0;
 }

@@ -18,7 +18,7 @@ int main(int argc, char ** argv) {
 	gwpr_src_add(pr,src1);
 	gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&filter);
 	assert(((gwprdata *)src1->pdata)->rdfilters != NULL);
-	assert(((gwprdata *)src1->pdata)->rdfilters[0] = &filter);
+	assert(((gwprdata *)src1->pdata)->rdfilters[0] == &filter);
 	
 	gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&filter2);
 	assert(_gwprdata(src1->pdata)->rdfilters != NULL);
@@ -26,6 +26,10 @@ int main(int argc, char ** argv) {
 	
 	gwpr_filter_reset(pr,src1,gwpr_rdfilter_id);
 	assert(((gwprdata *)src1->pdata)->rdfilters[0] == NULL);
+
+	filter(NULL,NULL);
+	filter2(NULL,NULL);
+	filter3(NULL,NULL);
 
 	return 0;
 }

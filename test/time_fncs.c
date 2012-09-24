@@ -39,7 +39,7 @@ int main(int argc, char ** argv) {
 	assert(ts2.tv_sec == (ts1.tv_sec+2));
 
 	gwtm_gettimeofday_timespec(&ts1);
-	sleep(1);
+	sleep(.2);
 	gwtm_gettimeofday_timespec(&ts2);
 	assert((gwtm_timespec_cmp(&ts1,&ts2) == &ts1));
 
@@ -54,14 +54,14 @@ int main(int argc, char ** argv) {
 	//assert(ts2.tv_nsec == (tv1.tv_usec*1000));
 	
 	gwtm_gettimeofday_timespec(&ts1);
-	sleep(1);
+	sleep(.2);
 	gwtm_gettimeofday_timespec(&ts2);
 	gwtm_timespec_copy_if_smaller(&ts1,&ts2);
 	assert(ts1.tv_sec == ts2.tv_sec);
 	assert(ts1.tv_nsec == ts2.tv_nsec);
 
 	gwtm_gettimeofday_timespec(&ts1);
-	sleep(1);
+	sleep(.2);
 	gwtm_gettimeofday_timespec(&ts2);
 	gwtm_timespec_sub_into(&ts1,&ts2,&ts3);
 	assert(gwtm_timespec_is_expired(&ts3));
