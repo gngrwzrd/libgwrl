@@ -344,7 +344,9 @@ gwrl_evt_free(gwrl * rl, gwrlevt * evt) {
 		gwrlevt * head = NULL;
 		bzero(evt,sizeof(*evt));
 		head = rl->cevents;
-		if(head) evt->next = head;
+		if(head) {
+			evt->next = head;
+		}
 		rl->cevents = evt;
 		rl->ncevents++;
 	}
