@@ -127,9 +127,9 @@
 <span class="lineNum">      56 </span>                :            :    : __inline_memcpy_chk (dest, src, len))
 <a name="57"><span class="lineNum">      57 </span>                :            : </a>
 <span class="lineNum">      58 </span>                :            : static __inline void *
-<span class="lineNum">      59 </span>                :<span class="lineCov">         58 : __inline_memcpy_chk (void *__dest, const void *__src, size_t __len)</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">        385 : __inline_memcpy_chk (void *__dest, const void *__src, size_t __len)</span>
 <span class="lineNum">      60 </span>                :            : {
-<span class="lineNum">      61 </span>                :<span class="lineCov">         58 :   return __builtin___memcpy_chk (__dest, __src, __len, __darwin_obsz0(__dest));</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">        385 :   return __builtin___memcpy_chk (__dest, __src, __len, __darwin_obsz0(__dest));</span>
 <span class="lineNum">      62 </span>                :            : }
 <span class="lineNum">      63 </span>                :            : 
 <span class="lineNum">      64 </span>                :            : #define memmove(dest, src, len)                                 \

@@ -79,30 +79,30 @@
 <span class="lineNum">       8 </span>                :            :         int something;
 <a name="9"><span class="lineNum">       9 </span>                :            : } my_source;</a>
 <span class="lineNum">      10 </span>                :            : 
-<span class="lineNum">      11 </span>                :<span class="lineCov">        180 : void my_gather(gwrl * rl) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">        180 :         gwrlsrc * src = rl-&gt;sources[MY_SOURCE_TYPE];</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">        180 :         my_source * msrc = NULL;</span>
-<span class="lineNum">      14 </span>        [<span class="branchCov" title="Branch 0 was taken 180 times"> + </span><span class="branchCov" title="Branch 1 was taken 180 times"> + </span>]:<span class="lineCov">        360 :         while(src) {</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">        180 :                 msrc = (my_source *)src;</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">        180 :                 msrc-&gt;something++;</span>
-<span class="lineNum">      17 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 162 times"> + </span>]:<span class="lineCov">        180 :                 if(msrc-&gt;something == 10) {</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         18 :                         msrc-&gt;something = 0;</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         18 :                         gwrlevt * evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         18 :                         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         18 :                 }</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">        180 :                 src = src-&gt;next;</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">        180 :         }</span>
-<a name="24"><span class="lineNum">      24 </span>                :<span class="lineCov">        180 : }</span></a>
+<span class="lineNum">      11 </span>                :<span class="lineCov">        150 : void my_gather(gwrl * rl) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">        150 :         gwrlsrc * src = rl-&gt;sources[MY_SOURCE_TYPE];</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">        150 :         my_source * msrc = NULL;</span>
+<span class="lineNum">      14 </span>        [<span class="branchCov" title="Branch 0 was taken 150 times"> + </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>]:<span class="lineCov">        300 :         while(src) {</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">        150 :                 msrc = (my_source *)src;</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">        150 :                 msrc-&gt;something++;</span>
+<span class="lineNum">      17 </span>        [<span class="branchCov" title="Branch 0 was taken 15 times"> + </span><span class="branchCov" title="Branch 1 was taken 135 times"> + </span>]:<span class="lineCov">        150 :                 if(msrc-&gt;something == 10) {</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         15 :                         msrc-&gt;something = 0;</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         15 :                         gwrlevt * evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         15 :                         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         15 :                 }</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">        150 :                 src = src-&gt;next;</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">        150 :         }</span>
+<a name="24"><span class="lineNum">      24 </span>                :<span class="lineCov">        150 : }</span></a>
 <span class="lineNum">      25 </span>                :            : 
-<span class="lineNum">      26 </span>                :<span class="lineCov">         18 : void my_callback(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         15 : void my_callback(gwrl * rl, gwrlevt * evt) {</span>
 <span class="lineNum">      27 </span>                :            :         //printf(&quot;custom gather fired an event for a custom input source.\n&quot;);
-<span class="lineNum">      28 </span>                :<span class="lineCov">         18 :         gwrl_stop(rl);</span>
-<a name="29"><span class="lineNum">      29 </span>                :<span class="lineCov">         18 : }</span></a>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         15 :         gwrl_stop(rl);</span>
+<a name="29"><span class="lineNum">      29 </span>                :<span class="lineCov">         15 : }</span></a>
 <span class="lineNum">      30 </span>                :            : 
-<span class="lineNum">      31 </span>                :<span class="lineCov">         18 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      32 </span>                :<span class="lineCov">         18 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">         18 :         my_source * msrc = gwrl_mem_calloc(1,sizeof(my_source));</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         18 :         gwrlsrc * src = _gwrlsrc(msrc);</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">         15 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         15 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">         15 :         my_source * msrc = gwrl_mem_calloc(1,sizeof(my_source));</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         15 :         gwrlsrc * src = _gwrlsrc(msrc);</span>
 <span class="lineNum">      35 </span>                :            :         
 <span class="lineNum">      36 </span>                :            :         #if GWRL_SRC_TYPES_COUNT &lt; 3
 <span class="lineNum">      37 </span>                :            :                 printf(&quot;error: GWRL_SRC_TYPES_COUNT must be at least 3 for this example.\n&quot;);
@@ -114,14 +114,14 @@
 <span class="lineNum">      43 </span>                :            :                 exit(-1);
 <span class="lineNum">      44 </span>                :            :         #endif
 <span class="lineNum">      45 </span>                :            :         
-<span class="lineNum">      46 </span>                :<span class="lineCov">         18 :         msrc-&gt;something = 0;</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">         18 :         src-&gt;type = MY_SOURCE_TYPE;</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">         18 :         src-&gt;callback = &amp;my_callback;</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">         18 :         gwrl_add_gather_fnc(rl,&amp;my_gather);</span>
-<span class="lineNum">      50 </span>                :<span class="lineCov">         18 :         gwrl_allow_poll_sleep(rl,0);</span>
-<span class="lineNum">      51 </span>                :<span class="lineCov">         18 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      52 </span>                :<span class="lineCov">         18 :         gwrl_run(rl);</span>
-<span class="lineNum">      53 </span>                :<span class="lineCov">         18 :         return 0;</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         15 :         msrc-&gt;something = 0;</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">         15 :         src-&gt;type = MY_SOURCE_TYPE;</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">         15 :         src-&gt;callback = &amp;my_callback;</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         15 :         gwrl_add_gather_fnc(rl,&amp;my_gather);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         15 :         gwrl_allow_poll_sleep(rl,0);</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         15 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">         15 :         gwrl_run(rl);</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">         15 :         return 0;</span>
 <span class="lineNum">      54 </span>                :            : }
 </pre>
       </td>

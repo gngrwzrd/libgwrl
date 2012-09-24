@@ -77,13 +77,13 @@
 <span class="lineNum">       6 </span>                :            : #endif
 <a name="7"><span class="lineNum">       7 </span>                :            : </a>
 <span class="lineNum">       8 </span>                :            : void
-<span class="lineNum">       9 </span>                :<span class="lineCov">         36 : lockid_init(lockid_t * lk) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         40 : lockid_init(lockid_t * lk) {</span>
 <span class="lineNum">      10 </span>                :            :         #if defined(PLATFORM_WINDOWS)
 <span class="lineNum">      11 </span>                :            :                 InitializeCriticalSection((LPCRITICAL_SECTION)lk);
 <span class="lineNum">      12 </span>                :            :         #elif defined(PLATFORM_LINUX)
 <span class="lineNum">      13 </span>                :            :                 pthread_spin_init(lk,PTHREAD_PROCESS_PRIVATE);
 <span class="lineNum">      14 </span>                :            :         #endif
-<span class="lineNum">      15 </span>                :<span class="lineCov">         36 : }</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         40 : }</span>
 <a name="16"><span class="lineNum">      16 </span>                :            : </a>
 <span class="lineNum">      17 </span>                :            : void
 <span class="lineNum">      18 </span>                :<span class="lineCov">          4 : lockid_lock(lockid_t * lk) {</span>

@@ -31,27 +31,27 @@
             <td class="headerValue">all.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">82</td>
-            <td class="headerCovTableEntry">161</td>
-            <td class="headerCovTableEntryLo">50.9 %</td>
+            <td class="headerCovTableEntry">105</td>
+            <td class="headerCovTableEntry">168</td>
+            <td class="headerCovTableEntryLo">62.5 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
             <td class="headerValue">2012-09-23</td>
             <td></td>
             <td class="headerItem">Functions:</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">17</td>
-            <td class="headerCovTableEntryLo">58.8 %</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">18</td>
+            <td class="headerCovTableEntryMed">77.8 %</td>
           </tr>
           <tr>
             <td></td>
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">11</td>
-            <td class="headerCovTableEntry">36</td>
-            <td class="headerCovTableEntryLo">30.6 %</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntryLo">36.8 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -79,96 +79,96 @@
 <span class="lineNum">       8 </span>                :            : extern void gwpr_src_activity(gwrl * rl, gwrlevt * evt);
 <a name="9"><span class="lineNum">       9 </span>                :            : </a>
 <span class="lineNum">      10 </span>                :            : gwpr *
-<span class="lineNum">      11 </span>                :<span class="lineCov">         18 : gwpr_create(gwrl * rl) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         18 :         gwpr * pr = (gwpr *)gwrl_mem_calloc(1,sizeof(gwpr));</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         18 :         gwpr_options options = {</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         20 : gwpr_create(gwrl * rl) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         20 :         gwpr * pr = (gwpr *)gwrl_mem_calloc(1,sizeof(gwpr));</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         20 :         gwpr_options options = {</span>
 <span class="lineNum">      14 </span>                :            :                 GWPR_MAX_ACCEPT,
 <span class="lineNum">      15 </span>                :            :                 GWPR_WRQUEUE_CACHE_MAX,
 <span class="lineNum">      16 </span>                :            :                 GWPR_IOCP_OVLP_CACHE_MAX
-<span class="lineNum">      17 </span>                :<span class="lineCov">         18 :         };</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         18 :         if(!pr) {</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         20 :         };</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         20 :         if(!pr) {</span>
 <span class="lineNum">      19 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(Dle3d) calloc error&quot;);</span>
 <span class="lineNum">      20 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">      21 </span>                :            :         }
-<span class="lineNum">      22 </span>                :<span class="lineCov">         18 :         pr-&gt;bufctl = gwprbufctl_create();</span>
-<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :         if(!pr-&gt;bufctl) {</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         20 :         pr-&gt;bufctl = gwprbufctl_create();</span>
+<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         if(!pr-&gt;bufctl) {</span>
 <span class="lineNum">      24 </span>                :<span class="lineNoCov">          0 :                 free(pr);</span>
 <span class="lineNum">      25 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">      26 </span>                :            :         }
-<span class="lineNum">      27 </span>                :<span class="lineCov">         18 :         gwpr_set_options(pr,&amp;options);</span>
-<span class="lineNum">      28 </span>                :<span class="lineCov">         18 :         pr-&gt;rl = rl;</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">         18 :         rl-&gt;pr = pr;</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">         18 :         return pr;</span>
-<span class="lineNum">      31 </span>                :<span class="lineCov">         18 : }</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         20 :         gwpr_set_options(pr,&amp;options);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         20 :         pr-&gt;rl = rl;</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">         20 :         rl-&gt;pr = pr;</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">         20 :         return pr;</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">         20 : }</span>
 <a name="32"><span class="lineNum">      32 </span>                :            : </a>
 <span class="lineNum">      33 </span>                :            : gwprdata *
 <span class="lineNum">      34 </span>                :            : gwprdata_create() {
-<span class="lineNum">      35 </span>                :<span class="lineCov">         17 :         gwprdata * data = _gwprdata(gwrl_mem_calloc(1,sizeof(gwprdata)));</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">         17 :         if(!data) {</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         20 :         gwprdata * data = _gwprdata(gwrl_mem_calloc(1,sizeof(gwprdata)));</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         20 :         if(!data) {</span>
 <span class="lineNum">      37 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(Do4Kd) calloc error&quot;);</span>
 <span class="lineNum">      38 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">      39 </span>                :            :         }
-<span class="lineNum">      40 </span>                :<span class="lineCov">         17 :         data-&gt;rdbufsize = 512;</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         17 :         data-&gt;rdfilters = NULL;</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">         17 :         data-&gt;wrfilters = NULL;</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         20 :         data-&gt;rdbufsize = 512;</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         20 :         data-&gt;rdfilters = NULL;</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         20 :         data-&gt;wrfilters = NULL;</span>
 <span class="lineNum">      43 </span>                :            :         if(GWPR_FILTERS_MAX &gt; 0) {
-<span class="lineNum">      44 </span>                :<span class="lineCov">         17 :                 data-&gt;rdfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);</span>
-<span class="lineNum">      45 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :                 if(!data-&gt;rdfilters) {</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         20 :                 data-&gt;rdfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);</span>
+<span class="lineNum">      45 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :                 if(!data-&gt;rdfilters) {</span>
 <span class="lineNum">      46 </span>                :<span class="lineNoCov">          0 :                         free(data);</span>
 <span class="lineNum">      47 </span>                :<span class="lineNoCov">          0 :                         return NULL;</span>
 <span class="lineNum">      48 </span>                :            :                 }
-<span class="lineNum">      49 </span>                :<span class="lineCov">         17 :                 data-&gt;wrfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);</span>
-<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :                 if(!data-&gt;wrfilters) {</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         20 :                 data-&gt;wrfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);</span>
+<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :                 if(!data-&gt;wrfilters) {</span>
 <span class="lineNum">      51 </span>                :<span class="lineNoCov">          0 :                         free(data);</span>
 <span class="lineNum">      52 </span>                :<span class="lineNoCov">          0 :                         free(data-&gt;rdfilters);</span>
 <span class="lineNum">      53 </span>                :<span class="lineNoCov">          0 :                         return NULL;</span>
 <span class="lineNum">      54 </span>                :            :                 }
 <span class="lineNum">      55 </span>                :            :         }
-<span class="lineNum">      56 </span>                :<span class="lineCov">         17 :         return data;</span>
-<span class="lineNum">      57 </span>                :<span class="lineCov">         17 : }</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         20 :         return data;</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">         20 : }</span>
 <a name="58"><span class="lineNum">      58 </span>                :            : </a>
 <span class="lineNum">      59 </span>                :            : gwrlsrc_file *
-<span class="lineNum">      60 </span>                :<span class="lineCov">         16 : gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">         16 :         gwrlsrc_file * fsrc = NULL;</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">         16 :         gwrlsrc * src = gwrl_src_file_create(fd,0,0,NULL);</span>
-<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>]:<span class="lineCov">         16 :         while(!src) src = gwrl_src_file_create(fd,0,0,NULL);</span>
-<span class="lineNum">      64 </span>                :<span class="lineCov">         16 :         fsrc = (gwrlsrc_file *)src;</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">         16 :         src-&gt;userdata = udata;</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">         16 :         gwpr_src_add(pr,fsrc);</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">         16 :         return fsrc;</span>
+<span class="lineNum">      60 </span>                :<span class="lineCov">         19 : gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">         19 :         gwrlsrc_file * fsrc = NULL;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">         19 :         gwrlsrc * src = gwrl_src_file_create(fd,0,0,NULL);</span>
+<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>]:<span class="lineCov">         19 :         while(!src) src = gwrl_src_file_create(fd,0,0,NULL);</span>
+<span class="lineNum">      64 </span>                :<span class="lineCov">         19 :         fsrc = (gwrlsrc_file *)src;</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">         19 :         src-&gt;userdata = udata;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">         19 :         gwpr_src_add(pr,fsrc);</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">         19 :         return fsrc;</span>
 <span class="lineNum">      68 </span>                :            : }
 <a name="69"><span class="lineNum">      69 </span>                :            : </a>
 <span class="lineNum">      70 </span>                :            : gwprbufctl *
 <span class="lineNum">      71 </span>                :            : gwprbufctl_create() {
-<span class="lineNum">      72 </span>                :<span class="lineCov">         18 :         gwprbufctl * ctl = (gwprbufctl *)gwrl_mem_calloc(1,sizeof(gwprbufctl));</span>
-<span class="lineNum">      73 </span>                :<span class="lineCov">         18 :         if(!ctl) {</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">         20 :         gwprbufctl * ctl = (gwprbufctl *)gwrl_mem_calloc(1,sizeof(gwprbufctl));</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">         20 :         if(!ctl) {</span>
 <span class="lineNum">      74 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(p4P0R) calloc error&quot;);</span>
 <span class="lineNum">      75 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">      76 </span>                :            :         }
-<span class="lineNum">      77 </span>                :<span class="lineCov">         18 :         return ctl;</span>
-<span class="lineNum">      78 </span>                :<span class="lineCov">         18 : }</span>
+<span class="lineNum">      77 </span>                :<span class="lineCov">         20 :         return ctl;</span>
+<span class="lineNum">      78 </span>                :<span class="lineCov">         20 : }</span>
 <a name="79"><span class="lineNum">      79 </span>                :            : </a>
 <span class="lineNum">      80 </span>                :            : void
-<span class="lineNum">      81 </span>                :<span class="lineNoCov">          0 : gwprbuf_free(gwprbufctl * bufctl, gwprbuf * buf) {</span>
-<span class="lineNum">      82 </span>                :<span class="lineNoCov">          0 :         free(buf-&gt;buf);</span>
-<span class="lineNum">      83 </span>                :<span class="lineNoCov">          0 :         free(buf);</span>
-<span class="lineNum">      84 </span>                :<span class="lineNoCov">          0 : }</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">        202 : gwprbuf_free(gwprbufctl * bufctl, gwprbuf * buf) {</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">        202 :         free(buf-&gt;buf);</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">        202 :         free(buf);</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">        202 : }</span>
 <a name="85"><span class="lineNum">      85 </span>                :            : </a>
 <span class="lineNum">      86 </span>                :            : void
-<span class="lineNum">      87 </span>                :<span class="lineCov">         18 : gwpr_set_options(gwpr * pr, gwpr_options * opts) {</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">         18 :         memcpy(&amp;pr-&gt;options,opts,sizeof(pr-&gt;options));</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">         18 : }</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">         20 : gwpr_set_options(gwpr * pr, gwpr_options * opts) {</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">         20 :         memcpy(&amp;pr-&gt;options,opts,sizeof(pr-&gt;options));</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">         20 : }</span>
 <a name="90"><span class="lineNum">      90 </span>                :            : </a>
 <span class="lineNum">      91 </span>                :            : void
-<span class="lineNum">      92 </span>                :<span class="lineCov">         17 : gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc) {</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">         17 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">         17 :         gwprdata * data = gwprdata_create();</span>
-<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 17 times"> + </span>]:<span class="lineCov">         17 :         while(!data) data = gwprdata_create();</span>
-<span class="lineNum">      96 </span>                :<span class="lineCov">         17 :         src-&gt;flags = GWRL_RD; //read but disabled</span>
-<span class="lineNum">      97 </span>                :<span class="lineCov">         17 :         src-&gt;callback = gwpr_src_activity;</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">         17 :         fsrc-&gt;pdata = data;</span>
-<span class="lineNum">      99 </span>                :<span class="lineCov">         17 :         gwrl_src_add(pr-&gt;rl,src);</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">         17 : }</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">         20 : gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc) {</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">         20 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">         20 :         gwprdata * data = gwprdata_create();</span>
+<span class="lineNum">      95 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         while(!data) data = gwprdata_create();</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">         20 :         src-&gt;flags = GWRL_RD; //read but disabled</span>
+<span class="lineNum">      97 </span>                :<span class="lineCov">         20 :         src-&gt;callback = gwpr_src_activity;</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">         20 :         fsrc-&gt;pdata = data;</span>
+<span class="lineNum">      99 </span>                :<span class="lineCov">         20 :         gwrl_src_add(pr-&gt;rl,src);</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">         20 : }</span>
 <a name="101"><span class="lineNum">     101 </span>                :            : </a>
 <span class="lineNum">     102 </span>                :            : void
 <span class="lineNum">     103 </span>                :<span class="lineNoCov">          0 : gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc) {</span>
@@ -241,9 +241,9 @@
 <span class="lineNum">     170 </span>                :<span class="lineCov">          1 : }</span>
 <a name="171"><span class="lineNum">     171 </span>                :            : </a>
 <span class="lineNum">     172 </span>                :            : void
-<span class="lineNum">     173 </span>                :<span class="lineCov">          1 : gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb) {</span>
-<span class="lineNum">     174 </span>                :<span class="lineCov">          1 :         gwprdata * data = _gwprdata(fsrc-&gt;pdata);</span>
-<span class="lineNum">     175 </span>                :<span class="lineCov">          1 :         switch(cbid) {</span>
+<span class="lineNum">     173 </span>                :<span class="lineCov">          3 : gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb) {</span>
+<span class="lineNum">     174 </span>                :<span class="lineCov">          3 :         gwprdata * data = _gwprdata(fsrc-&gt;pdata);</span>
+<span class="lineNum">     175 </span>                :<span class="lineCov">          3 :         switch(cbid) {</span>
 <span class="lineNum">     176 </span>                :            :         case gwpr_error_cb_id:
 <span class="lineNum">     177 </span>                :<span class="lineNoCov">          0 :                 data-&gt;errorcb = (gwpr_error_cb *)cb;</span>
 <span class="lineNum">     178 </span>                :<span class="lineNoCov">          0 :                 break;</span>
@@ -257,47 +257,47 @@
 <span class="lineNum">     186 </span>                :<span class="lineNoCov">          0 :                 data-&gt;closedcb = (gwpr_io_cb *)cb;</span>
 <span class="lineNum">     187 </span>                :<span class="lineNoCov">          0 :                 break;</span>
 <span class="lineNum">     188 </span>                :            :         case gwpr_did_read_cb_id:
-<span class="lineNum">     189 </span>                :<span class="lineCov">          1 :                 data-&gt;didreadcb = (gwpr_io_cb *)cb;</span>
-<span class="lineNum">     190 </span>                :<span class="lineCov">          1 :                 break;</span>
+<span class="lineNum">     189 </span>                :<span class="lineCov">          2 :                 data-&gt;didreadcb = (gwpr_io_cb *)cb;</span>
+<span class="lineNum">     190 </span>                :<span class="lineCov">          2 :                 break;</span>
 <span class="lineNum">     191 </span>                :            :         case gwpr_did_write_cb_id:
-<span class="lineNum">     192 </span>                :<span class="lineNoCov">          0 :                 data-&gt;didwritecb = (gwpr_io_cb *)cb;</span>
-<span class="lineNum">     193 </span>                :<span class="lineNoCov">          0 :                 break;</span>
+<span class="lineNum">     192 </span>                :<span class="lineCov">          1 :                 data-&gt;didwritecb = (gwpr_io_cb *)cb;</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">          1 :                 break;</span>
 <span class="lineNum">     194 </span>                :            :         }
-<span class="lineNum">     195 </span>                :<span class="lineCov">          1 : }</span>
+<span class="lineNum">     195 </span>                :<span class="lineCov">          3 : }</span>
 <a name="196"><span class="lineNum">     196 </span>                :            : </a>
 <span class="lineNum">     197 </span>                :            : gwprbuf *
-<span class="lineNum">     198 </span>                :<span class="lineCov">          4 : gwpr_buf_get(gwpr * pr, size_t size) {</span>
-<span class="lineNum">     199 </span>                :<span class="lineCov">          4 :         gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));</span>
-<span class="lineNum">     200 </span>                :<span class="lineCov">          4 :         if(!data) {</span>
+<span class="lineNum">     198 </span>                :<span class="lineCov">        104 : gwpr_buf_get(gwpr * pr, size_t size) {</span>
+<span class="lineNum">     199 </span>                :<span class="lineCov">        104 :         gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));</span>
+<span class="lineNum">     200 </span>                :<span class="lineCov">        104 :         if(!data) {</span>
 <span class="lineNum">     201 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(Erl3F) calloc error&quot;);</span>
 <span class="lineNum">     202 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">     203 </span>                :            :         }
-<span class="lineNum">     204 </span>                :<span class="lineCov">          4 :         data-&gt;buf = (char *)gwrl_mem_calloc(1,size);</span>
-<span class="lineNum">     205 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>]:<span class="lineCov">          4 :         if(!data-&gt;buf) {</span>
+<span class="lineNum">     204 </span>                :<span class="lineCov">        104 :         data-&gt;buf = (char *)gwrl_mem_calloc(1,size);</span>
+<span class="lineNum">     205 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 104 times"> + </span>]:<span class="lineCov">        104 :         if(!data-&gt;buf) {</span>
 <span class="lineNum">     206 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(RF4Hk) calloc error&quot;);</span>
 <span class="lineNum">     207 </span>                :<span class="lineNoCov">          0 :                 free(data);</span>
 <span class="lineNum">     208 </span>                :<span class="lineNoCov">          0 :                 return NULL;</span>
 <span class="lineNum">     209 </span>                :            :         }
-<span class="lineNum">     210 </span>                :<span class="lineCov">          4 :         data-&gt;buf = data-&gt;buf;</span>
-<span class="lineNum">     211 </span>                :<span class="lineCov">          4 :         data-&gt;bufsize = size;</span>
-<span class="lineNum">     212 </span>                :<span class="lineCov">          4 :         return data;</span>
-<span class="lineNum">     213 </span>                :<span class="lineCov">          4 : }</span>
+<span class="lineNum">     210 </span>                :<span class="lineCov">        104 :         data-&gt;buf = data-&gt;buf;</span>
+<span class="lineNum">     211 </span>                :<span class="lineCov">        104 :         data-&gt;bufsize = size;</span>
+<span class="lineNum">     212 </span>                :<span class="lineCov">        104 :         return data;</span>
+<span class="lineNum">     213 </span>                :<span class="lineCov">        104 : }</span>
 <a name="214"><span class="lineNum">     214 </span>                :            : </a>
 <span class="lineNum">     215 </span>                :            : gwprbuf *
-<span class="lineNum">     216 </span>                :<span class="lineNoCov">          0 : gwpr_buf_getp(gwpr * pr, size_t size) {</span>
-<span class="lineNum">     217 </span>                :<span class="lineNoCov">          0 :         gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));</span>
-<span class="lineNum">     218 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while(!data) {</span>
+<span class="lineNum">     216 </span>                :<span class="lineCov">        101 : gwpr_buf_getp(gwpr * pr, size_t size) {</span>
+<span class="lineNum">     217 </span>                :<span class="lineCov">        101 :         gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));</span>
+<span class="lineNum">     218 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 101 times"> + </span>]:<span class="lineCov">        101 :         while(!data) {</span>
 <span class="lineNum">     219 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(Erl3F) calloc error&quot;);</span>
 <span class="lineNum">     220 </span>                :<span class="lineNoCov">          0 :                 data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));</span>
 <span class="lineNum">     221 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     222 </span>                :<span class="lineNoCov">          0 :         data-&gt;buf = (char *)gwrl_mem_calloc(1,size);</span>
-<span class="lineNum">     223 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :         while(!data-&gt;buf) {</span>
+<span class="lineNum">     222 </span>                :<span class="lineCov">        101 :         data-&gt;buf = (char *)gwrl_mem_calloc(1,size);</span>
+<span class="lineNum">     223 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 101 times"> + </span>]:<span class="lineCov">        101 :         while(!data-&gt;buf) {</span>
 <span class="lineNum">     224 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(RF4Hk) calloc error&quot;);</span>
 <span class="lineNum">     225 </span>                :<span class="lineNoCov">          0 :                 data-&gt;buf = (char *)gwrl_mem_calloc(1,size);</span>
 <span class="lineNum">     226 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     227 </span>                :<span class="lineNoCov">          0 :         data-&gt;buf = data-&gt;buf;</span>
-<span class="lineNum">     228 </span>                :<span class="lineNoCov">          0 :         data-&gt;bufsize = size;</span>
-<span class="lineNum">     229 </span>                :<span class="lineNoCov">          0 :         return data;</span>
+<span class="lineNum">     227 </span>                :<span class="lineCov">        101 :         data-&gt;buf = data-&gt;buf;</span>
+<span class="lineNum">     228 </span>                :<span class="lineCov">        101 :         data-&gt;bufsize = size;</span>
+<span class="lineNum">     229 </span>                :<span class="lineCov">        101 :         return data;</span>
 <span class="lineNum">     230 </span>                :            : }
 <a name="231"><span class="lineNum">     231 </span>                :            : </a>
 <span class="lineNum">     232 </span>                :            : gwprbuf *
@@ -307,15 +307,24 @@
 <span class="lineNum">     236 </span>                :<span class="lineNoCov">          0 :         return buf;</span>
 <span class="lineNum">     237 </span>                :            : }
 <a name="238"><span class="lineNum">     238 </span>                :            : </a>
-<span class="lineNum">     239 </span>                :            : void
-<span class="lineNum">     240 </span>                :<span class="lineNoCov">          0 : gwpr_buf_free(gwpr * pr, gwprbuf * buf) {</span>
-<span class="lineNum">     241 </span>                :<span class="lineNoCov">          0 :         gwprbuf_free(pr-&gt;bufctl,buf);</span>
-<span class="lineNum">     242 </span>                :<span class="lineNoCov">          0 : }</span>
-<span class="lineNum">     243 </span>                :            : 
-<span class="lineNum">     244 </span>                :            : 
-<span class="lineNum">     245 </span>                :            : #ifdef __cplusplus
-<span class="lineNum">     246 </span>                :            : }
-<span class="lineNum">     247 </span>                :            : #endif
+<span class="lineNum">     239 </span>                :            : gwprbuf *
+<span class="lineNum">     240 </span>                :<span class="lineCov">        101 : gwpr_buf_get_with_data(gwpr * pr, size_t size, char * data, size_t datasize) {</span>
+<span class="lineNum">     241 </span>                :<span class="lineNoCov">          0 :         if(datasize &gt; size) return NULL;</span>
+<span class="lineNum">     242 </span>                :<span class="lineCov">        101 :         gwprbuf * buf = gwpr_buf_getp(pr,size);</span>
+<span class="lineNum">     243 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 101 times"> + </span>]:<span class="lineCov">        101 :         memcpy(buf-&gt;buf,data,datasize);</span>
+<span class="lineNum">     244 </span>                :<span class="lineCov">        101 :         buf-&gt;len = datasize;</span>
+<span class="lineNum">     245 </span>                :<span class="lineCov">        101 :         return buf;</span>
+<span class="lineNum">     246 </span>                :<span class="lineCov">        101 : }</span>
+<a name="247"><span class="lineNum">     247 </span>                :            : </a>
+<span class="lineNum">     248 </span>                :            : void
+<span class="lineNum">     249 </span>                :<span class="lineCov">        202 : gwpr_buf_free(gwpr * pr, gwprbuf * buf) {</span>
+<span class="lineNum">     250 </span>                :<span class="lineCov">        202 :         gwprbuf_free(pr-&gt;bufctl,buf);</span>
+<span class="lineNum">     251 </span>                :<span class="lineCov">        202 : }</span>
+<span class="lineNum">     252 </span>                :            : 
+<span class="lineNum">     253 </span>                :            : 
+<span class="lineNum">     254 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     255 </span>                :            : }
+<span class="lineNum">     256 </span>                :            : #endif
 </pre>
       </td>
     </tr>
