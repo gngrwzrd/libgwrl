@@ -16,6 +16,18 @@ int main(int argc, char ** argv) {
 	gwtm_timeval_to_ms(&tv1,&ms1);
 	assert(ms1 == 1345223184123);
 
+	ms1 = 10;
+	tv1.tv_sec = 0;
+	tv1.tv_usec = 0;
+	gwtm_timeval_to_ms(&tv1,&ms1);
+	assert(ms1 == 0);
+
+	ms1 = 10;
+	ts1.tv_sec = 0;
+	ts1.tv_nsec = 0;
+	gwtm_timespec_to_ms(&ts1,&ms1);
+	assert(ms1 == 0);
+
 	gwtm_gettimeofday_timespec(&ts1);
 	memcpy(&ts2,&ts1,sizeof(ts2));
 
@@ -31,6 +43,7 @@ int main(int argc, char ** argv) {
 	gettimeofday(&tv1,NULL);
 	memcpy(&tv2,&tv1,sizeof(tv2));
 	gwtm_add_ms_to_timeval(2000,&tv2);
+	gwtm_add_ms_to_timeval(0,&tv2);
 	assert(tv2.tv_sec == (tv1.tv_sec+2));
 	
 	gwtm_gettimeofday_timespec(&ts1);
@@ -56,7 +69,9 @@ int main(int argc, char ** argv) {
 	gwtm_gettimeofday_timespec(&ts1);
 	sleep(.2);
 	gwtm_gettimeofday_timespec(&ts2);
+	assert( gwtm_timespec_copy_if_smaller(&ts2,&ts1) == false);
 	gwtm_timespec_copy_if_smaller(&ts1,&ts2);
+
 	assert(ts1.tv_sec == ts2.tv_sec);
 	assert(ts1.tv_nsec == ts2.tv_nsec);
 
