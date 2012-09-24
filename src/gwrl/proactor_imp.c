@@ -686,7 +686,9 @@ gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 int
 gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	gwprdata * pdata = fsrc->pdata;
-	if(!pdata->didwritecb) pdata->didwritecb = &io_activity;
+	if(!pdata->didwritecb) {
+		pdata->didwritecb = &io_activity;
+	}
 	if(pdata->wrq) {
 		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);
 		return 0;
