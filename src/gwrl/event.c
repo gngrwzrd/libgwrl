@@ -5,10 +5,21 @@
 extern "C" {
 #endif
 
+#ifndef NDEBUG
+int asserts_var1 = 0;
+#endif
+
 gwrl *
 gwrl_create() {
 	gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));
 	gwrl_options defaults = GWRL_DEFAULT_OPTIONS;
+	
+	#ifndef NDEBUG
+		if(asserts_var1 == gwrl_create_fail) {
+			free(rl);
+			rl = NULL;
+		}
+	#endif
 	
 	if(!rl) {
 		gwerr("(6GlI8) calloc error");

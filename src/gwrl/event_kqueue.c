@@ -20,6 +20,14 @@ extern "C" {
 
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_kqueue * kbkd = _gwrlbkdk(gwrl_mem_calloc(1,sizeof(gwrlbkd_kqueue)));
+	
+	#ifndef NDEBUG
+		if(asserts_var1 == gwrlbkd_init_fail) {
+			free(kbkd);
+			kbkd = NULL;
+		}
+	#endif
+	
 	if(!kbkd) {
 		gwerr("(3el0L) calloc error");
 		return NULL;

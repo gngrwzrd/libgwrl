@@ -1,4 +1,12 @@
 
+#ifndef NDEBUG
+extern int asserts_var1;
+typedef enum assert_codes {
+	gwrl_create_fail = 10,
+	gwrlbkd_init_fail = 20,
+} assert_codes;
+#endif
+
 //(runloop flag) indicates a break in the runloop
 #define GWRL_STOP (1 << 0)
 
