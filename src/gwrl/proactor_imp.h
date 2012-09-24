@@ -40,16 +40,13 @@ void gwprwrq_add(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * wrq);
 void gwprwrq_putback(gwpr * pr, gwrlsrc_file * fsrc, gwprwrq * q);
 void io_activity(gwpr * pr, gwpr_io_info * info);
 void gwpr_src_activity(gwrl * rl, gwrlevt * evt);
-
 void gwpr_write_buffer(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
      gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen,
      size_t * written, int * errnm);
-
 bool gwpr_synchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen);
-
 void gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen);
-
 int gwpr_asynchronous_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	gwpr_io_op_id op);
+void gwprwrq_free_list_no_cache(gwpr * pr, gwprwrq * wrq);
