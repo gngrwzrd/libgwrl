@@ -108,4 +108,10 @@
 #cmakedefine gwrl_mem_calloc(n,s) (@gwrl_mem_calloc@)
 #cmakedefine gwrl_mem_free(mm) (@gwrl_mem_free@)
 
+//coverage
+#cmakedefine GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+
+//errors
+#cmakedefine GWRL_HIDE_ERRORS
+
 #endif
