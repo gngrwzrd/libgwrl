@@ -1,5 +1,8 @@
--use lcov --remove to remove kernel specific stuff in lcov reports
+-for some reason kqueue backend us setting the GWRL_RD flag on the write only input source
+ in test/proactor_tcp
+
 -add asserts_var1 for each backend.
+-add options for putting gcov data into a backend folder, then each test in there.
 -put lcov handling for each backend
 -gwpr_free on Windows
 -gwrl_wake_activity and gwrl_wake can be called less frequently. see
