@@ -253,10 +253,9 @@ gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
 }
 
 void
-gwrl_reset_gather_fncs(gwrl * rl, gwrl_gather_fnc * fnc) {
+gwrl_reset_gather_fncs(gwrl * rl) {
 	if(rl->options.gwrl_gather_funcs_max > 0) {
-		bzero(rl->gatherfncs,sizeof(gwrl_gather_fnc*)*
-			rl->options.gwrl_gather_funcs_max);
+		bzero(rl->gatherfncs,sizeof(gwrl_gather_fnc*)*rl->options.gwrl_gather_funcs_max);
 	}
 }
 
