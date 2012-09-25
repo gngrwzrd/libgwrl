@@ -23,5 +23,7 @@ int main(int argc, char ** argv) {
 	gwrl_run_once(rl);
 	assert(did_gather == true);
 	assert(gather_count == 2);
+	gwrl_reset_gather_fncs(rl);
+	assert(rl->gatherfncs[0] == NULL);
 	return 0;
 }

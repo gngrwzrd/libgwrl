@@ -46,6 +46,15 @@ target_link_libraries(reactor_del_pers_timeouts3 gwrl)
 add_executable(reactor_timer_interval reactor_timer_interval.c)
 target_link_libraries(reactor_timer_interval gwrl)
 
+add_executable(reactor_mem_errors reactor_mem_errors.c)
+target_link_libraries(reactor_mem_errors gwrl)
+
+add_executable(reactor_safely reactor_safely.c)
+target_link_libraries(reactor_safely gwrl)
+
+add_executable(reactor_no_sleep reactor_no_sleep.c)
+target_link_libraries(reactor_no_sleep gwrl)
+
 if(NOT PLATFORM_WINDOWS)
 	add_executable(reactor_wake_pipe reactor_wake_pipe.c)
 	target_link_libraries(reactor_wake_pipe gwrl pthread)
@@ -74,5 +83,5 @@ target_link_libraries(proactor_free1 gwrl)
 add_executable(proactor_tcp proactor_tcp.c)
 target_link_libraries(proactor_tcp gwrl)
 
-add_executable(proactor_mem_errors proactor_mem_errors.c)
-target_link_libraries(proactor_mem_errors gwrl)
+add_executable(proactor_udp proactor_udp.c)
+target_link_libraries(proactor_udp gwrl)
