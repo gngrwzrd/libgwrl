@@ -78,11 +78,9 @@ typedef enum gwpr_io_op_id {
 	gwpr_read_op_id,
 	gwpr_recv_op_id,
 	gwpr_recvfrom_op_id,
-	gwpr_recvmsg_op_id,
 	gwpr_write_op_id,
 	gwpr_send_op_id,
 	gwpr_sendto_op_id,
-	gwpr_sendmsg_op_id,
 } gwpr_io_op_id;
 
 //filter ids for gwpr_filter_add. when you add a filter these
@@ -188,7 +186,6 @@ int gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc);
 int gwpr_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 int gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 int gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-int gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 void gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc);
 
 //write data asynchronously from the provided buffer. Unlike the read functions
@@ -198,7 +195,6 @@ void gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc);
 int gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 int gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 int gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * peer, socklen_t peerlen);
-int gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 
 //add filter at the end of the filter list for an input source.
 void gwpr_filter_add(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid, gwpr_io_cb * fnc);
