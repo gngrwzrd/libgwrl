@@ -21,8 +21,16 @@ void gwrl_bkd_set_options(gwrl * rl,gwrl_options * opts){};
 
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_select * sbkd = _gwrlbkds(gwrl_mem_calloc(1,sizeof(gwrlbkd_select)));
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+		if(asserts_var1 == gwrlbkd_init_fail) {
+			free(sbkd);
+			sbkd = NULL;
+		}
+	#endif
 	if(!sbkd) {
-		gwprintsyserr("(p3F7r) calloc error",errno);
+		#ifndef GWRL_HIDE_ERRORS
+			gwprintsyserr("(p3F7r) calloc error",errno);
+		#endif
 		return NULL;
 	}
 	sbkd->maxfd = -1;
@@ -135,6 +143,12 @@ void gwrl_bkd_gather(gwrl * rl) {
 		timeoutp = &timeout;
 		timeout.tv_sec = 0;
 		timeout.tv_usec = 0;
+
+		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			if(asserts_var1 == gwrlbkd_no_sleep_assert_true) {
+				asserts_var2 = true;
+			}
+		#endif
 	}
 	
 	//initialize fds
