@@ -277,6 +277,9 @@ void gwrl_del_persistent_timeouts(gwrl * rl);
 //add a custom gather function.
 void gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc);
 
+//reset and zero all gather functions.
+void gwrl_reset_gather_fncs(gwrl * rl);
+
 //post a function call.
 void gwrl_post_function(gwrl * rl, gwrlevt_cb * cb, void * userdata);
 
