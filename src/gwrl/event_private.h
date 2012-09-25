@@ -1,9 +1,15 @@
 
-#ifndef NDEBUG
+#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
 extern int asserts_var1;
+extern bool asserts_var2;
 typedef enum assert_codes {
 	gwrl_create_fail = 10,
+	gwrl_create_gatherfncs_fail = 11,
+	gwrl_evt_create_fail = 12,
+	gwrl_src_time_create_fail = 13,
+	gwrl_src_file_create_fail = 14,
 	gwrlbkd_init_fail = 20,
+	gwrlbkd_no_sleep_assert_true = 21,
 } assert_codes;
 #endif
 
