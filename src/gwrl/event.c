@@ -5,8 +5,9 @@
 extern "C" {
 #endif
 
-#ifndef NDEBUG
+#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
 int asserts_var1 = 0;
+bool asserts_var2 = 0;
 #endif
 
 gwrl *
@@ -14,7 +15,7 @@ gwrl_create() {
 	gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));
 	gwrl_options defaults = GWRL_DEFAULT_OPTIONS;
 	
-	#ifndef NDEBUG
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
 		if(asserts_var1 == gwrl_create_fail) {
 			free(rl);
 			rl = NULL;
@@ -22,7 +23,9 @@ gwrl_create() {
 	#endif
 	
 	if(!rl) {
-		gwerr("(6GlI8) calloc error");
+		#ifndef GWRL_HIDE_ERRORS
+			gwerr("(6GlI8) calloc error");
+		#endif
 		return NULL;
 	}
 	
@@ -40,8 +43,16 @@ gwrl_create() {
 	rl->gatherfncs = NULL;
 	if(GWRL_GATHER_FUNCS_MAX > 0) {
 		rl->gatherfncs = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * GWRL_GATHER_FUNCS_MAX);
+		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			if(asserts_var1 == gwrl_create_gatherfncs_fail) {
+				free(rl->gatherfncs);
+				rl->gatherfncs = NULL;
+			}
+		#endif
 		if(!rl->gatherfncs) {
-			gwerr("(7VB3R) calloc error");
+			#ifndef GWRL_HIDE_ERRORS
+				gwerr("(7VB3R) calloc error");
+			#endif
 			free(rl);
 			return NULL;
 		}
@@ -67,8 +78,16 @@ void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
 		evt->next = NULL;
 	} else {
 		evt = _gwrlevt(gwrl_mem_calloc(1,sizeof(*evt)));
+		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			if(asserts_var1 == gwrl_evt_create_fail) {
+				free(evt);
+				evt = NULL;
+			}
+		#endif
 		if(!evt) {
-			gwerr("(8FxlC) calloc error");
+			#ifndef GWRL_HIDE_ERRORS
+				gwerr("(8FxlC) calloc error");
+			#endif
 			return NULL;
 		}
 	}
@@ -85,8 +104,16 @@ gwrl_src_time_create(int64_t ms, bool repeat, int whence,
 bool persist, gwrlevt_cb * callback, void * userdata) {
 	gwrlsrc_time * tsrc = _gwrlsrct(gwrl_mem_calloc(1,sizeof(gwrlsrc_time)));
 	gwrlsrc * src = _gwrlsrc(tsrc);
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+		if(asserts_var1 == gwrl_src_time_create_fail) {
+			free(tsrc);
+			tsrc = NULL;
+		}
+	#endif
 	if(!tsrc) {
-		gwerr("(5Gn3K) caloc error");
+		#ifndef GWRL_HIDE_ERRORS
+			gwerr("(5Gn3K) caloc error");
+		#endif
 		return NULL;
 	}
 	src->type = GWRL_SRC_TYPE_TIME;
@@ -112,8 +139,17 @@ gwrl_src_file_create(fileid_t fd, gwrlsrc_flags_t flags,
 gwrlevt_cb * callback, void * userdata) {
 	gwrlsrc_file * fsrc = _gwrlsrcf(gwrl_mem_calloc(1,sizeof(gwrlsrc_file)));
 	gwrlsrc * src = _gwrlsrc(fsrc);
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+		if(asserts_var1 == gwrl_src_file_create_fail) {
+			free(fsrc);
+			fsrc = NULL;
+			src = NULL;
+		}
+	#endif
 	if(!src) {
-		gwerr("(25FnG) calloc error");
+		#ifndef GWRL_HIDE_ERRORS
+			gwerr("(25FnG) calloc error");
+		#endif
 		return NULL;
 	}
 	src->flags = flags;
@@ -236,7 +272,9 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 
 	//make sure there is no proactor associated with the reactor.
 	if(rl && rl->pr) {
-		gwerr("(RF4L3) gwrl_free error, you can't free a reactor before freeing the proactor.");
+		#ifndef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			gwerr("(RF4L3) gwrl_free error, you can't free a reactor before freeing the proactor.");
+		#endif
 		return;
 	}
 
