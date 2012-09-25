@@ -79,7 +79,9 @@ void gwrl_bkd_kevent(gwrl * rl, gwrlsrc * src, int kflags, int kfilter) {
 	ke.flags = kflags;
 	ke.filter = kfilter;
 	res = kevent(kbkd->kq,&ke,1,NULL,0,&ts);
-	if(res < 0 && errno != EBADF) gwprintsyserr("(9dlkF) kevent error",errno);
+	if(res < 0 && errno != EBADF) {
+		gwprintsyserr("(9dlkF) kevent error",errno);
+	}
 }
 
 void gwrl_src_file_update_flags(gwrl * rl, gwrlsrc * src, gwrlsrc_flags_t flags) {
