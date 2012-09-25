@@ -23,8 +23,16 @@ extern "C" {
 
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_poll * pbkd = _gwrlbkdp(gwrl_mem_calloc(1,sizeof(gwrlbkd_poll)));
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+		if(asserts_var1 == gwrlbkd_init_fail) {
+			free(pbkd);
+			pbkd = NULL;
+		}
+	#endif
 	if(!pbkd) {
-		gwprintsyserr("(pe1Ij) calloc error",errno);
+		#ifndef GWRL_HIDE_ERRORS
+			gwprintsyserr("(pe1Ij) calloc error",errno);
+		#endif
 		return NULL;
 	}
 	pbkd->nfds = 0;
@@ -180,7 +188,14 @@ void gwrl_bkd_gather(gwrl * rl) {
 	}
 	
 	//check and see if we're allowed to sleep in sys calls when no timeout is set.
-	if(ms < 0 && flisset(rl->flags,GWRL_NOSLEEP)) ms = 0;
+	if(ms < 0 && flisset(rl->flags,GWRL_NOSLEEP)) {
+		ms = 0;
+		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			if(asserts_var1 == gwrlbkd_no_sleep_assert_true) {
+				asserts_var2 = true;
+			}
+		#endif
+	}
 		
 	//poll, wrap in sleep flags so other threads can wake us.
 	flset(rl->flags,GWRL_SLEEPING);
