@@ -13,7 +13,8 @@ gwpr_create(gwrl * rl) {
 	gwpr_options options = {
 		GWPR_MAX_ACCEPT,
 		GWPR_WRQUEUE_CACHE_MAX,
-		GWPR_IOCP_OVLP_CACHE_MAX
+		GWPR_IOCP_OVLP_CACHE_MAX,
+		GWPR_SYNCHRONOUS_WRITE_MAX_BYTES
 	};
 	if(!pr) {
 		gwerr("(Dle3d) calloc error");
