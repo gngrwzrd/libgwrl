@@ -84,12 +84,6 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 					while((res=recv(fsrc->fd,rd->buf,rd->bufsize,0)) < 0 && errno == EINTR);
 				}
 				
-				else if(pdata->rdop == gwpr_recvmsg_op_id) {
-					ioinfo.op = gwpr_recvmsg_op_id;
-					memcpy(errfnc,"recvmsg\0",8);
-					while((res=recvmsg(fsrc->fd,(struct msghdr *)rd->buf,0)) < 0 && errno == EINTR);
-				}
-
 				if(res > 0) {
 					//good read, call rd filters and did_read callback.
 					
@@ -195,7 +189,6 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 					if(q->wrop == gwpr_write_op_id) memcpy(errfnc,"write\0",6);
 					else if(q->wrop == gwpr_sendto_op_id) memcpy(errfnc,"sendto\0",7);
 					else if(q->wrop == gwpr_send_op_id) memcpy(errfnc,"send\0",5);
-					else if(q->wrop == gwpr_sendmsg_op_id) memcpy(errfnc,"sendmsg\0",8);
 					
 					//perform the write.
 					gwpr_write_buffer(pr,fsrc,q->buf,q->wrop,&q->peer,q->peerlen,&written,&errnm);
@@ -395,8 +388,6 @@ size_t * written, int * errnm) {
 			while((didwrite=send(fsrc->fd,_buf,towrite,0)) && didwrite < 0 && (errno == EINTR));
 		} else if(op == gwpr_sendto_op_id) {
 			while((didwrite=sendto(fsrc->fd,_buf,towrite,0, _sockaddr(peer),peerlen)) && didwrite < 0 && (errno == EINTR));
-		} else if(op == gwpr_sendmsg_op_id) {
-			while((didwrite=sendmsg(fsrc->fd,(struct msghdr *)_buf,0)) && didwrite < 0 && (errno == EINTR));
 		}
 		
 		if(didwrite > 0) {
@@ -573,7 +564,6 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 			if(op == gwpr_write_op_id) memcpy(errinfo->fnc,"write\0",6);
 			else if(op == gwpr_send_op_id) memcpy(errinfo->fnc,"send\0",5);
 			else if(op == gwpr_sendto_op_id) memcpy(errinfo->fnc,"sendto\0",7);
-			else if(op == gwpr_sendmsg_op_id) memcpy(errinfo->fnc,"sendmsg\0",8);
 
 			//get an event and post it
 			evt = gwrl_evt_create(pr->rl,src,&gwpr_src_activity,errinfo,fsrc->fd,GWRL_SYNC_ERROR);
@@ -678,10 +668,6 @@ gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recvfrom_op_id);
 }
 
-int
-gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recvmsg_op_id);
-}
 
 int
 gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
@@ -724,20 +710,6 @@ gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	}
 	if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen))) {
 		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);
-	}
-	return 0;
-}
-
-int
-gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	gwprdata * pdata = fsrc->pdata;
-	if(!pdata->didwritecb) pdata->didwritecb = &io_activity;
-	if(pdata->wrq) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0);
-		return 0;
-	}
-	if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0))) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendmsg_op_id,NULL,0);
 	}
 	return 0;
 }
