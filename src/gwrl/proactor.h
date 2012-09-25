@@ -48,7 +48,8 @@ typedef void (gwpr_io_cb)(struct gwpr * pr, struct gwpr_io_info * info);
 #define GWPR_DEFAULT_OPTIONS {\
 GWPR_MAX_ACCEPT,\
 GWPR_WRQUEUE_CACHE_MAX,\
-GWPR_IOCP_OVLP_CACHE_MAX}
+GWPR_IOCP_OVLP_CACHE_MAX,\
+GWPR_SYNCHRONOUS_WRITE_MAX_BYTES}
 
 //runtime options that can override some compile time #defines. useful for
 //setting different options on a proactor that may need to be different
@@ -57,6 +58,7 @@ typedef struct gwpr_options {
 	int gwpr_max_accept;
 	int gwpr_wrqueue_cache_max;
 	int gwpr_iocp_ovlp_cache_max;
+	int gwpr_synchronous_write_max_bytes;
 } gwpr_options;
 
 //ids for the "cbid" parameter to the gwpr_set_cb function.
