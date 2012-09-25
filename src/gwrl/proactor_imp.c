@@ -408,7 +408,8 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	
 	#if defined(GWPR_TRY_SYNCHRONOUS_WRITE_UNIX)
 	
-	if(buf->len <= GWPR_SYNCHRONOUS_WRITE_MAX_BYTES) {
+	if(buf->len <= pr->options.gwpr_synchronous_write_max_bytes
+		&& pr->options.gwpr_synchronous_write_max_bytes > 0) {
 		//the buffer requested is smaller than the maximum allowed
 		//bytes to allow synchronous writes with, so give it a shot.
 
