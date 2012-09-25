@@ -21,7 +21,7 @@ extern "C" {
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_kqueue * kbkd = _gwrlbkdk(gwrl_mem_calloc(1,sizeof(gwrlbkd_kqueue)));
 	
-	#ifndef NDEBUG
+	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
 		if(asserts_var1 == gwrlbkd_init_fail) {
 			free(kbkd);
 			kbkd = NULL;
@@ -29,9 +29,12 @@ gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	#endif
 	
 	if(!kbkd) {
-		gwerr("(3el0L) calloc error");
+		#ifndef GWRL_HIDE_ERRORS
+			gwerr("(3el0L) calloc error");
+		#endif
 		return NULL;
 	}
+
 	kbkd->kq = kqueue();
 	if(kbkd->kq < 0) {
 		gwerr("(1LKdoL) kqueue error");
@@ -176,6 +179,11 @@ void gwrl_bkd_gather(gwrl * rl) {
 	if(!timeout && flisset(rl->flags,GWRL_NOSLEEP)) {
 		struct timespec ts = {0};
 		timeout = &ts;
+		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+			if(asserts_var1 == gwrlbkd_no_sleep_assert_true) {
+				asserts_var2 = true;
+			}
+		#endif
 	}
 	
 	flset(rl->flags,GWRL_SLEEPING);
