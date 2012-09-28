@@ -15,47 +15,36 @@ gwrl_create() {
 	gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));
 	gwrl_options defaults = GWRL_DEFAULT_OPTIONS;
 	
-	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-		if(asserts_var1 == gwrl_create_fail) {
-			free(rl);
-			rl = NULL;
-		}
-	#endif
-	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!rl) {
-		#ifndef GWRL_HIDE_ERRORS
-			gwerr("(6GlI8) calloc error");
-		#endif
+		gwerr("(6GlI8) calloc error");
 		return NULL;
 	}
+	#endif
 	
 	//setup default options.
 	memcpy(&rl->options,&defaults,sizeof(defaults));
 	
 	//initialize the backend.
 	rl->backend = gwrl_bkd_init(rl);
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!rl->backend) {
 		free(rl);
 		return NULL;
 	}
+	#endif
 	
 	//setup the custom gather functions.
 	rl->gatherfncs = NULL;
 	if(GWRL_GATHER_FUNCS_MAX > 0) {
 		rl->gatherfncs = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * GWRL_GATHER_FUNCS_MAX);
-		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-			if(asserts_var1 == gwrl_create_gatherfncs_fail) {
-				free(rl->gatherfncs);
-				rl->gatherfncs = NULL;
-			}
-		#endif
+		#ifndef GWRL_HIDE_FROM_COVERAGE
 		if(!rl->gatherfncs) {
-			#ifndef GWRL_HIDE_ERRORS
-				gwerr("(7VB3R) calloc error");
-			#endif
+			gwerr("(7VB3R) calloc error");
 			free(rl);
 			return NULL;
 		}
+		#endif
 	}
 	
 	//initialize locks for thread safe functions.
@@ -78,18 +67,12 @@ void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
 		evt->next = NULL;
 	} else {
 		evt = _gwrlevt(gwrl_mem_calloc(1,sizeof(*evt)));
-		#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-			if(asserts_var1 == gwrl_evt_create_fail) {
-				free(evt);
-				evt = NULL;
-			}
-		#endif
+		#ifndef GWRL_HIDE_FROM_COVERAGE
 		if(!evt) {
-			#ifndef GWRL_HIDE_ERRORS
-				gwerr("(8FxlC) calloc error");
-			#endif
+			gwerr("(8FxlC) calloc error");
 			return NULL;
 		}
+		#endif
 	}
 	evt->callback = callback;
 	evt->userdata = userdata;
@@ -104,18 +87,12 @@ gwrl_src_time_create(int64_t ms, bool repeat, int whence,
 bool persist, gwrlevt_cb * callback, void * userdata) {
 	gwrlsrc_time * tsrc = _gwrlsrct(gwrl_mem_calloc(1,sizeof(gwrlsrc_time)));
 	gwrlsrc * src = _gwrlsrc(tsrc);
-	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-		if(asserts_var1 == gwrl_src_time_create_fail) {
-			free(tsrc);
-			tsrc = NULL;
-		}
-	#endif
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!tsrc) {
-		#ifndef GWRL_HIDE_ERRORS
-			gwerr("(5Gn3K) caloc error");
-		#endif
+		gwerr("(5Gn3K) caloc error");
 		return NULL;
 	}
+	#endif
 	src->type = GWRL_SRC_TYPE_TIME;
 	src->userdata = userdata;
 	src->callback = callback;
@@ -139,19 +116,12 @@ gwrl_src_file_create(fileid_t fd, gwrlsrc_flags_t flags,
 gwrlevt_cb * callback, void * userdata) {
 	gwrlsrc_file * fsrc = _gwrlsrcf(gwrl_mem_calloc(1,sizeof(gwrlsrc_file)));
 	gwrlsrc * src = _gwrlsrc(fsrc);
-	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-		if(asserts_var1 == gwrl_src_file_create_fail) {
-			free(fsrc);
-			fsrc = NULL;
-			src = NULL;
-		}
-	#endif
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!src) {
-		#ifndef GWRL_HIDE_ERRORS
-			gwerr("(25FnG) calloc error");
-		#endif
+		gwerr("(25FnG) calloc error");
 		return NULL;
 	}
+	#endif
 	src->flags = flags;
 	src->type = GWRL_SRC_TYPE_FILE;
 	src->userdata = userdata;
@@ -246,10 +216,12 @@ gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
 			break;
 		}
 	}
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!added) {
 		gwerr("(3F85R) no open gather slots.");
 		return;
 	}
+	#endif
 }
 
 void
@@ -270,12 +242,12 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 	gwrlsrc * src = NULL;
 
 	//make sure there is no proactor associated with the reactor.
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(rl && rl->pr) {
-		#ifndef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-			gwerr("(RF4L3) gwrl_free error, you can't free a reactor before freeing the proactor.");
-		#endif
+		gwerr("(RF4L3) gwrl_free error, you can't free a reactor before freeing the proactor.");
 		return;
 	}
+	#endif
 
 	//if rl is NULL, just free all sources passed in
 	if(!rl && sources) {
@@ -427,8 +399,9 @@ gwrl_src_add(gwrl * rl, gwrlsrc * src) {
 
 void
 gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
-	gwrlsrc * head = rl->_qsrc;
+	gwrlsrc * head = NULL;
 	lockid_lock(&rl->_qsrclk);
+	head = rl->_qsrc;
 	if(head) src->next = head;
 	else src->next = NULL;
 	rl->_qsrc = src;
@@ -438,8 +411,9 @@ gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
 
 void
 gwrl_post_evt_safely(gwrl * rl, gwrlevt * evt) {
-	gwrlevt * head = rl->_qevt;
+	gwrlevt * head = NULL;
 	lockid_lock(&rl->_qevtlk);
+	head = rl->_qevt;
 	if(head) evt->next = head;
 	else evt->next = NULL;
 	rl->_qevt = evt;
