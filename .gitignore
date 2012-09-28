@@ -15,4 +15,4 @@ build/
 src/config.h
 src/gwc/config.h
 *_config.h
-
+docs/reference/
