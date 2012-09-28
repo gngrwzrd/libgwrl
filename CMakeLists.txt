@@ -26,6 +26,7 @@ set(GWPR_SYNCHRONOUS_WRITE_MAX_BYTES 512 CACHE STRING "The maximum bytes allowed
 set(GWPR_WRQUEUE_CACHE_MAX 256 CACHE STRING "Internal cache size for gwpr_wrqueue structures.")
 if(GWRL_BUILD_COVERAGE AND "${CMAKE_GENERATOR}" MATCHES "Make")
 	set(GWRL_COVERAGE_INTERNAL_ASSERT_VARS 1)
+	set(GWRL_HIDE_FROM_COVERAGE 1)
 	set(GWRL_HIDE_ERRORS 1)
 	add_custom_target(coverage COMMAND "../../scripts/coverage.sh")
 	add_custom_target(clean_coverage COMMAND "../../scripts/coverage_clean.sh")
