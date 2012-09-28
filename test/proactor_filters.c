@@ -14,7 +14,7 @@ int main(int argc, char ** argv) {
 		printf("error: GWPR_FILTERS_MAX must be at least 2 for this test.\n");
 		return -1;
 	}
-
+	
 	gwpr_src_add(pr,src1);
 	gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&filter);
 	assert(((gwprdata *)src1->pdata)->rdfilters != NULL);
@@ -25,11 +25,13 @@ int main(int argc, char ** argv) {
 	assert(_gwprdata(src1->pdata)->rdfilters[1] == &filter2);
 	
 	gwpr_filter_reset(pr,src1,gwpr_rdfilter_id);
+	gwpr_filter_reset(pr,src1,gwpr_wrfilter_id);
 	assert(((gwprdata *)src1->pdata)->rdfilters[0] == NULL);
-
+	assert(((gwprdata *)src1->pdata)->wrfilters[0] == NULL);
+	
 	filter(NULL,NULL);
 	filter2(NULL,NULL);
 	filter3(NULL,NULL);
-
+	
 	return 0;
 }
