@@ -22,11 +22,12 @@ def add_test(testname):
 		"-e","%s%s" % (testdir,testname),
 	])
 
+#add_test("proactor_thread_specific_nix")
+
 add_test("proactor_buf")
 add_test("proactor_filters")
 add_test("proactor_free1")
 add_test("proactor_tcp")
-#add_test("proactor_thread_specific_nix")
 add_test("proactor_udp")
 add_test("proactor_wrq")
 add_test("reactor_custom_gathering")
@@ -37,8 +38,8 @@ add_test("reactor_events")
 add_test("reactor_free1")
 add_test("reactor_free2")
 add_test("reactor_free3")
+add_test("reactor_free4")
 add_test("reactor_gatherfunc")
-add_test("reactor_mem_errors")
 add_test("reactor_no_sleep")
 add_test("reactor_options")
 add_test("reactor_safely")
