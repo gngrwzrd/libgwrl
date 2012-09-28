@@ -197,6 +197,8 @@ void gwrl_bkd_gather(gwrl * rl) {
 	
 	if(res > 0) {
 		while(i < res) {
+			postread = false;
+			postwrite = false;
 			event = &kbkd->kevents[i];
 			src = event->udata;
 			if(!flisset(src->flags,GWRL_ENABLED)) continue;
