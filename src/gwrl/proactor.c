@@ -16,15 +16,23 @@ gwpr_create(gwrl * rl) {
 		GWPR_IOCP_OVLP_CACHE_MAX,
 		GWPR_SYNCHRONOUS_WRITE_MAX_BYTES
 	};
-	if(!pr) {
-		gwerr("(Dle3d) calloc error");
-		return NULL;
-	}
+
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		if(!pr) {
+			gwerr("(Dle3d) calloc error");
+			return NULL;
+		}
+	#endif
+
 	pr->bufctl = gwprbufctl_create();
-	if(!pr->bufctl) {
-		free(pr);
-		return NULL;
-	}
+	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		if(!pr->bufctl) {
+			free(pr);
+			return NULL;
+		}
+	#endif
+
 	gwpr_set_options(pr,&options);
 	pr->rl = rl;
 	rl->pr = pr;
@@ -34,25 +42,34 @@ gwpr_create(gwrl * rl) {
 gwprdata *
 gwprdata_create() {
 	gwprdata * data = _gwprdata(gwrl_mem_calloc(1,sizeof(gwprdata)));
-	if(!data) {
-		gwerr("(Do4Kd) calloc error");
-		return NULL;
-	}
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		if(!data) {
+			gwerr("(Do4Kd) calloc error");
+			return NULL;
+		}
+	#endif
+	
 	data->rdbufsize = 512;
 	data->rdfilters = NULL;
 	data->wrfilters = NULL;
+	
 	if(GWPR_FILTERS_MAX > 0) {
 		data->rdfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);
-		if(!data->rdfilters) {
-			free(data);
-			return NULL;
-		}
+		#ifndef GWRL_HIDE_FROM_COVERAGE
+			if(!data->rdfilters) {
+				free(data);
+				return NULL;
+			}
+		#endif
+		
 		data->wrfilters = gwrl_mem_calloc(1,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);
-		if(!data->wrfilters) {
-			free(data);
-			free(data->rdfilters);
-			return NULL;
-		}
+		#ifndef GWRL_HIDE_FROM_COVERAGE
+			if(!data->wrfilters) {
+				free(data);
+				free(data->rdfilters);
+				return NULL;
+			}
+		#endif
 	}
 	return data;
 }
@@ -61,7 +78,9 @@ gwrlsrc_file *
 gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {
 	gwrlsrc_file * fsrc = NULL;
 	gwrlsrc * src = gwrl_src_file_create(fd,0,0,NULL);
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!src) src = gwrl_src_file_create(fd,0,0,NULL);
+	#endif
 	fsrc = (gwrlsrc_file *)src;
 	src->userdata = udata;
 	gwpr_src_add(pr,fsrc);
@@ -71,10 +90,12 @@ gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {
 gwprbufctl *
 gwprbufctl_create() {
 	gwprbufctl * ctl = (gwprbufctl *)gwrl_mem_calloc(1,sizeof(gwprbufctl));
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!ctl) {
 		gwerr("(p4P0R) calloc error");
 		return NULL;
 	}
+	#endif
 	return ctl;
 }
 
@@ -93,7 +114,9 @@ void
 gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc) {
 	gwrlsrc * src = _gwrlsrc(fsrc);
 	gwprdata * data = gwprdata_create();
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!data) data = gwprdata_create();
+	#endif
 	src->flags = GWRL_RD; //read but disabled
 	src->callback = gwpr_src_activity;
 	fsrc->pdata = data;
@@ -104,7 +127,9 @@ void
 gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc) {
 	gwrlsrc * src = _gwrlsrc(fsrc);
 	gwprdata * data = gwprdata_create();
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!data) data = gwprdata_create();
+	#endif
 	src->flags = GWRL_RD; //read but disabled
 	src->callback = gwpr_src_activity;
 	fsrc->pdata = data;
@@ -198,35 +223,50 @@ gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb) {
 gwprbuf *
 gwpr_buf_get(gwpr * pr, size_t size) {
 	gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));
-	if(!data) {
-		gwerr("(Erl3F) calloc error");
-		return NULL;
-	}
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		if(!data) {
+			gwerr("(Erl3F) calloc error");
+			return NULL;
+		}
+	#endif
+
 	data->buf = (char *)gwrl_mem_calloc(1,size);
-	if(!data->buf) {
-		gwerr("(RF4Hk) calloc error");
-		free(data);
-		return NULL;
-	}
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		if(!data->buf) {
+			gwerr("(RF4Hk) calloc error");
+			free(data);
+			return NULL;
+		}
+	#endif
+
 	data->buf = data->buf;
 	data->bufsize = size;
+
 	return data;
 }
 
 gwprbuf *
 gwpr_buf_getp(gwpr * pr, size_t size) {
 	gwprbuf * data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));
+	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!data) {
 		gwerr("(Erl3F) calloc error");
 		data = (gwprbuf *)gwrl_mem_calloc(1,sizeof(gwprbuf));
 	}
+	#endif
+
 	data->buf = (char *)gwrl_mem_calloc(1,size);
-	while(!data->buf) {
-		gwerr("(RF4Hk) calloc error");
-		data->buf = (char *)gwrl_mem_calloc(1,size);
-	}
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		while(!data->buf) {
+			gwerr("(RF4Hk) calloc error");
+			data->buf = (char *)gwrl_mem_calloc(1,size);
+		}
+	#endif
+	
 	data->buf = data->buf;
 	data->bufsize = size;
+	
 	return data;
 }
 
