@@ -12,6 +12,12 @@ int main(int argc, char ** argv) {
 	assert(buf1->bufsize == 128);
 	assert(buf2->bufsize == 256);
 	assert(buf3->bufsize == 512);
-
+	
+	buf1 = gwpr_buf_get_tagged(pr,128,10);
+	assert(buf1->tag == 10);
+	
+	buf1 = gwpr_buf_get_with_data(pr,10,"word",100);
+	assert(buf1 == NULL);
+	
 	return 0;
 }
