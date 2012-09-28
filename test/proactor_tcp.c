@@ -15,10 +15,10 @@ bool called_rdfilter2 = false;
 void didrd(gwpr * pr, gwpr_io_info * info) {
 	assert(strcmp(info->buf->buf,"hello world") == 0);
 	gwpr_buf_free(pr,info->buf);
-	rdcount++;
 	if(rdcount == 100) {
 		gwrl_stop(rl);
 	}
+	rdcount++;
 }
 
 void didwr(gwpr * pr, gwpr_io_info * info) {	
@@ -81,13 +81,13 @@ int main(int argc, char ** argv) {
 	gwpr_filter_add(pr,wrsrc,gwpr_wrfilter_id,&wrfilter2);
 	gwpr_filter_add(pr,rdsrc,gwpr_rdfilter_id,&rdfilter1);
 	gwpr_filter_add(pr,rdsrc,gwpr_rdfilter_id,&rdfilter2);
-
+	
 	gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&didwr);
 	gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&didrd);
 	gwpr_read(pr,rdsrc,gwpr_buf_get(pr,128));
-
+	
 	gwrl_set_interval(rl,0,&write_data,NULL);
-	gwrl_set_timeout(rl,10000,false,&timeout,NULL);
+	//gwrl_set_timeout(rl,10000,false,&timeout,NULL);
 	gwrl_run(rl);
 	
 	timeout(rl,NULL);
