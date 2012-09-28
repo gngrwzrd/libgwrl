@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_gatherfunc.c</title>
+  <title>LCOV - lcov1.info - test/reactor_gatherfunc.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">13</td>
-            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">15</td>
+            <td class="headerCovTableEntry">15</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -49,8 +49,8 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -75,27 +75,29 @@
 <span class="lineNum">       4 </span>                :            : int gather_count = 0;
 <a name="5"><span class="lineNum">       5 </span>                :            : bool did_gather = false;</a>
 <span class="lineNum">       6 </span>                :            : 
-<span class="lineNum">       7 </span>                :<span class="lineCov">         44 : void custom_gather(gwrl * rl) {</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         44 :         did_gather = true;</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         44 :         gather_count++;</span>
-<a name="10"><span class="lineNum">      10 </span>                :<span class="lineCov">         44 : }</span></a>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         20 : void custom_gather(gwrl * rl) {</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         20 :         did_gather = true;</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         20 :         gather_count++;</span>
+<a name="10"><span class="lineNum">      10 </span>                :<span class="lineCov">         20 : }</span></a>
 <span class="lineNum">      11 </span>                :            : 
-<span class="lineNum">      12 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         22 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         10 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         10 :         gwrl * rl = gwrl_create();</span>
 <span class="lineNum">      14 </span>                :            :         
 <span class="lineNum">      15 </span>                :            :         #if GWRL_GATHER_FUNCS_MAX &lt; 2
 <span class="lineNum">      16 </span>                :            :                 printf(&quot;error: GWRL_GATHER_FUNCS_MAX must be at least 2 for this test.\n&quot;);
 <span class="lineNum">      17 </span>                :            :                 exit(-1);
 <span class="lineNum">      18 </span>                :            :         #endif
 <span class="lineNum">      19 </span>                :            :         
-<span class="lineNum">      20 </span>                :<span class="lineCov">         22 :         gwrl_add_gather_fnc(rl,&amp;custom_gather);</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         22 :         gwrl_add_gather_fnc(rl,&amp;custom_gather);</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         22 :         gwrl_allow_poll_sleep(rl,0);</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">         22 :         gwrl_run_once(rl);</span>
-<span class="lineNum">      24 </span>                :<span class="lineCov">         22 :         assert(did_gather == true);</span>
-<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(gather_count == 2);</span>
-<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         return 0;</span>
-<span class="lineNum">      27 </span>                :            : }
+<span class="lineNum">      20 </span>                :<span class="lineCov">         10 :         gwrl_add_gather_fnc(rl,&amp;custom_gather);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         10 :         gwrl_add_gather_fnc(rl,&amp;custom_gather);</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         10 :         gwrl_allow_poll_sleep(rl,0);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">         10 :         gwrl_run_once(rl);</span>
+<span class="lineNum">      24 </span>                :<span class="lineCov">         10 :         assert(did_gather == true);</span>
+<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         assert(gather_count == 2);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         10 :         gwrl_reset_gather_fncs(rl);</span>
+<span class="lineNum">      27 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         assert(rl-&gt;gatherfncs[0] == NULL);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         10 :         return 0;</span>
+<span class="lineNum">      29 </span>                :            : }
 </pre>
       </td>
     </tr>

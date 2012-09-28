@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - lcov1.info - test/reactor_safely.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">test</a> - reactor_safely.c<span style="font-size: 80%;"> (source / <a href="reactor_safely.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov1.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntry">32</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">62.5 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : </a>
+<span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;
+<span class="lineNum">       3 </span>                :            : 
+<a name="4"><span class="lineNum">       4 </span>                :            : bool fired = false;</a>
+<span class="lineNum">       5 </span>                :            : 
+<span class="lineNum">       6 </span>                :<span class="lineCov">          7 : void event(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">          7 :         gwrl_stop(rl);</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">          7 :         fired = true;</span>
+<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">          7 : }</span></a>
+<span class="lineNum">      10 </span>                :            : 
+<span class="lineNum">      11 </span>                :<span class="lineCov">          7 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">          7 :         int count = 0;</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">          7 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">          7 :         gwrlsrc * src = gwrl_src_file_create(STDIN_FILENO,GWRL_RD,NULL,NULL);</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">          7 :         gwrlevt * evt = gwrl_evt_create(rl,src,&amp;event,NULL,STDIN_FILENO,GWRL_RD);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">          7 :         gwrlsrc * src2 = NULL;</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">          7 :         gwrl_src_add_safely(rl,src);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">          7 :         gwrl_post_evt_safely(rl,evt);</span>
+<span class="lineNum">      19 </span>                :            :         
+<span class="lineNum">      20 </span>                :            :         //this clears the internal wake mechanism, just for testing only
+<span class="lineNum">      21 </span>                :<span class="lineCov">          7 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      22 </span>                :            :         
+<span class="lineNum">      23 </span>                :            :         //run and assert stuff fired and was added.
+<span class="lineNum">      24 </span>                :<span class="lineCov">          7 :         gwrl_run(rl);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">          7 :         assert(fired == true);</span>
+<span class="lineNum">      26 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
+<span class="lineNum">      27 </span>                :            :         
+<span class="lineNum">      28 </span>                :            :         //add more queued data so it uses the internal queue freeing logic
+<span class="lineNum">      29 </span>                :<span class="lineCov">          7 :         src = gwrl_src_file_create(STDIN_FILENO,GWRL_RD,NULL,NULL);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">          7 :         evt = gwrl_evt_create(rl,src,&amp;event,NULL,STDIN_FILENO,GWRL_RD);</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">          7 :         gwrl_src_add_safely(rl,src);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">          7 :         gwrl_post_evt_safely(rl,evt);</span>
+<span class="lineNum">      33 </span>                :            :         
+<span class="lineNum">      34 </span>                :            :         //now free
+<span class="lineNum">      35 </span>                :<span class="lineCov">          7 :         gwrl_free(rl,&amp;src);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">          7 :         src2 = src;</span>
+<span class="lineNum">      37 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">         21 :         while(src2) {</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">         14 :                 count++;</span>
+<span class="lineNum">      39 </span>        [<span class="branchCov" title="Branch 0 was taken 14 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         14 :                 if(src2-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         14 :                         close(_gwrlsrcf(src)-&gt;fd);</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         14 :                 }</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         14 :                 src2 = src2-&gt;next;</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">         14 :         }</span>
+<span class="lineNum">      44 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 7 times"> + </span>]:<span class="lineCov">          7 :         assert(count == 2);</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">          7 :         gwrl_free(NULL,&amp;src);</span>
+<span class="lineNum">      46 </span>                :            : 
+<span class="lineNum">      47 </span>                :<span class="lineCov">          7 :         return 0;</span>
+<span class="lineNum">      48 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

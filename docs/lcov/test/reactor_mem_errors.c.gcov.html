@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - lcov1.info - test/reactor_mem_errors.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">test</a> - reactor_mem_errors.c<span style="font-size: 80%;"> (source / <a href="reactor_mem_errors.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov1.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntry">21</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-25</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : </a>
+<a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :<span class="lineCov">         10 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :            :         #ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+<span class="lineNum">       6 </span>                :<span class="lineCov">         10 :         gwrl * rl = NULL;</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         10 :         gwpr * pr = NULL;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         10 :         gwrlevt * evt = NULL;</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         10 :         gwrlsrc * src = NULL;</span>
+<span class="lineNum">      10 </span>                :            : 
+<span class="lineNum">      11 </span>                :<span class="lineCov">         10 :         asserts_var1 = gwrlbkd_init_fail;</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         10 :         rl = gwrl_create();</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         10 :         assert(rl == NULL);</span>
+<span class="lineNum">      14 </span>                :            :         
+<span class="lineNum">      15 </span>                :<span class="lineCov">         10 :         asserts_var1 = gwrl_evt_create_fail;</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         10 :         rl = gwrl_create();</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         10 :         evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
+<span class="lineNum">      18 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         assert(evt == NULL);</span>
+<span class="lineNum">      19 </span>                :            : 
+<span class="lineNum">      20 </span>                :<span class="lineCov">         10 :         asserts_var1 = gwrl_src_time_create_fail;</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         10 :         src = gwrl_src_time_create(100,false,0,false,NULL,NULL);</span>
+<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         assert(src == NULL);</span>
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :<span class="lineCov">         10 :         asserts_var1 = gwrl_src_file_create_fail;</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">         10 :         src = gwrl_src_file_create(0,GWRL_RD,NULL,NULL);</span>
+<span class="lineNum">      26 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :         assert(src == NULL);</span>
+<span class="lineNum">      27 </span>                :            : 
+<span class="lineNum">      28 </span>                :<span class="lineCov">         10 :         pr = gwpr_create(rl);</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">         10 :         gwrl_free(rl,NULL);</span>
+<span class="lineNum">      30 </span>                :            : 
+<span class="lineNum">      31 </span>                :            :         #endif
+<span class="lineNum">      32 </span>                :<span class="lineCov">         10 :         return 0;</span>
+<span class="lineNum">      33 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

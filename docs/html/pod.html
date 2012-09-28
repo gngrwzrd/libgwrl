@@ -199,6 +199,7 @@
 	</ul>
 
 	<li><a href="#worker_threads">WORKER THREADS</a></li>
+	<li><a href="#code_coverage">CODE COVERAGE</a></li>
 	<li><a href="#global_types">GLOBAL TYPES</a></li>
 	<ul>
 
@@ -1336,13 +1337,10 @@ to accept as many as it can.</p>
 <h2><a name="freeing_a_proactor">Freeing a Proactor</a></h2>
 <p>Freeing a proactor only frees the internal resources the proactor requires,
 it does not free the file input sources you added to it, or any of the reactor
-resources internally. It does however disable all file input sources that were
-added to the proactor specifically.</p>
-<p>Because the proactor uses a reactor internally, the file input sources are left untouched,
-but disabled with the reactor. Leaving
-it up to you to use gwrl_free to finish freeing the rest of the resources, and
-cleaning up the file input sources. See the &quot;Freeing a Reactor&quot; section
-described earlier.</p>
+resources internally.</p>
+<p>Freeing a proactor disables all file input sources that were added to with the
+proactor API's.</p>
+<p>To continue freeing and</p>
 <p>Free a proactor with:</p>
 <pre>
  void gwpr_free(gwpr * pr);</pre>
@@ -1647,6 +1645,11 @@ your worker threads.</p>
      gwpr_accept(pr,src);
      gwrl_run(rl);
  }</pre>
+<p>
+</p>
+<hr />
+<h1><a name="code_coverage">CODE COVERAGE</a></h1>
+<p>GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.</p>
 <p>
 </p>
 <hr />

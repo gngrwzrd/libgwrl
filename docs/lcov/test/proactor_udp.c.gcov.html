@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>LCOV - lcov1.info - test/proactor_udp.c</title>
+  <link rel="stylesheet" type="text/css" href="../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">test</a> - proactor_udp.c<span style="font-size: 80%;"> (source / <a href="proactor_udp.c.func.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">lcov1.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">27</td>
+            <td class="headerCovTableEntry">34</td>
+            <td class="headerCovTableEntryMed">79.4 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2012-09-26</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">5</td>
+            <td class="headerCovTableEntryLo">60.0 %</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td class="headerItem">Branches:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">           Branch data     Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>                :            : </a>
+<span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;
+<span class="lineNum">       3 </span>                :            : 
+<span class="lineNum">       4 </span>                :            : gwrl * rl = NULL;
+<span class="lineNum">       5 </span>                :            : gwpr * pr = NULL;
+<span class="lineNum">       6 </span>                :            : gwrlsrc_file * rdsrc = NULL;
+<span class="lineNum">       7 </span>                :            : gwrlsrc_file * wrsrc = NULL;
+<span class="lineNum">       8 </span>                :            : int rdcount = 0;
+<span class="lineNum">       9 </span>                :            : int sockets[2];
+<span class="lineNum">      10 </span>                :            : struct sockaddr_storage peer;
+<a name="11"><span class="lineNum">      11 </span>                :            : socklen_t peerlen = 0;</a>
+<span class="lineNum">      12 </span>                :            : 
+<span class="lineNum">      13 </span>                :<span class="lineCov">       2100 : void didrd(gwpr * pr, gwpr_io_info * info) {</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">       2100 :         rdcount++;</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">       2100 :         gwpr_buf_free(pr,info-&gt;buf);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">       2100 :         if(rdcount == 100) {</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         21 :                 gwrl_stop(rl);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         21 :         }</span>
+<a name="19"><span class="lineNum">      19 </span>                :<span class="lineCov">       2100 : }</span></a>
+<span class="lineNum">      20 </span>                :            : 
+<span class="lineNum">      21 </span>                :<span class="lineNoCov">          0 : void didwr(gwpr * pr, gwpr_io_info * info) {</span>
+<span class="lineNum">      22 </span>                :<span class="lineNoCov">          0 :         gwpr_buf_free(pr,info-&gt;buf);</span>
+<a name="23"><span class="lineNum">      23 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      24 </span>                :            : 
+<span class="lineNum">      25 </span>                :<span class="lineCov">       2121 : void write_data(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">       2121 :         gwprbuf * buf = gwpr_buf_get_with_data(pr,12,&quot;hello world&quot;,12);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">       2121 :         gwpr_sendto(pr,wrsrc,buf,&amp;peer,peerlen);</span>
+<a name="28"><span class="lineNum">      28 </span>                :<span class="lineCov">       2121 : }</span></a>
+<span class="lineNum">      29 </span>                :            : 
+<span class="lineNum">      30 </span>                :<span class="lineNoCov">          0 : void timeout(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      31 </span>                :<span class="lineNoCov">          0 :         assert(rdcount &gt; 0);</span>
+<span class="lineNum">      32 </span>                :<span class="lineNoCov">          0 :         gwrl_stop(rl);</span>
+<a name="33"><span class="lineNum">      33 </span>                :<span class="lineNoCov">          0 : }</span></a>
+<span class="lineNum">      34 </span>                :            : 
+<span class="lineNum">      35 </span>                :<span class="lineCov">         21 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         21 :         socketpair(AF_UNIX,SOCK_DGRAM,0,sockets);</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">         21 :         peerlen = sizeof(peer);</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">         21 :         getpeername(sockets[1],(struct sockaddr *)&amp;peer,&amp;peerlen);</span>
+<span class="lineNum">      39 </span>                :            : 
+<span class="lineNum">      40 </span>                :<span class="lineCov">         21 :         rl = gwrl_create();</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         21 :         pr = gwpr_create(rl);</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         21 :         rdsrc = gwpr_set_fd(pr,sockets[0],NULL);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">         21 :         wrsrc = gwpr_set_fd(pr,sockets[1],NULL);</span>
+<span class="lineNum">      44 </span>                :            : 
+<span class="lineNum">      45 </span>                :<span class="lineCov">         21 :         gwrl_set_interval(rl,0,&amp;write_data,NULL);</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">         21 :         gwrl_set_timeout(rl,10000,false,&amp;timeout,NULL);</span>
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :<span class="lineCov">         21 :         gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&amp;didrd);</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         21 :         gwpr_set_cb(pr,rdsrc,gwpr_did_write_cb_id,&amp;didwr);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         21 :         gwpr_recvfrom(pr,rdsrc,gwpr_buf_get(pr,128));</span>
+<span class="lineNum">      51 </span>                :            :         
+<span class="lineNum">      52 </span>                :<span class="lineCov">         21 :         gwrl_run(rl);</span>
+<span class="lineNum">      53 </span>                :            :         
+<span class="lineNum">      54 </span>                :<span class="lineCov">         21 :         assert(rdcount == 100);</span>
+<span class="lineNum">      55 </span>                :            : 
+<span class="lineNum">      56 </span>                :<span class="lineCov">         21 :         return 0;</span>
+<span class="lineNum">      57 </span>                :            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.9</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

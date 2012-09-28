@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_src.c</title>
+  <title>LCOV - lcov1.info - test/reactor_src.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">43</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,56 +72,56 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         22 :         gwrl * rl = NULL;</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">         22 :         gwrlsrc * src = NULL;</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">         22 :         gwrlsrc * src2 = NULL;</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         22 :         gwrlsrc * src3 = NULL;</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">          6 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">          6 :         gwrl * rl = NULL;</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">          6 :         gwrlsrc * src = NULL;</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">          6 :         gwrlsrc * src2 = NULL;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">          6 :         gwrlsrc * src3 = NULL;</span>
 <span class="lineNum">       9 </span>                :            :         
-<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         rl = gwrl_create();</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">          6 :         rl = gwrl_create();</span>
 <span class="lineNum">      11 </span>                :            :         
 <span class="lineNum">      12 </span>                :            :         //clear sources
-<span class="lineNum">      13 </span>                :<span class="lineCov">         22 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         22 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         22 :         gwrl_src_remove(rl,src);</span>
-<span class="lineNum">      18 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == NULL);</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      20 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         22 :         gwrl_src_del(rl,src,NULL,true);</span>
-<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == NULL);</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">         22 :         src = NULL;</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">          6 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">          6 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">          6 :         gwrl_src_remove(rl,src);</span>
+<span class="lineNum">      18 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == NULL);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      20 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">          6 :         gwrl_src_del(rl,src,NULL,true);</span>
+<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == NULL);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">          6 :         src = NULL;</span>
 <span class="lineNum">      24 </span>                :            :         
 <span class="lineNum">      25 </span>                :            :         //clear sources
-<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
-<span class="lineNum">      27 </span>                :<span class="lineCov">         22 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      28 </span>                :<span class="lineCov">         22 :         src2 = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src2);</span>
-<span class="lineNum">      31 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
-<span class="lineNum">      32 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src2);</span>
-<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src);</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         22 :         gwrl_src_remove(rl,src);</span>
-<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src2);</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src2);</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">         22 :         gwrl_src_remove(rl,src2);</span>
-<span class="lineNum">      39 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">          6 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">          6 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">          6 :         src2 = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src2);</span>
+<span class="lineNum">      31 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] != NULL);</span>
+<span class="lineNum">      32 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src2);</span>
+<span class="lineNum">      33 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">          6 :         gwrl_src_remove(rl,src);</span>
+<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src2);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src2);</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">          6 :         gwrl_src_remove(rl,src2);</span>
+<span class="lineNum">      39 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src);</span>
 <span class="lineNum">      40 </span>                :            :         
-<span class="lineNum">      41 </span>                :<span class="lineCov">         22 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">         22 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">         22 :         src2 = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">         22 :         src3 = gwrl_src_file_create(0,0,NULL,NULL);</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src);</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src2);</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">         22 :         gwrl_src_add(rl,src3);</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">         22 :         gwrl_src_remove(rl,src2);</span>
-<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src3);</span>
-<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src);</span>
-<span class="lineNum">      51 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next-&gt;next == NULL);</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">          6 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">          6 :         src = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">          6 :         src2 = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">          6 :         src3 = gwrl_src_file_create(0,0,NULL,NULL);</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src);</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src2);</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">          6 :         gwrl_src_add(rl,src3);</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">          6 :         gwrl_src_remove(rl,src2);</span>
+<span class="lineNum">      49 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE] == src3);</span>
+<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next == src);</span>
+<span class="lineNum">      51 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 6 times"> + </span>]:<span class="lineCov">          6 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_FILE]-&gt;next-&gt;next == NULL);</span>
 <span class="lineNum">      52 </span>                :            :         
-<span class="lineNum">      53 </span>                :<span class="lineCov">         22 :         return 0;</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          6 :         return 0;</span>
 <span class="lineNum">      54 </span>                :            : }
 </pre>
       </td>

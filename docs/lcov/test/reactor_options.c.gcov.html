@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_options.c</title>
+  <title>LCOV - lcov1.info - test/reactor_options.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">10</td>
-            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">17</td>
+            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -49,8 +49,8 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -72,30 +72,28 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :            : 
-<span class="lineNum">       6 </span>                :<span class="lineCov">         22 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       7 </span>                :            :         //assert(rl-&gt;gatherfncs == NULL);
-<span class="lineNum">       8 </span>                :            :         
-<span class="lineNum">       9 </span>                :<span class="lineCov">         22 :         gwrl_options opts = GWRL_DEFAULT_OPTIONS;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         opts.gwrl_gather_funcs_max = 10;</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">          8 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">          8 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       6 </span>                :            :         
+<span class="lineNum">       7 </span>                :<span class="lineCov">          8 :         gwrl_options opts = GWRL_DEFAULT_OPTIONS;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">          8 :         opts.gwrl_gather_funcs_max = 10;</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">          8 :         gwrl_set_options(rl,&amp;opts);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">          8 :         assert(rl-&gt;gatherfncs != NULL);</span>
 <span class="lineNum">      11 </span>                :            :         
-<span class="lineNum">      12 </span>                :<span class="lineCov">         22 :         gwrl_set_options(rl,&amp;opts);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         22 :         assert(rl-&gt;gatherfncs != NULL);</span>
-<span class="lineNum">      14 </span>                :            :         
-<span class="lineNum">      15 </span>                :            :         //assert(test_var1 == 1);
-<span class="lineNum">      16 </span>                :            :         //assert(test_var2 == 1);
-<span class="lineNum">      17 </span>                :            : 
-<span class="lineNum">      18 </span>                :<span class="lineCov">         22 :         opts.gwrl_gather_funcs_max = 20;</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         22 :         gwrl_set_options(rl,&amp;opts);</span>
-<span class="lineNum">      20 </span>                :            : 
-<span class="lineNum">      21 </span>                :            :         //assert(test_var3 == 1);
-<span class="lineNum">      22 </span>                :            :         //assert(test_var1 == 2);
-<span class="lineNum">      23 </span>                :            :         
-<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;gatherfncs != NULL);      </span>
-<span class="lineNum">      25 </span>                :            : 
-<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         return 0;</span>
-<span class="lineNum">      27 </span>                :            : }
+<span class="lineNum">      12 </span>                :<span class="lineCov">          8 :         opts.gwrl_gather_funcs_max = 20;</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">          8 :         gwrl_set_options(rl,&amp;opts);</span>
+<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :         assert(rl-&gt;gatherfncs != NULL);</span>
+<span class="lineNum">      15 </span>                :            : 
+<span class="lineNum">      16 </span>                :<span class="lineCov">          8 :         gwrl_options opts2 = GWRL_DEFAULT_OPTIONS;</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">          8 :         free(rl-&gt;gatherfncs);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">          8 :         rl-&gt;gatherfncs = NULL;</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">          8 :         rl-&gt;options.gwrl_gather_funcs_max = 0;</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">          8 :         opts2.gwrl_gather_funcs_max = 10;</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">          8 :         gwrl_set_options(rl,&amp;opts2);</span>
+<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 8 times"> + </span>]:<span class="lineCov">          8 :         assert(rl-&gt;gatherfncs != NULL);</span>
+<span class="lineNum">      23 </span>                :            : 
+<span class="lineNum">      24 </span>                :<span class="lineCov">          8 :         return 0;</span>
+<span class="lineNum">      25 </span>                :            : }
 </pre>
       </td>
     </tr>

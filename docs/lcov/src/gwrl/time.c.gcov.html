@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - src/gwrl/time.c</title>
+  <title>LCOV - lcov1.info - src/gwrl/time.c</title>
   <link rel="stylesheet" type="text/css" href="../../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">80</td>
+            <td class="headerCovTableEntry">83</td>
             <td class="headerCovTableEntry">89</td>
-            <td class="headerCovTableEntryMed">89.9 %</td>
+            <td class="headerCovTableEntryHi">93.3 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">13</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntry">17</td>
             <td class="headerCovTableEntry">22</td>
-            <td class="headerCovTableEntryLo">72.7 %</td>
+            <td class="headerCovTableEntryMed">77.3 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -76,11 +76,11 @@
 <span class="lineNum">       5 </span>                :            : extern &quot;C&quot; {
 <a name="6"><span class="lineNum">       6 </span>                :            : #endif</a>
 <span class="lineNum">       7 </span>                :            : 
-<span class="lineNum">       8 </span>                :<span class="lineCov">        386 : void gwtm_gettimeofday_timespec(struct timespec * ts) {</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">        386 :         struct timeval tv;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">        386 :         gettimeofday(&amp;tv,NULL);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">        386 :         gwtm_timeval_to_timespec(&amp;tv,ts);</span>
-<a name="12"><span class="lineNum">      12 </span>                :<span class="lineCov">        386 : }</span></a>
+<span class="lineNum">       8 </span>                :<span class="lineCov">        508 : void gwtm_gettimeofday_timespec(struct timespec * ts) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">        508 :         struct timeval tv;</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">        508 :         gettimeofday(&amp;tv,NULL);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">        508 :         gwtm_timeval_to_timespec(&amp;tv,ts);</span>
+<a name="12"><span class="lineNum">      12 </span>                :<span class="lineCov">        508 : }</span></a>
 <span class="lineNum">      13 </span>                :            : 
 <span class="lineNum">      14 </span>                :<span class="lineCov">          1 : void gwtm_ms_to_timeval(int64_t ms, struct timeval * tv) {</span>
 <span class="lineNum">      15 </span>                :<span class="lineCov">          1 :         tv-&gt;tv_sec = (long)(ms/1000);</span>
@@ -122,59 +122,59 @@
 <span class="lineNum">      51 </span>                :<span class="lineCov">          1 :         if(ms == 0) return;</span>
 <span class="lineNum">      52 </span>                :<span class="lineCov">          2 :         tv-&gt;tv_sec += (long)(ms/1000);</span>
 <span class="lineNum">      53 </span>                :<span class="lineCov">          2 :         tv-&gt;tv_usec += 1000*(ms%1000);</span>
-<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         while(tv-&gt;tv_usec &gt;= _MICROSECONDS_WC) {</span>
-<span class="lineNum">      55 </span>                :<span class="lineNoCov">          0 :                 tv-&gt;tv_sec += 1;</span>
-<span class="lineNum">      56 </span>                :<span class="lineNoCov">          0 :                 tv-&gt;tv_usec -= _MICROSECONDS_WC;</span>
-<span class="lineNum">      57 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">      54 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          3 :         while(tv-&gt;tv_usec &gt;= _MICROSECONDS_WC) {</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">          1 :                 tv-&gt;tv_sec += 1;</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">          1 :                 tv-&gt;tv_usec -= _MICROSECONDS_WC;</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">          1 :         }</span>
 <a name="58"><span class="lineNum">      58 </span>                :<span class="lineCov">          3 : }</span></a>
 <span class="lineNum">      59 </span>                :            : 
-<span class="lineNum">      60 </span>                :<span class="lineCov">        148 : void gwtm_add_ms_to_timespec(int64_t ms, struct timespec * ts) {</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">        102 :         if(ms == 0) return;</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">         46 :         ts-&gt;tv_sec += (long)(ms/1000);</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">         46 :         ts-&gt;tv_nsec += 1000000*(ms%1000);</span>
-<span class="lineNum">      64 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 46 times"> + </span>]:<span class="lineCov">         49 :         while(ts-&gt;tv_nsec &gt;= _NANOSECONDS_WC) {</span>
-<span class="lineNum">      65 </span>                :<span class="lineCov">          3 :                 ts-&gt;tv_sec += 1;</span>
-<span class="lineNum">      66 </span>                :<span class="lineCov">          3 :                 ts-&gt;tv_nsec -= _NANOSECONDS_WC;</span>
-<span class="lineNum">      67 </span>                :<span class="lineCov">          3 :         }</span>
-<a name="68"><span class="lineNum">      68 </span>                :<span class="lineCov">        148 : }</span></a>
+<span class="lineNum">      60 </span>                :<span class="lineCov">        297 : void gwtm_add_ms_to_timespec(int64_t ms, struct timespec * ts) {</span>
+<span class="lineNum">      61 </span>                :<span class="lineCov">        255 :         if(ms == 0) return;</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">         42 :         ts-&gt;tv_sec += (long)(ms/1000);</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">         42 :         ts-&gt;tv_nsec += 1000000*(ms%1000);</span>
+<span class="lineNum">      64 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchCov" title="Branch 1 was taken 42 times"> + </span>]:<span class="lineCov">         46 :         while(ts-&gt;tv_nsec &gt;= _NANOSECONDS_WC) {</span>
+<span class="lineNum">      65 </span>                :<span class="lineCov">          4 :                 ts-&gt;tv_sec += 1;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">          4 :                 ts-&gt;tv_nsec -= _NANOSECONDS_WC;</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">          4 :         }</span>
+<a name="68"><span class="lineNum">      68 </span>                :<span class="lineCov">        297 : }</span></a>
 <span class="lineNum">      69 </span>                :            : 
-<span class="lineNum">      70 </span>                :<span class="lineCov">        159 : struct timespec * gwtm_timespec_cmp(struct timespec * ts1, struct timespec * ts2) {</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">        125 :         if(ts1-&gt;tv_sec &lt; ts2-&gt;tv_sec) return ts1;</span>
-<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         34 :         if(ts1-&gt;tv_sec == ts2-&gt;tv_sec) {</span>
-<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 8 times"> + </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">         13 :                 if(ts1-&gt;tv_nsec &lt; ts2-&gt;tv_nsec) return ts1;</span>
-<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 5 times"> + </span>]:<span class="lineCov">          5 :                 else if(ts1-&gt;tv_nsec == ts2-&gt;tv_nsec) return NULL;</span>
-<span class="lineNum">      75 </span>                :<span class="lineCov">          5 :         }</span>
-<span class="lineNum">      76 </span>                :<span class="lineCov">         26 :         return ts2;</span>
-<a name="77"><span class="lineNum">      77 </span>                :<span class="lineCov">        159 : }</span></a>
+<span class="lineNum">      70 </span>                :<span class="lineCov">        140 : struct timespec * gwtm_timespec_cmp(struct timespec * ts1, struct timespec * ts2) {</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">        107 :         if(ts1-&gt;tv_sec &lt; ts2-&gt;tv_sec) return ts1;</span>
+<span class="lineNum">      72 </span>        [<span class="branchCov" title="Branch 0 was taken 33 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         33 :         if(ts1-&gt;tv_sec == ts2-&gt;tv_sec) {</span>
+<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 23 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         33 :                 if(ts1-&gt;tv_nsec &lt; ts2-&gt;tv_nsec) return ts1;</span>
+<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">         10 :                 else if(ts1-&gt;tv_nsec == ts2-&gt;tv_nsec) return NULL;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">         10 :         }</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">         10 :         return ts2;</span>
+<a name="77"><span class="lineNum">      77 </span>                :<span class="lineCov">        140 : }</span></a>
 <span class="lineNum">      78 </span>                :            : 
-<span class="lineNum">      79 </span>                :<span class="lineCov">        158 : bool gwtm_timespec_copy_if_smaller(struct timespec * source, struct timespec * update) {</span>
-<span class="lineNum">      80 </span>                :<span class="lineCov">        158 :         struct timespec * smaller = gwtm_timespec_cmp(source,update);</span>
-<span class="lineNum">      81 </span>                :<span class="lineCov">        158 :         if(smaller == source) {</span>
-<span class="lineNum">      82 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 132 times"> + </span>]:<span class="lineCov">        132 :                 memcpy(update,smaller,sizeof(struct timespec));</span>
-<span class="lineNum">      83 </span>                :<span class="lineCov">        132 :                 return true;</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">        139 : bool gwtm_timespec_copy_if_smaller(struct timespec * source, struct timespec * update) {</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">        139 :         struct timespec * smaller = gwtm_timespec_cmp(source,update);</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">        139 :         if(smaller == source) {</span>
+<span class="lineNum">      82 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 129 times"> + </span>]:<span class="lineCov">        129 :                 memcpy(update,smaller,sizeof(struct timespec));</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">        129 :                 return true;</span>
 <span class="lineNum">      84 </span>                :            :         }
-<span class="lineNum">      85 </span>                :<span class="lineCov">         26 :         return false;</span>
-<a name="86"><span class="lineNum">      86 </span>                :<span class="lineCov">        158 : }</span></a>
+<span class="lineNum">      85 </span>                :<span class="lineCov">         10 :         return false;</span>
+<a name="86"><span class="lineNum">      86 </span>                :<span class="lineCov">        139 : }</span></a>
 <span class="lineNum">      87 </span>                :            : 
-<span class="lineNum">      88 </span>                :<span class="lineCov">        467 : void gwtm_timespec_sub_into(struct timespec * ts1, struct timespec * ts2, struct timespec * into) {</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">        467 :         into-&gt;tv_sec = ts1-&gt;tv_sec - ts2-&gt;tv_sec;</span>
-<span class="lineNum">      90 </span>                :<span class="lineCov">        467 :         into-&gt;tv_nsec = ts1-&gt;tv_nsec - ts2-&gt;tv_nsec;</span>
-<span class="lineNum">      91 </span>        [<span class="branchCov" title="Branch 0 was taken 398 times"> + </span><span class="branchCov" title="Branch 1 was taken 467 times"> + </span>]:<span class="lineCov">        865 :         while(into-&gt;tv_nsec &lt; 0) {</span>
-<span class="lineNum">      92 </span>                :<span class="lineCov">        398 :                 into-&gt;tv_sec -= 1;</span>
-<span class="lineNum">      93 </span>                :<span class="lineCov">        398 :                 into-&gt;tv_nsec += _NANOSECONDS_WC;</span>
-<span class="lineNum">      94 </span>                :<span class="lineCov">        398 :         }</span>
-<a name="95"><span class="lineNum">      95 </span>                :<span class="lineCov">        467 : }</span></a>
+<span class="lineNum">      88 </span>                :<span class="lineCov">        738 : void gwtm_timespec_sub_into(struct timespec * ts1, struct timespec * ts2, struct timespec * into) {</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">        738 :         into-&gt;tv_sec = ts1-&gt;tv_sec - ts2-&gt;tv_sec;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">        738 :         into-&gt;tv_nsec = ts1-&gt;tv_nsec - ts2-&gt;tv_nsec;</span>
+<span class="lineNum">      91 </span>        [<span class="branchCov" title="Branch 0 was taken 664 times"> + </span><span class="branchCov" title="Branch 1 was taken 738 times"> + </span>]:<span class="lineCov">       1402 :         while(into-&gt;tv_nsec &lt; 0) {</span>
+<span class="lineNum">      92 </span>                :<span class="lineCov">        664 :                 into-&gt;tv_sec -= 1;</span>
+<span class="lineNum">      93 </span>                :<span class="lineCov">        664 :                 into-&gt;tv_nsec += _NANOSECONDS_WC;</span>
+<span class="lineNum">      94 </span>                :<span class="lineCov">        664 :         }</span>
+<a name="95"><span class="lineNum">      95 </span>                :<span class="lineCov">        738 : }</span></a>
 <span class="lineNum">      96 </span>                :            : 
-<span class="lineNum">      97 </span>                :<span class="lineCov">        349 : bool gwtm_timespec_is_expired(struct timespec * ts1) {</span>
-<span class="lineNum">      98 </span>                :<span class="lineCov">        144 :         if(ts1-&gt;tv_sec &lt; 0) return true;</span>
-<span class="lineNum">      99 </span>[<span class="branchCov" title="Branch 0 was taken 53 times"> + </span><span class="branchCov" title="Branch 1 was taken 152 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 53 times"> + </span>]:<span class="lineCov">        205 :         if(ts1-&gt;tv_sec &lt;= 0 &amp;&amp; ts1-&gt;tv_nsec &lt;= 0) return true;</span>
-<span class="lineNum">     100 </span>                :<span class="lineCov">        205 :         return false;</span>
-<a name="101"><span class="lineNum">     101 </span>                :<span class="lineCov">        349 : }</span></a>
+<span class="lineNum">      97 </span>                :<span class="lineCov">        471 : bool gwtm_timespec_is_expired(struct timespec * ts1) {</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">        290 :         if(ts1-&gt;tv_sec &lt; 0) return true;</span>
+<span class="lineNum">      99 </span>[<span class="branchCov" title="Branch 0 was taken 74 times"> + </span><span class="branchCov" title="Branch 1 was taken 107 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 72 times"> + </span>]:<span class="lineCov">        181 :         if(ts1-&gt;tv_sec &lt;= 0 &amp;&amp; ts1-&gt;tv_nsec &lt;= 0) return true;</span>
+<span class="lineNum">     100 </span>                :<span class="lineCov">        179 :         return false;</span>
+<a name="101"><span class="lineNum">     101 </span>                :<span class="lineCov">        471 : }</span></a>
 <span class="lineNum">     102 </span>                :            : 
-<span class="lineNum">     103 </span>                :<span class="lineCov">        387 : void gwtm_timeval_to_timespec(struct timeval * tv, struct timespec * ts) {</span>
-<span class="lineNum">     104 </span>                :<span class="lineCov">        387 :         ts-&gt;tv_sec = tv-&gt;tv_sec;</span>
-<span class="lineNum">     105 </span>                :<span class="lineCov">        387 :         ts-&gt;tv_nsec = ((int64_t)tv-&gt;tv_usec)*1000;</span>
-<a name="106"><span class="lineNum">     106 </span>                :<span class="lineCov">        387 : }</span></a>
+<span class="lineNum">     103 </span>                :<span class="lineCov">        509 : void gwtm_timeval_to_timespec(struct timeval * tv, struct timespec * ts) {</span>
+<span class="lineNum">     104 </span>                :<span class="lineCov">        509 :         ts-&gt;tv_sec = tv-&gt;tv_sec;</span>
+<span class="lineNum">     105 </span>                :<span class="lineCov">        509 :         ts-&gt;tv_nsec = ((int64_t)tv-&gt;tv_usec)*1000;</span>
+<a name="106"><span class="lineNum">     106 </span>                :<span class="lineCov">        509 : }</span></a>
 <span class="lineNum">     107 </span>                :            : 
 <span class="lineNum">     108 </span>                :<span class="lineCov">          1 : void gwtm_timespec_to_timeval(struct timespec * ts, struct timeval * tv) {</span>
 <span class="lineNum">     109 </span>                :<span class="lineCov">          1 :         tv-&gt;tv_sec = ts-&gt;tv_sec;</span>

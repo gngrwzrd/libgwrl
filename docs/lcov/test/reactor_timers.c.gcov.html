@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_timers.c</title>
+  <title>LCOV - lcov1.info - test/reactor_timers.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,16 +28,16 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">38</td>
-            <td class="headerCovTableEntry">38</td>
+            <td class="headerCovTableEntry">43</td>
+            <td class="headerCovTableEntry">43</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">4</td>
+            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -73,65 +73,79 @@
 <span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :            : gwrl * rl1 = NULL;
-<a name="5"><span class="lineNum">       5 </span>                :            : gwrlsrc * tsrc1 = NULL;</a>
-<span class="lineNum">       6 </span>                :            : 
-<span class="lineNum">       7 </span>                :<span class="lineCov">         12 : void functionCall(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         12 :         printf(&quot;&gt; function call!\n&quot;);</span>
-<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">         12 : }</span></a>
-<span class="lineNum">      10 </span>                :            : 
-<span class="lineNum">      11 </span>                :<span class="lineCov">          3 : void delayedFunctionCall(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">          3 :         printf(&quot;&gt; delayed function call!\n&quot;);</span>
-<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">          3 : }</span></a>
-<span class="lineNum">      14 </span>                :            : 
-<span class="lineNum">      15 </span>                :<span class="lineCov">          3 : void futureTimeout(gwrl *rl, gwrlevt *evt) {</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">          3 :         printf(&quot;fiture timeout!\n&quot;);</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">          3 :         gwrl_stop(rl);</span>
-<a name="18"><span class="lineNum">      18 </span>                :<span class="lineCov">          3 : }</span></a>
-<span class="lineNum">      19 </span>                :            : 
-<span class="lineNum">      20 </span>                :<span class="lineCov">         21 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         21 :         printf(&quot;&gt; timeout1\n&quot;);</span>
-<span class="lineNum">      22 </span>                :            :         //gwrl_post_function(rl,&amp;functionCall,NULL);
-<span class="lineNum">      23 </span>                :            :         //if(!gwrlsrc_enabled(tsrc1)) {
-<span class="lineNum">      24 </span>                :            :                 //gwrlsrc_enable(rl,tsrc1);
-<span class="lineNum">      25 </span>                :            :         //}
-<a name="26"><span class="lineNum">      26 </span>                :<span class="lineCov">         21 : }</span></a>
+<span class="lineNum">       5 </span>                :            : gwrlsrc * tsrc1 = NULL;
+<span class="lineNum">       6 </span>                :            : bool future_timeout = false;
+<span class="lineNum">       7 </span>                :            : bool timeout = false;
+<span class="lineNum">       8 </span>                :            : bool interval = false;
+<span class="lineNum">       9 </span>                :            : bool delayed = false;
+<a name="10"><span class="lineNum">      10 </span>                :            : bool funccall = false;</a>
+<span class="lineNum">      11 </span>                :            : 
+<span class="lineNum">      12 </span>                :<span class="lineCov">         12 : void functionCall(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      13 </span>                :            :         //printf(&quot;&gt; function call!\n&quot;);
+<span class="lineNum">      14 </span>                :<span class="lineCov">         12 :         funccall = true;</span>
+<a name="15"><span class="lineNum">      15 </span>                :<span class="lineCov">         12 : }</span></a>
+<span class="lineNum">      16 </span>                :            : 
+<span class="lineNum">      17 </span>                :<span class="lineCov">          3 : void delayedFunctionCall(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      18 </span>                :            :         //printf(&quot;&gt; delayed function call!\n&quot;);
+<span class="lineNum">      19 </span>                :<span class="lineCov">          3 :         delayed = true;</span>
+<a name="20"><span class="lineNum">      20 </span>                :<span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      21 </span>                :            : 
+<span class="lineNum">      22 </span>                :<span class="lineCov">          3 : void futureTimeout(gwrl *rl, gwrlevt *evt) {</span>
+<span class="lineNum">      23 </span>                :            :         //printf(&quot;fiture timeout!\n&quot;);
+<span class="lineNum">      24 </span>                :<span class="lineCov">          3 :         gwrl_stop(rl);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">          3 :         future_timeout = true;</span>
+<a name="26"><span class="lineNum">      26 </span>                :<span class="lineCov">          3 : }</span></a>
 <span class="lineNum">      27 </span>                :            : 
-<span class="lineNum">      28 </span>                :<span class="lineCov">          9 : void timeout2(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">          9 :         printf(&quot;&gt; timeout2\n&quot;);</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">          9 :         gwrl_set_timeout(rl1,3000,false,&amp;timeout2,NULL);</span>
-<a name="31"><span class="lineNum">      31 </span>                :<span class="lineCov">          9 : }</span></a>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         12 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">         12 :         interval = true;</span>
+<span class="lineNum">      30 </span>                :            :         //printf(&quot;&gt; timeout1\n&quot;);
+<a name="31"><span class="lineNum">      31 </span>                :<span class="lineCov">         12 : }</span></a>
 <span class="lineNum">      32 </span>                :            : 
-<span class="lineNum">      33 </span>                :<span class="lineCov">          3 : void timeout3(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">          3 :         printf(&quot;&gt; timeout3\n&quot;);</span>
-<a name="35"><span class="lineNum">      35 </span>                :<span class="lineCov">          3 : }</span></a>
-<span class="lineNum">      36 </span>                :            : 
-<span class="lineNum">      37 </span>                :<span class="lineCov">          3 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">          3 :         struct timeval tv = {0};</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">          3 :         int64_t ms = 0;</span>
-<span class="lineNum">      40 </span>                :            :         
-<span class="lineNum">      41 </span>                :<span class="lineCov">          3 :         rl1 = gwrl_create();</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
-<span class="lineNum">      46 </span>                :<span class="lineCov">          3 :         gwrl_set_timeout(rl1,2000,false,&amp;delayedFunctionCall,NULL);</span>
-<span class="lineNum">      47 </span>                :<span class="lineCov">          3 :         gwrl_set_interval(rl1,1258,&amp;timeout1,NULL);</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">          3 :         gwrl_set_timeout(rl1,3000,false,&amp;timeout2,NULL);</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">          3 :         tsrc1 = gwrl_set_timeout(rl1,1000,true,&amp;timeout3,NULL);</span>
-<span class="lineNum">      50 </span>                :            :         
-<span class="lineNum">      51 </span>                :<span class="lineCov">          3 :         gettimeofday(&amp;tv,NULL);</span>
-<span class="lineNum">      52 </span>                :            :         //printf(&quot;now: %ld.%ld\n&quot;,tv.tv_sec,tv.tv_usec);
-<span class="lineNum">      53 </span>                :            : 
-<span class="lineNum">      54 </span>                :<span class="lineCov">          3 :         gwtm_add_ms_to_timeval(10000,&amp;tv);</span>
-<span class="lineNum">      55 </span>                :            :         //printf(&quot;future time: %ld.%ld\n&quot;,tv.tv_sec,tv.tv_usec);
-<span class="lineNum">      56 </span>                :            :         
-<span class="lineNum">      57 </span>                :<span class="lineCov">          3 :         gwtm_timeval_to_ms(&amp;tv,&amp;ms);</span>
-<span class="lineNum">      58 </span>                :            :         //printf(&quot;future ms timeout: %lld\n&quot;,ms);
-<span class="lineNum">      59 </span>                :            :         
-<span class="lineNum">      60 </span>                :<span class="lineCov">          3 :         gwrl_set_date_timeout(rl1,ms,&amp;futureTimeout,NULL);</span>
-<span class="lineNum">      61 </span>                :<span class="lineCov">          3 :         gwrl_run(rl1);</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">          3 :         return 0;</span>
-<span class="lineNum">      63 </span>                :            : }
+<span class="lineNum">      33 </span>                :<span class="lineCov">          3 : void timeout2(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      34 </span>                :            :         //printf(&quot;&gt; timeout2\n&quot;);
+<span class="lineNum">      35 </span>                :<span class="lineCov">          3 :         gwrl_set_timeout(rl1,3000,false,&amp;timeout2,NULL);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">          3 :         timeout = true;</span>
+<a name="37"><span class="lineNum">      37 </span>                :<span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      38 </span>                :            : 
+<span class="lineNum">      39 </span>                :<span class="lineCov">          3 : void timeout3(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      40 </span>                :            :         //printf(&quot;&gt; timeout3\n&quot;);
+<span class="lineNum">      41 </span>                :<span class="lineCov">          3 :         timeout = true;</span>
+<a name="42"><span class="lineNum">      42 </span>                :<span class="lineCov">          3 : }</span></a>
+<span class="lineNum">      43 </span>                :            : 
+<span class="lineNum">      44 </span>                :<span class="lineCov">          3 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">          3 :         struct timeval tv = {0};</span>
+<span class="lineNum">      46 </span>                :<span class="lineCov">          3 :         int64_t ms = 0;</span>
+<span class="lineNum">      47 </span>                :            :         
+<span class="lineNum">      48 </span>                :<span class="lineCov">          3 :         rl1 = gwrl_create();</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">          3 :         gwrl_post_function(rl1,&amp;functionCall,NULL);</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">          3 :         gwrl_set_timeout(rl1,200,false,&amp;delayedFunctionCall,NULL);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">          3 :         gwrl_set_interval(rl1,125,&amp;timeout1,NULL);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">          3 :         gwrl_set_timeout(rl1,300,false,&amp;timeout2,NULL);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">          3 :         tsrc1 = gwrl_set_timeout(rl1,100,true,&amp;timeout3,NULL);</span>
+<span class="lineNum">      57 </span>                :            :         
+<span class="lineNum">      58 </span>                :<span class="lineCov">          3 :         gettimeofday(&amp;tv,NULL);</span>
+<span class="lineNum">      59 </span>                :            :         //printf(&quot;now: %ld.%ld\n&quot;,tv.tv_sec,tv.tv_usec);
+<span class="lineNum">      60 </span>                :            : 
+<span class="lineNum">      61 </span>                :<span class="lineCov">          3 :         gwtm_add_ms_to_timeval(600,&amp;tv);</span>
+<span class="lineNum">      62 </span>                :            :         //printf(&quot;future time: %ld.%ld\n&quot;,tv.tv_sec,tv.tv_usec);
+<span class="lineNum">      63 </span>                :            :         
+<span class="lineNum">      64 </span>                :<span class="lineCov">          3 :         gwtm_timeval_to_ms(&amp;tv,&amp;ms);</span>
+<span class="lineNum">      65 </span>                :            :         //printf(&quot;future ms timeout: %lld\n&quot;,ms);
+<span class="lineNum">      66 </span>                :            :         
+<span class="lineNum">      67 </span>                :<span class="lineCov">          3 :         gwrl_set_date_timeout(rl1,ms,&amp;futureTimeout,NULL);</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">          3 :         gwrl_run(rl1);</span>
+<span class="lineNum">      69 </span>                :            : 
+<span class="lineNum">      70 </span>                :<span class="lineCov">          3 :         assert(timeout);</span>
+<span class="lineNum">      71 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :         assert(interval);</span>
+<span class="lineNum">      72 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :         assert(future_timeout);</span>
+<span class="lineNum">      73 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :         assert(funccall);</span>
+<span class="lineNum">      74 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          3 :         assert(delayed);</span>
+<span class="lineNum">      75 </span>                :            : 
+<span class="lineNum">      76 </span>                :<span class="lineCov">          3 :         return 0;</span>
+<span class="lineNum">      77 </span>                :            : }
 </pre>
       </td>
     </tr>

@@ -1517,6 +1517,11 @@ Example:
      gwrl_run(rl);
  }
 
+=head1 CODE COVERAGE
+
+GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.
+
+
 =head1 GLOBAL TYPES
 
 GWRL defines a couple types that you might find useful.

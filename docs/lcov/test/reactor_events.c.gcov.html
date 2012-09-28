@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_events.c</title>
+  <title>LCOV - lcov1.info - test/reactor_events.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">29</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,41 +72,41 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         22 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">         22 :         gwrlevt * evt = NULL;</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">         22 :         gwrlevt * evt_tmp = NULL;</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         22 :         int i = 0;</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         15 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         15 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         15 :         gwrlevt * evt = NULL;</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         15 :         gwrlevt * evt_tmp = NULL;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         15 :         int i = 0;</span>
 <span class="lineNum">       9 </span>                :            :         
-<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         22 :         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         22 :         assert(rl-&gt;events != NULL);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         22 :         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;events-&gt;next != NULL);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         15 :         evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         15 :         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         15 :         assert(rl-&gt;events != NULL);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         15 :         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;events-&gt;next != NULL);</span>
 <span class="lineNum">      15 </span>                :            :         
-<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         rl-&gt;events = NULL;</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         22 :         gwrl_evt_free(rl,evt);</span>
-<span class="lineNum">      18 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;cevents != NULL);</span>
-<span class="lineNum">      19 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;ncevents == 1);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         15 :         rl-&gt;events = NULL;</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         15 :         gwrl_evt_free(rl,evt);</span>
+<span class="lineNum">      18 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;cevents != NULL);</span>
+<span class="lineNum">      19 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;ncevents == 1);</span>
 <span class="lineNum">      20 </span>                :            :         
-<span class="lineNum">      21 </span>                :<span class="lineCov">         22 :         evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         22 :         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;events != NULL);</span>
-<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;cevents == NULL);</span>
-<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;ncevents == 0);</span>
-<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         gwrl_evt_free(rl,evt);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         15 :         evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         15 :         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;events != NULL);</span>
+<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;cevents == NULL);</span>
+<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;ncevents == 0);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         15 :         gwrl_evt_free(rl,evt);</span>
 <span class="lineNum">      27 </span>                :            :         
-<span class="lineNum">      28 </span>        [<span class="branchCov" title="Branch 0 was taken 5016 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">       5038 :         while(i &lt; GWRL_EVENT_CACHE_MAX + 100) {</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">       5016 :                 i++;</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">       5016 :                 evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
-<span class="lineNum">      31 </span>        [<span class="branchCov" title="Branch 0 was taken 4994 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">       5016 :                 if(evt_tmp) evt-&gt;next = evt_tmp;</span>
-<span class="lineNum">      32 </span>                :<span class="lineCov">       5016 :                 evt_tmp = evt;</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">       5016 :         }</span>
+<span class="lineNum">      28 </span>        [<span class="branchCov" title="Branch 0 was taken 3420 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">       3435 :         while(i &lt; GWRL_EVENT_CACHE_MAX + 100) {</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">       3420 :                 i++;</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">       3420 :                 evt = gwrl_evt_create(rl,NULL,NULL,NULL,0,0);</span>
+<span class="lineNum">      31 </span>        [<span class="branchCov" title="Branch 0 was taken 3405 times"> + </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">       3420 :                 if(evt_tmp) evt-&gt;next = evt_tmp;</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">       3420 :                 evt_tmp = evt;</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">       3420 :         }</span>
 <span class="lineNum">      34 </span>                :            :         
-<span class="lineNum">      35 </span>                :<span class="lineCov">         22 :         gwrl_evt_free_list(rl,evt);</span>
-<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>]:<span class="lineCov">         22 :         assert(rl-&gt;ncevents == GWRL_EVENT_CACHE_MAX);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         15 :         gwrl_evt_free_list(rl,evt);</span>
+<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 15 times"> + </span>]:<span class="lineCov">         15 :         assert(rl-&gt;ncevents == GWRL_EVENT_CACHE_MAX);</span>
 <span class="lineNum">      37 </span>                :            :         
-<span class="lineNum">      38 </span>                :<span class="lineCov">         22 :         return 0;</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">         15 :         return 0;</span>
 <span class="lineNum">      39 </span>                :            : }
 </pre>
       </td>

@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_wake_pipe.c</title>
+  <title>LCOV - lcov1.info - test/reactor_wake_pipe.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">18</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -77,28 +77,28 @@
 <span class="lineNum">       6 </span>                :            : pthread_t th1;
 <a name="7"><span class="lineNum">       7 </span>                :            : bool did_timeout;</a>
 <span class="lineNum">       8 </span>                :            : 
-<span class="lineNum">       9 </span>                :<span class="lineCov">         22 : void timeout(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         did_timeout = true;</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         22 :         gwrl_stop(rl);</span>
-<a name="12"><span class="lineNum">      12 </span>                :<span class="lineCov">         22 : }</span></a>
+<span class="lineNum">       9 </span>                :<span class="lineCov">          2 : void timeout(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">          2 :         did_timeout = true;</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">          2 :         gwrl_stop(rl);</span>
+<a name="12"><span class="lineNum">      12 </span>                :<span class="lineCov">          2 : }</span></a>
 <span class="lineNum">      13 </span>                :            : 
-<span class="lineNum">      14 </span>                :<span class="lineCov">         22 : void * threadMain(void * arg) {</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         22 :         sleep(1);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         gwrl_post_function_safely(rl,&amp;timeout,NULL);</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         22 :         return NULL;</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">          2 : void * threadMain(void * arg) {</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">          2 :         sleep(1);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">          2 :         gwrl_post_function_safely(rl,&amp;timeout,NULL);</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">          2 :         return NULL;</span>
 <a name="18"><span class="lineNum">      18 </span>                :            : }</a>
 <span class="lineNum">      19 </span>                :            : 
-<span class="lineNum">      20 </span>                :<span class="lineCov">         22 : void start_thread(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         22 :         pthread_create(&amp;th1,NULL,&amp;threadMain,NULL);</span>
-<a name="22"><span class="lineNum">      22 </span>                :<span class="lineCov">         22 : }</span></a>
+<span class="lineNum">      20 </span>                :<span class="lineCov">          2 : void start_thread(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">          2 :         pthread_create(&amp;th1,NULL,&amp;threadMain,NULL);</span>
+<a name="22"><span class="lineNum">      22 </span>                :<span class="lineCov">          2 : }</span></a>
 <span class="lineNum">      23 </span>                :            : 
-<span class="lineNum">      24 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      25 </span>                :<span class="lineCov">         22 :         rl = gwrl_create();</span>
-<span class="lineNum">      26 </span>                :<span class="lineCov">         22 :         gwrl_post_function(rl,&amp;start_thread,NULL);</span>
-<span class="lineNum">      27 </span>                :<span class="lineCov">         22 :         gwrl_run(rl);</span>
-<span class="lineNum">      28 </span>                :<span class="lineCov">         22 :         pthread_join(th1,NULL);</span>
-<span class="lineNum">      29 </span>                :<span class="lineCov">         22 :         assert(did_timeout);</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">         22 :         return 0;</span>
+<span class="lineNum">      24 </span>                :<span class="lineCov">          2 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">          2 :         rl = gwrl_create();</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">          2 :         gwrl_post_function(rl,&amp;start_thread,NULL);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">          2 :         gwrl_run(rl);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">          2 :         pthread_join(th1,NULL);</span>
+<span class="lineNum">      29 </span>                :<span class="lineCov">          2 :         assert(did_timeout);</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">          2 :         return 0;</span>
 <span class="lineNum">      31 </span>                :            : }
 </pre>
       </td>

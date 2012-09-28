@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - all.info - test/reactor_timeout_rearm.c</title>
+  <title>LCOV - lcov1.info - test/reactor_timeout_rearm.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -28,7 +28,7 @@
           </tr>
           <tr>
             <td class="headerItem">Test:</td>
-            <td class="headerValue">all.info</td>
+            <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
             <td class="headerCovTableEntry">13</td>
@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-23</td>
+            <td class="headerValue">2012-09-26</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -74,21 +74,21 @@
 <span class="lineNum">       3 </span>                :            : 
 <a name="4"><span class="lineNum">       4 </span>                :            : int count = 0;</a>
 <span class="lineNum">       5 </span>                :            : 
-<span class="lineNum">       6 </span>                :<span class="lineCov">        220 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">        220 :         count++;</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">        220 :         if(count == 10) {</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         22 :                 gwrl_stop(rl);</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         22 :         } else {</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">        198 :                 gwrl_src_enable(rl,evt-&gt;src);</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         50 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         50 :         count++;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         50 :         if(count == 10) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">          5 :                 gwrl_stop(rl);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">          5 :         } else {</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         45 :                 gwrl_src_enable(rl,evt-&gt;src);</span>
 <span class="lineNum">      12 </span>                :            :         }
-<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">        220 : }</span></a>
+<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">         50 : }</span></a>
 <span class="lineNum">      14 </span>                :            : 
-<span class="lineNum">      15 </span>                :<span class="lineCov">         22 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         22 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         22 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         22 :         gwrl_run(rl);</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         22 :         assert(count == 10);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         22 :         return 0;</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">          5 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">          5 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">          5 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">          5 :         gwrl_run(rl);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">          5 :         assert(count == 10);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">          5 :         return 0;</span>
 <span class="lineNum">      21 </span>                :            : }
 </pre>
       </td>
