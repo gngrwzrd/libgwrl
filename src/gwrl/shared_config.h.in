@@ -109,6 +109,7 @@
 #cmakedefine gwrl_mem_free(mm) (@gwrl_mem_free@)
 
 //coverage
+#cmakedefine GWRL_HIDE_FROM_COVERAGE
 #cmakedefine GWRL_COVERAGE_INTERNAL_ASSERT_VARS
 
 //errors
