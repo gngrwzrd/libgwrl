@@ -21,26 +21,23 @@ extern "C" {
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_kqueue * kbkd = _gwrlbkdk(gwrl_mem_calloc(1,sizeof(gwrlbkd_kqueue)));
 	
-	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-		if(asserts_var1 == gwrlbkd_init_fail) {
-			free(kbkd);
-			kbkd = NULL;
-		}
-	#endif
-	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!kbkd) {
-		#ifndef GWRL_HIDE_ERRORS
-			gwerr("(3el0L) calloc error");
-		#endif
+		gwerr("(3el0L) calloc error");
 		return NULL;
 	}
+	#endif
 
 	kbkd->kq = kqueue();
+	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(kbkd->kq < 0) {
 		gwerr("(1LKdoL) kqueue error");
 		free(kbkd);
 		return NULL;
 	}
+	#endif
+
 	kbkd->kevents = gwrl_mem_calloc(1,sizeof(struct kevent)*GWRL_KQUEUE_KEVENT_COUNT);
 	kbkd->maxkevents = GWRL_KQUEUE_KEVENT_COUNT;
 	rl->options.gwrl_kqueue_kevent_count = GWRL_KQUEUE_KEVENT_COUNT;
@@ -53,10 +50,14 @@ void gwrl_bkd_set_options(gwrl * rl,gwrl_options * opts) {
 		kbkd->maxkevents = opts->gwrl_kqueue_kevent_count;
 	}
 	void * tmp = gwrl_mem_realloc(kbkd->kevents,sizeof(struct kevent) * kbkd->maxkevents);
+	
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!tmp) {
 		gwerr("(54oKD0) realloc error");
 		tmp = gwrl_mem_realloc(kbkd->kevents,sizeof(struct kevent) * kbkd->maxkevents);
 	}
+	#endif
+	
 	kbkd->kevents = (struct kevent *)tmp;
 }
 
@@ -79,31 +80,31 @@ void gwrl_bkd_kevent(gwrl * rl, gwrlsrc * src, int kflags, int kfilter) {
 	ke.flags = kflags;
 	ke.filter = kfilter;
 	res = kevent(kbkd->kq,&ke,1,NULL,0,&ts);
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(res < 0 && errno != EBADF) {
 		gwprintsyserr("(9dlkF) kevent error",errno);
 	}
+	#endif
 }
 
 void gwrl_src_file_update_flags(gwrl * rl, gwrlsrc * src, gwrlsrc_flags_t flags) {
-	
-	//enable read
 	if(flisset(flags,GWRL_RD)) {
+		//enable read
 		flset(flags,GWRL_ENABLED);
 		gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_READ);
-
-	//disable read
 	} else if(flisset(src->flags,GWRL_RD) && !flisset(flags,GWRL_RD)) {
+		//disable read
 		gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_READ);
 	}
 	
-	//enable write
 	if(flisset(flags,GWRL_WR)) {
+		//enable write
 		flset(flags,GWRL_ENABLED);
 		gwrl_bkd_kevent(rl,src,EV_ADD|EV_ENABLE,EVFILT_WRITE);
 	}
 	
-	//disable write
 	else if(flisset(src->flags,GWRL_WR) && !flisset(flags,GWRL_WR)) {
+		//disable write
 		gwrl_bkd_kevent(rl,src,EV_ADD|EV_DISABLE,EVFILT_WRITE);
 	}
 	
