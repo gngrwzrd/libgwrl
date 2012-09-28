@@ -23,18 +23,12 @@ extern "C" {
 
 gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_poll * pbkd = _gwrlbkdp(gwrl_mem_calloc(1,sizeof(gwrlbkd_poll)));
-	#ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-		if(asserts_var1 == gwrlbkd_init_fail) {
-			free(pbkd);
-			pbkd = NULL;
-		}
-	#endif
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!pbkd) {
-		#ifndef GWRL_HIDE_ERRORS
-			gwprintsyserr("(pe1Ij) calloc error",errno);
-		#endif
+		gwprintsyserr("(pe1Ij) calloc error",errno);
 		return NULL;
 	}
+	#endif
 	pbkd->nfds = 0;
 	pbkd->maxnfds = GWRL_POLLFD_COUNT;
 	pbkd->fds = (struct pollfd *)gwrl_mem_calloc(pbkd->maxnfds,sizeof(struct pollfd));
