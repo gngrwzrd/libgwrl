@@ -1,7 +1,4 @@
--for some reason kqueue backend us setting the GWRL_RD flag on the write only input source
- in test/proactor_tcp
 
--add asserts_var1 for each backend.
 -add options for putting gcov data into a backend folder, then each test in there.
 -put lcov handling for each backend
 -gwpr_free on Windows
@@ -9,14 +6,6 @@
  kcachegrind with data from test/reactor_events.
 -valgrind memory tests
 -valgrind callgrind tests
-
-TESTS:
--tests can't sleep, need to test socketpair so I can automate read/write testing
--test the _safely methods
--tcp and udp test utility, test all the read/write methods in proactor
--test re-dispatching and max
--test proactor filters
--test gwpr_stop_read
 
 DOCS:
 -Coverage Testing pod
