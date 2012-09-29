@@ -81,7 +81,6 @@
 			<li><a href="#gather_time_events">Gather Time Events</a></li>
 			<li><a href="#gather_io_events">Gather IO Events</a></li>
 			<li><a href="#custom_gather_functions">Custom Gather Functions</a></li>
-			<li><a href="#flowchart_diagram">Flowchart Diagram</a></li>
 		</ul>
 
 		<li><a href="#custom_input_sources">Custom Input Sources</a></li>
@@ -96,6 +95,7 @@
 			<li><a href="#gwrl_kqueue_kevent_count">GWRL_KQUEUE_KEVENT_COUNT</a></li>
 			<li><a href="#gwrl_pollfd_count">GWRL_POLLFD_COUNT</a></li>
 			<li><a href="#gwrl_src_types_count">GWRL_SRC_TYPES_COUNT</a></li>
+			<li><a href="#gwrl_redispatch_max">GWRL_REDISPATCH_MAX</a></li>
 		</ul>
 
 		<li><a href="#overriding_reactor_cmake_compile_time_options">Overriding Reactor CMAKE compile-time options</a></li>
@@ -199,7 +199,7 @@
 	</ul>
 
 	<li><a href="#worker_threads">WORKER THREADS</a></li>
-	<li><a href="#code_coverage">CODE COVERAGE</a></li>
+	<li><a href="#unit_and_coverage_tests">UNIT AND COVERAGE TESTS</a></li>
 	<li><a href="#global_types">GLOBAL TYPES</a></li>
 	<ul>
 
@@ -693,11 +693,12 @@ of the reactor loop.</p>
 <p>
 </p>
 <h3><a name="dispatch_events">Dispatch Events</a></h3>
-<p>The dispatch events phase calls the callbacks of all gathered events from the
-previous iteration of the reactor loop. If more events are posted during the
-dispatch phase, those will also be dispatched, but re-dispatching
-will only happen at a maximum of five times. If more events were posted during
-the re-dispatch phase they will not be dipatched until the next loop iteration.</p>
+<p>This phase calls all callbacks of all gathered events from the previous iteration
+of the reactor loop. If more events are posted during the dispatch phase, those
+will also be dispatched, but re-dispatching will only happen a certain amount of
+times, which is controlled by the CMake option GWRL_REDISPATCH_MAX. If more events
+were posted during the re-dispatch phase they will not be dipatched until the next
+loop iteration.</p>
 <p>
 </p>
 <h3><a name="gather_time_events">Gather Time Events</a></h3>
@@ -719,11 +720,6 @@ shut off, refer to backend sleeping above.</p>
 This can be used to extend the reactor with custom input sources and custom
 gathering phases for those input sources.</p>
 <p>
-</p>
-<h3><a name="flowchart_diagram">Flowchart Diagram</a></h3>
-<p>This flowchart illustrates how the reactor event loop runs internally which may
-help explain the reactor phases a bit more.</p>
-<img src="reactor_flowchart.png" /><p>
 </p>
 <h2><a name="custom_input_sources">Custom Input Sources</a></h2>
 <p>Users of GWRL can create custom input sources to register with
@@ -863,8 +859,8 @@ then they are freed rather than cached. The default is 128.</p>
 <p>
 </p>
 <h3><a name="gwrl_epoll_event_count">GWRL_EPOLL_EVENT_COUNT</a></h3>
-<p>The number of events to accept from epoll_wait. This does
-not grow internally as more input sources are added. The default is 64.</p>
+<p>The number of events to accept from epoll_wait. This does not grow internally
+as more input sources are added. The default is 64.</p>
 <p>
 </p>
 <h3><a name="gwrl_gather_funcs_max">GWRL_GATHER_FUNCS_MAX</a></h3>
@@ -873,8 +869,8 @@ Gathering section for more information. The default is 0.</p>
 <p>
 </p>
 <h3><a name="gwrl_kqueue_kevent_count">GWRL_KQUEUE_KEVENT_COUNT</a></h3>
-<p>The number of events to accept from kevent. This does not
-grow internally as more input sources are added. The default is 64.</p>
+<p>The number of events to accept from kevent. This does not grow internally as
+more input sources are added. The default is 64.</p>
 <p>
 </p>
 <h3><a name="gwrl_pollfd_count">GWRL_POLLFD_COUNT</a></h3>
@@ -884,8 +880,13 @@ added to poll the size will grow by a factor of this number. The default is
 <p>
 </p>
 <h3><a name="gwrl_src_types_count">GWRL_SRC_TYPES_COUNT</a></h3>
-<p>The number of supported input sources. Currently 2. Refer back to
-Custom Input Sources for more information.</p>
+<p>The number of supported input sources. Currently 2. Refer back to Custom Input Sources
+for more information.</p>
+<p>
+</p>
+<h3><a name="gwrl_redispatch_max">GWRL_REDISPATCH_MAX</a></h3>
+<p>The maximum number of times to re-dispatch events that were generated or created
+during the dispatch phase.</p>
 <p>
 </p>
 <h2><a name="overriding_reactor_cmake_compile_time_options">Overriding Reactor CMAKE compile-time options</a></h2>
@@ -1511,7 +1512,7 @@ then add it to the other reactor/proactor safely with a thread safe function.</p
 <p>
 </p>
 <h2><a name="file_io_on_the_same_thread">File IO on the Same Thread</a></h2>
-<p>All file IO must happen on the same thread.</p>
+<p>All file IO for an input source must happen on the same thread.</p>
 <p>Windows deserves special mentioning here. In most Windows examples I've seen,
 they use Windows IOCP for high-performance, but they use a one-to-many model
 where there's only one completion port, and many threads that perform file IO.</p>
@@ -1648,7 +1649,7 @@ your worker threads.</p>
 <p>
 </p>
 <hr />
-<h1><a name="code_coverage">CODE COVERAGE</a></h1>
+<h1><a name="unit_and_coverage_tests">UNIT AND COVERAGE TESTS</a></h1>
 <p>GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.</p>
 <p>
 </p>

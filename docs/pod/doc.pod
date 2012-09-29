@@ -486,11 +486,12 @@ of the reactor loop.
 
 =head3 Dispatch Events
 
-The dispatch events phase calls the callbacks of all gathered events from the
-previous iteration of the reactor loop. If more events are posted during the
-dispatch phase, those will also be dispatched, but re-dispatching
-will only happen at a maximum of five times. If more events were posted during
-the re-dispatch phase they will not be dipatched until the next loop iteration.
+This phase calls all callbacks of all gathered events from the previous iteration
+of the reactor loop. If more events are posted during the dispatch phase, those
+will also be dispatched, but re-dispatching will only happen a certain amount of
+times, which is controlled by the CMake option GWRL_REDISPATCH_MAX. If more events
+were posted during the re-dispatch phase they will not be dipatched until the next
+loop iteration.
 
 =head3 Gather Time Events
 
@@ -511,17 +512,6 @@ shut off, refer to backend sleeping above.
 The fourth and final phase is to call user-supplied event gathering functions.
 This can be used to extend the reactor with custom input sources and custom
 gathering phases for those input sources.
-
-=head3 Flowchart Diagram
-
-This flowchart illustrates how the reactor event loop runs internally which may
-help explain the reactor phases a bit more.
-
-=begin html
-
-<img src="reactor_flowchart.png" />
-
-=end html
 
 =head2 Custom Input Sources
 
@@ -673,8 +663,8 @@ then they are freed rather than cached. The default is 128.
 
 =head3 GWRL_EPOLL_EVENT_COUNT
 
-The number of events to accept from epoll_wait. This does
-not grow internally as more input sources are added. The default is 64.
+The number of events to accept from epoll_wait. This does not grow internally
+as more input sources are added. The default is 64.
 
 =head3 GWRL_GATHER_FUNCS_MAX
 
@@ -683,8 +673,8 @@ Gathering section for more information. The default is 0.
 
 =head3 GWRL_KQUEUE_KEVENT_COUNT
 
-The number of events to accept from kevent. This does not
-grow internally as more input sources are added. The default is 64.
+The number of events to accept from kevent. This does not grow internally as
+more input sources are added. The default is 64.
 
 =head3 GWRL_POLLFD_COUNT
 
@@ -694,8 +684,13 @@ added to poll the size will grow by a factor of this number. The default is
 
 =head3 GWRL_SRC_TYPES_COUNT
 
-The number of supported input sources. Currently 2. Refer back to
-Custom Input Sources for more information.
+The number of supported input sources. Currently 2. Refer back to Custom Input Sources
+for more information.
+
+=head3 GWRL_REDISPATCH_MAX
+
+The maximum number of times to re-dispatch events that were generated or created
+during the dispatch phase.
 
 =head2 Overriding Reactor CMAKE compile-time options
 
@@ -1370,7 +1365,7 @@ then add it to the other reactor/proactor safely with a thread safe function.
 
 =head2 File IO on the Same Thread
 
-All file IO must happen on the same thread.
+All file IO for an input source must happen on the same thread.
 
 Windows deserves special mentioning here. In most Windows examples I've seen,
 they use Windows IOCP for high-performance, but they use a one-to-many model
@@ -1517,10 +1512,9 @@ Example:
      gwrl_run(rl);
  }
 
-=head1 CODE COVERAGE
+=head1 UNIT AND COVERAGE TESTS
 
 GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.
-
 
 =head1 GLOBAL TYPES
 
