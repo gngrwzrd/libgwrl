@@ -7,11 +7,160 @@ extern "C" {
 
 void
 io_activity(gwpr * pr, gwpr_io_info * info) {
+	//this is an empty method for cases where a write is
+	//requested on a descriptor but no user provided callback
+	//is set, so this is called instead.
+}
+
+void
+gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
+	//this method does the accept logic when a read
+	//event is available for a descriptor that has an
+	//accept callback set.
+
+	//setup vars
+	int i = 0;
+	ssize_t res = 0;
+	struct gwpr_io_info ioinfo = {0};
+	struct gwpr_error_info errinfo = {0};
+	gwprdata * pdata = fsrc->pdata;
+	ioinfo.src = fsrc;
+	
+	//try and accept as many clients as possible up to the
+	//specified max amount in pr->options.gwpr_max_accept
+	for(; i < pr->options.gwpr_max_accept; i++) {
+
+		//try the accept
+		ioinfo.peerlen = sizeof(&ioinfo.peer);
+		res = accept(fsrc->fd,_sockaddr(&(ioinfo.peer)),&(ioinfo.peerlen));
+		
+		if(res > -1) {
+			//accept success, call the user callback
+			ioinfo.peersrc = _gwrlsrcf(gwrl_src_file_create(res,0,NULL,NULL));
+			pdata->acceptcb(pr,&ioinfo);
+
+		} else if(res < 0) {
+			//error, if the error is not EWOULDBLOCK it's a valid error.
+			//if it is EWOULDBLOCK it's ignored meaning no clients are
+			//available to accept.
+
+			if(errno != EWOULDBLOCK) {
+				//error we don't want to handle, pass to the user.
+				if(pdata->errorcb) {
+					errinfo.src = fsrc;
+					errinfo.errnm = errno;
+					memcpy(errinfo.fnc,"accept\0",7);
+					pdata->errorcb(pr,&errinfo);
+				} else {
+					gwprintsyserr("(09F6R) accept() error occured with no error callback.",errno);
+				}
+			}
+		}
+	}
+}
+
+void
+gwpr_src_activity_read(gwpr * pr, gwrlsrc_file * fsrc,
+ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
+	//this method does the actual read calls when a
+	//read is available on a descriptor.
+
+	//setup vars
+	int _res = 0;
+	char errfnc[16];
+	gwprdata * pdata = fsrc->pdata;
+	gwprbuf * rd = pdata->rdbuf;
+	while(!rd) rd = gwpr_buf_get(pr,pdata->rdbufsize);
+	pdata->rdbuf = NULL;
+	ioinfo->src = fsrc;
+	ioinfo->buf = rd;
+	ioinfo->op = pdata->rdop;
+
+	if(ioinfo->op == gwpr_read_op_id) {
+		//normal read
+		memcpy(errfnc,"read\0",5);
+		while((_res=read(fsrc->fd,rd->buf,rd->bufsize)) < 0 && errno==EINTR);
+	}
+	
+	else if(pdata->rdop == gwpr_recvfrom_op_id) {
+		//recvfrom (probably udp)
+		memcpy(errfnc,"recvfrom\0",9);
+		ioinfo->peerlen = sizeof(ioinfo->peer);
+		while((_res=recvfrom(fsrc->fd,rd->buf,rd->bufsize,0,
+			_sockaddr(&ioinfo->peer),&ioinfo->peerlen)) < 0 && errno == EINTR);
+	}
+	
+	else if(pdata->rdop == gwpr_recv_op_id) {
+		memcpy(errfnc,"recv\0",5);
+		while((_res=recv(fsrc->fd,rd->buf,rd->bufsize,0)) < 0 && errno == EINTR);
+	}
+
+	if(_res < 0) {
+		//error, copy the name of the function that errored
+		//info the errinfo payload.
+		memcpy(errinfo->fnc,errfnc,16);
+	}
+	
+	//update results
+	rd->len = _res;
+	*res = _res;
+}
+
+void
+gwpr_src_activity_read_result(ssize_t res, gwpr * pr,
+gwrlsrc_file * fsrc, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
+	//this method handles the result from a call
+	//to gwpr_src_activity_read() above.
+	
+	//setup vars
+	gwprdata * pdata = fsrc->pdata;
+
+	if(res > 0) {
+		//good read, call filters and the callback.
+		gwpr_filter_call(pr,fsrc,ioinfo,gwpr_rdfilter_id);
+		pdata->didreadcb(pr,ioinfo);
+	}
+	
+	else if(res == 0 && pdata->closedcb) {
+		//closed socket or eof from file
+		pdata->closedcb(pr,ioinfo);
+	}
+	
+	else if(res < 0 && (errno == ECONNRESET || errno == EPIPE) && pdata->closedcb) {
+		//closed socket or pipe close
+		pdata->closedcb(pr,ioinfo);
+	}
+	
+	else if(res < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+		//socket or file marked as non blocking,
+		//no data to read, nothing to do.
+	}
+	
+	else if(res < 0 && pdata->errorcb) {
+		//some other error that we don't want
+		//to handle internally, pass to the user.
+		errinfo->errnm = errno;
+		errinfo->src = fsrc;
+		errinfo->op = ioinfo->op;
+		pdata->errorcb(pr,errinfo);
+	}
+
+	else {
+		gwprintsyserr("(OKL4F) proactor read error with no error callback",errno);
+	}
 }
 
 void 
 gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
+	//this method is the callback method for all file input sources added
+	//to the reactor. typically if the user is using the reactor by itself,
+	//this is the equivalent method that they would have to write. here I just
+	//provide all the logic for the user with reads and writes on their behalf.
+
+	//make sure the event is indeed a file input source
 	if(evt->src->type == GWRL_SRC_TYPE_FILE) {
+		
+		//setup vars
 		char errfnc[16];
 		gwpr * pr = _gwpr(rl->pr);
 		gwrlsrc * src = evt->src;
@@ -20,120 +169,23 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 		gwpr_error_info errinfo = {0};
 		gwpr_io_info ioinfo = {0};
 		bzero(errfnc,sizeof(errfnc));
-		
-		if(evt->flags & GWRL_RD) {
-			int i = 0;
+		if(!pdata) return;
+
+		if(evt->flags & GWRL_RD) { //readable activity
 			ssize_t res = 0;
-			gwprbuf * rd = NULL;
-
-			if(pdata->acceptcb) {
-				//an accept callback is set, assume they want us to
-				//try and accept as many clients up to gwpr_max_accept.
-				ioinfo.src = fsrc;
-				for(; i<pr->options.gwpr_max_accept; i++) {
-					res = accept(evt->fd,_sockaddr(&(ioinfo.peer)),&(ioinfo.peerlen));
-					if(res > -1) {
-						ioinfo.peersrc = _gwrlsrcf(gwrl_src_file_create(res,0,NULL,NULL));
-						pdata->acceptcb(pr,&ioinfo);
-					} else if(res < 0) {
-						if(errno != EWOULDBLOCK) {
-							if(pdata->errorcb) {
-								errinfo.src = fsrc;
-								errinfo.errnm = errno;
-								memcpy(errinfo.fnc,"accept\0",7);
-								pdata->errorcb(pr,&errinfo);
-							} else {
-								gwprintsyserr("(09F6R) accept() error occured with no error callback.",errno);
-							}
-						}
-					}
-				}
-			}
-			
-			//clear info objects from past use
-			bzero(&ioinfo,sizeof(ioinfo));
-			bzero(&errinfo,sizeof(errinfo));
-
 			if(pdata->didreadcb) {
 				//did read callback is set so let's try and read data.
-
-				//get or create a read buffer.
-				rd = pdata->rdbuf;
-				while(!rd) rd = gwpr_buf_get(pr,pdata->rdbufsize);
-				pdata->rdbuf = NULL;
-				ioinfo.src = fsrc;
-				ioinfo.buf = rd;
-
-				if(pdata->rdop == gwpr_read_op_id) {
-					ioinfo.op = gwpr_read_op_id;
-					memcpy(errfnc,"read\0",5);
-					while((res=read(fsrc->fd,rd->buf,rd->bufsize)) < 0 && errno==EINTR);
-				}
-				
-				else if(pdata->rdop == gwpr_recvfrom_op_id) {
-					ioinfo.op = gwpr_recvfrom_op_id;
-					memcpy(errfnc,"recvfrom\0",9);
-					ioinfo.peerlen = sizeof(ioinfo.peer);
-					while((res=recvfrom(fsrc->fd,rd->buf,rd->bufsize,0,
-						_sockaddr(&ioinfo.peer),&ioinfo.peerlen)) < 0 && errno == EINTR);
-				}
-				
-				else if(pdata->rdop == gwpr_recv_op_id) {
-					ioinfo.op = gwpr_recv_op_id;
-					memcpy(errfnc,"recv\0",5);
-					while((res=recv(fsrc->fd,rd->buf,rd->bufsize,0)) < 0 && errno == EINTR);
-				}
-				
-				if(res > 0) {
-					//good read, call rd filters and did_read callback.
-					
-					rd->len = res;
-					if(pdata->rdfilters && pdata->rdfilters[0] != NULL) {
-						for(i=0; i<GWPR_FILTERS_MAX; i++) {
-							if(!pdata->rdfilters[i]) break;
-							pdata->rdfilters[i](pr,&ioinfo);
-						}
-					}
-					
-					pdata->didreadcb(pr,&ioinfo);
-				}
-				
-				else if(res == 0 && pdata->closedcb) {
-					//closed socket or eof from file
-					pdata->closedcb(pr,&ioinfo);
-				}
-				
-				else if(res < 0 && (errno == ECONNRESET || errno == EPIPE)
-					&& pdata->closedcb) {
-					//closed socket or pipe error
-					pdata->closedcb(pr,&ioinfo);
-				}
-				
-				else if(res < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
-					//socket or file marked as non blocking,
-					//no data to read, nothing to do.
-				}
-				
-				else if(res < 0 && pdata->errorcb) {
-					//error we don't want to handle, pass to users.
-					errinfo.errnm = errno;
-					errinfo.src = fsrc;
-					errinfo.op = ioinfo.op;
-					memcpy(errinfo.fnc,errfnc,sizeof(errfnc));
-					pdata->errorcb(pr,&errinfo);
-				}
-
-				else {
-					gwprintsyserr("(OKL4F) proactor read error with no error callback",errno);
-				}
-			} else if(!pdata->didreadcb && !pdata->acceptcb) {
+				gwpr_src_activity_read(pr,fsrc,&res,&ioinfo,&errinfo);
+				gwpr_src_activity_read_result(res,pr,fsrc,&ioinfo,&errinfo);
+			} else if(pdata->acceptcb) {
+				//accept is set, try and accept any clients
+				gwpr_src_activity_read_accept(pr,fsrc);
+			} else {
 				gwerr("(4FL9KF) proactor can read data but there's no read callback set.");
 			}
 		}
 		
-		if(evt->flags & GWRL_WR) {
-			//writable activity
-			
+		if(evt->flags & GWRL_WR) { //writable activity
 			if(pdata->connectcb) {
 				//the user wanted to know when a socket is writable after
 				//calling connect(), call it here and disable the connectcb.
@@ -413,7 +465,7 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 		&& pr->options.gwpr_synchronous_write_max_bytes > 0) {
 		//the buffer requested is smaller than the maximum allowed
 		//bytes to allow synchronous writes with, so give it a shot.
-
+		
 		//setup vars
 		gwrlsrc * src = _gwrlsrc(fsrc);
 		gwprdata * pdata = fsrc->pdata;
