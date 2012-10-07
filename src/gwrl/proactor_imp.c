@@ -581,10 +581,14 @@ void
 gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	gwrlsrc * src = _gwrlsrc(fsrc);
-	gwprdata * pdata = fsrc->pdata;
 	gwprwrq * q = gwprwrq_get(pr,fsrc);
 	gwrlsrc_flags_t flags = src->flags;
-	if(!pdata->didwritecb) pdata->didwritecb = &io_activity;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+	gwprdata * pdata = fsrc->pdata;
+	if(!pdata->didwritecb) {
+		pdata->didwritecb = &io_activity;
+	}
+	#endif
 	q->buf = buf;
 	q->wrop = op;
 	if(op == gwpr_sendto_op_id) {
@@ -673,9 +677,11 @@ gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 int
 gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	gwprdata * pdata = fsrc->pdata;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!pdata->didwritecb) {
 		pdata->didwritecb = &io_activity;
 	}
+	#endif
 	if(pdata->wrq) {
 		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);
 		return 0;
@@ -689,7 +695,11 @@ gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 int
 gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	gwprdata * pdata = fsrc->pdata;
-	if(!pdata->didwritecb) pdata->didwritecb = &io_activity;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+	if(!pdata->didwritecb) {
+		pdata->didwritecb = &io_activity;
+	}
+	#endif
 	if(pdata->wrq) {
 		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0);
 		return 0;
@@ -704,7 +714,11 @@ int
 gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	struct sockaddr_storage * peer, socklen_t peerlen) {
 	gwprdata * pdata = fsrc->pdata;
-	if(!pdata->didwritecb) pdata->didwritecb = &io_activity;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+	if(!pdata->didwritecb) {
+		pdata->didwritecb = &io_activity;
+	}
+	#endif
 	if(pdata->wrq) {
 		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);
 		return 0;
