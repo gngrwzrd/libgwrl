@@ -196,6 +196,23 @@ gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid) {
 }
 
 void
+gwpr_filter_call(gwpr * pr, gwrlsrc_file * fsrc, gwpr_io_info * ioinfo,
+gwpr_filter_id fid) {
+	gwprdata * pdata = fsrc->pdata;
+	if(fid == gwpr_rdfilter_id) {
+		int i = 0;
+		if(pdata->rdfilters && pdata->rdfilters[0] != NULL) {
+			for(i=0; i<GWPR_FILTERS_MAX; i++) {
+				if(!pdata->rdfilters[i]) break;
+				pdata->rdfilters[i](pr,ioinfo);
+			}
+		}
+	} else if(fid == gwpr_wrfilter_id) {
+
+	}
+}
+
+void
 gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb) {
 	gwprdata * data = _gwprdata(fsrc->pdata);
 	switch(cbid) {

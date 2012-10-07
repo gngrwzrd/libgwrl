@@ -202,4 +202,7 @@ void gwpr_filter_add(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid, gwpr_io
 //remove all filters associated with an input source.
 void gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid);
 
+//call read or write filters with ioinfo provided.
+void gwpr_filter_call(gwpr * pr, gwrlsrc_file * fsrc, gwpr_io_info * info, gwpr_filter_id fid);
+
 #endif
