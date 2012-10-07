@@ -25,8 +25,10 @@ def add_test(testname):
 #add_test("proactor_thread_specific_nix")
 
 add_test("proactor_buf")
+add_test("proactor_cb")
 add_test("proactor_filters")
 add_test("proactor_free1")
+add_test("proactor_src")
 add_test("proactor_tcp")
 add_test("proactor_udp")
 add_test("proactor_wrq")
