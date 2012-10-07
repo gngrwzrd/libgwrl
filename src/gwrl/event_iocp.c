@@ -15,8 +15,6 @@ gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 	gwrlbkd_iocp * iobkd = _gwrlbkdi(gwrl_mem_calloc(1,sizeof(gwrlbkd_iocp)));
 	GUID GuidAcceptEx = WSAID_ACCEPTEX;
 	GUID GuidConnectEx = WSAID_CONNECTEX;
-	GUID GuidRecvMsg = WSAID_WSARECVMSG;
-	GUID GuidSendMsg = WSAID_WSASENDMSG;
 	DWORD bytes = 0;
 	SOCKET s = 0;
 	LPSTR msg = NULL;
@@ -46,18 +44,6 @@ gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 		&bytes,NULL,NULL);
 	PRINT_ERROR_FM(res,==,SOCKET_ERROR,WSAGetLastError(),NULL,iobkd);
 	
-	res = WSAIoctl(s,SIO_GET_EXTENSION_FUNCTION_POINTER,
-		&GuidRecvMsg,sizeof(GuidRecvMsg),
-		&iobkd->WSARecvMsg,sizeof(iobkd->WSARecvMsg),
-		&bytes,NULL,NULL);
-	PRINT_ERROR_FM(res,==,SOCKET_ERROR,WSAGetLastError(),NULL,iobkd);
-
-	res = WSAIoctl(s,SIO_GET_EXTENSION_FUNCTION_POINTER,
-		&GuidSendMsg,sizeof(GuidSendMsg),
-		&iobkd->WSASendMsg,sizeof(iobkd->WSASendMsg),
-		&bytes,NULL,NULL);
-	PRINT_ERROR_FM(res,==,SOCKET_ERROR,WSAGetLastError(),NULL,iobkd);
-
 	closesocket(s);
 	return _gwrlbkd(iobkd);
 }

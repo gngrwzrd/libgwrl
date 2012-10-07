@@ -6,8 +6,6 @@ typedef struct gwrlbkd_iocp {
 	fileid_t iocp;
 	bool (*AcceptEx)(SOCKET,SOCKET,PVOID,DWORD,DWORD,DWORD,LPDWORD,LPOVERLAPPED);
 	bool (*ConnectEx)(SOCKET,struct sockaddr *,int,PVOID,DWORD,LPDWORD,LPOVERLAPPED);
-	int (*WSARecvMsg)();
-	int (*WSASendMsg)();
 } gwrlbkd_iocp;
 
 #define _gwrlbkdi(o) ((gwrlbkd_iocp *)o)
