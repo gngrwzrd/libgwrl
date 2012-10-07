@@ -32,8 +32,28 @@ int main(int argc, char ** argv) {
 		del = del->next;
 	}
 	gwrl_free(NULL,&sources);
-	
 	didrd(NULL,NULL);
+
+	rl = gwrl_create();
+	pr = gwpr_create(rl);
+	rl->sources[GWRL_SRC_TYPE_FILE] = NULL;
+	fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));
+	gwpr_src_add_safely(pr,fsrc);
+	fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));
+	gwpr_src_add_safely(pr,fsrc);
+	gwpr_free(pr);
+	gwrl_free(rl,NULL);
+
+	rl = gwrl_create();
+	pr = gwpr_create(rl);
+	rl->sources[GWRL_SRC_TYPE_FILE] = NULL;
+	fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));
+	gwpr_src_add_safely(pr,fsrc);
+	fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));
+	gwpr_src_add_safely(pr,fsrc);
+	gwpr_free(pr);
+	gwrl_free(rl,&sources);
+	gwrl_free(NULL,&sources);
 
 	return 0;
 }
