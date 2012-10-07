@@ -5,6 +5,3 @@ typedef struct gwprbufctl {
 } gwprbufctl;
 
 gwprbufctl * gwprbufctl_create();
-
-#define _gwpr(o) ((gwpr *)o)
-#define _gwprdata(o) ((gwprdata *)o)
