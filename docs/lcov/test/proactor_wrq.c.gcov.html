@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-26</td>
+            <td class="headerValue">2012-10-02</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,73 +72,73 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         20 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         27 : int main(int argc, char ** argv) {</span>
 <span class="lineNum">       5 </span>                :            :         
-<span class="lineNum">       6 </span>                :<span class="lineCov">         20 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">         20 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         20 :         gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         27 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         27 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         27 :         gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
 <span class="lineNum">       9 </span>                :            :         
-<span class="lineNum">      10 </span>                :<span class="lineCov">         20 :         gwprwrq * q1 = gwprwrq_get(pr,fsrc);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         20 :         gwprwrq * q2 = gwprwrq_get(pr,fsrc);</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         20 :         gwprwrq * q3 = gwprwrq_get(pr,fsrc);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         20 :         gwprwrq * q4 = gwprwrq_get(pr,fsrc);</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         20 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         27 :         gwprwrq * q1 = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         27 :         gwprwrq * q2 = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         27 :         gwprwrq * q3 = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         27 :         gwprwrq * q4 = gwprwrq_get(pr,fsrc);</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         27 :         gwprdata * pdata = fsrc-&gt;pdata;</span>
 <span class="lineNum">      15 </span>                :            :         
-<span class="lineNum">      16 </span>                :<span class="lineCov">         20 :         assert(pr-&gt;nwrqcache == 0);</span>
-<span class="lineNum">      17 </span>[<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 20 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         20 :         assert(q1 &amp;&amp; q2 &amp;&amp; q3);</span>
-<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 20 times"> + </span>]
+<span class="lineNum">      16 </span>                :<span class="lineCov">         27 :         assert(pr-&gt;nwrqcache == 0);</span>
+<span class="lineNum">      17 </span>[<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 27 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         27 :         assert(q1 &amp;&amp; q2 &amp;&amp; q3);</span>
+<span class="lineNum">         </span>        [<span class="branchNoCov" title="Branch 4 was not taken"> - </span><span class="branchCov" title="Branch 5 was taken 27 times"> + </span>]
 <span class="lineNum">      18 </span>                :            :         
 <span class="lineNum">      19 </span>                :            :         //testing adding some
-<span class="lineNum">      20 </span>                :<span class="lineCov">         20 :         gwprwrq_add(pr,fsrc,q1);</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         20 :         gwprwrq_add(pr,fsrc,q2);</span>
-<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq == q1);</span>
-<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
-<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrqlast == q2);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         27 :         gwprwrq_add(pr,fsrc,q1);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         27 :         gwprwrq_add(pr,fsrc,q2);</span>
+<span class="lineNum">      22 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq == q1);</span>
+<span class="lineNum">      23 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
+<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrqlast == q2);</span>
 <span class="lineNum">      25 </span>                :            :         
 <span class="lineNum">      26 </span>                :            :         //assert one more add
-<span class="lineNum">      27 </span>                :<span class="lineCov">         20 :         gwprwrq_add(pr,fsrc,q3);</span>
-<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrqlast == q3);</span>
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         27 :         gwprwrq_add(pr,fsrc,q3);</span>
+<span class="lineNum">      28 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrqlast == q3);</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
 <span class="lineNum">      30 </span>                :            : 
 <span class="lineNum">      31 </span>                :            :         //assert posting a q back.
-<span class="lineNum">      32 </span>                :<span class="lineCov">         20 :         pdata-&gt;wrq = NULL;</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">         20 :         gwprwrq_putback(pr,fsrc,q1);</span>
-<span class="lineNum">      34 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq == q1);</span>
-<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
-<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrqlast == q3);</span>
-<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         27 :         pdata-&gt;wrq = NULL;</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">         27 :         gwprwrq_putback(pr,fsrc,q1);</span>
+<span class="lineNum">      34 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq == q1);</span>
+<span class="lineNum">      35 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
+<span class="lineNum">      36 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrqlast == q3);</span>
+<span class="lineNum">      37 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
 <span class="lineNum">      38 </span>                :            : 
 <span class="lineNum">      39 </span>                :            :         //assert putting a q back when one already existed
-<span class="lineNum">      40 </span>                :<span class="lineCov">         20 :         pdata-&gt;wrq = q4;</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         20 :         gwprwrq_putback(pr,fsrc,q1);</span>
-<span class="lineNum">      42 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq == q1);</span>
-<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
-<span class="lineNum">      44 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
-<span class="lineNum">      45 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrq-&gt;next-&gt;next-&gt;next == q4);</span>
-<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pdata-&gt;wrqlast == q4);</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         27 :         pdata-&gt;wrq = q4;</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         27 :         gwprwrq_putback(pr,fsrc,q1);</span>
+<span class="lineNum">      42 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq == q1);</span>
+<span class="lineNum">      43 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next == q2);</span>
+<span class="lineNum">      44 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next-&gt;next == q3);</span>
+<span class="lineNum">      45 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrq-&gt;next-&gt;next-&gt;next == q4);</span>
+<span class="lineNum">      46 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pdata-&gt;wrqlast == q4);</span>
 <span class="lineNum">      47 </span>                :            : 
 <span class="lineNum">      48 </span>                :            :         //assert free/cache
-<span class="lineNum">      49 </span>                :<span class="lineCov">         20 :         pdata-&gt;wrq = NULL;</span>
-<span class="lineNum">      50 </span>                :<span class="lineCov">         20 :         gwprwrq_free(pr,fsrc,q1);</span>
-<span class="lineNum">      51 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;nwrqcache == 1);</span>
-<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache == q1);</span>
-<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next == NULL);</span>
-<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(q1-&gt;next == NULL);</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         27 :         pdata-&gt;wrq = NULL;</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         27 :         gwprwrq_free(pr,fsrc,q1);</span>
+<span class="lineNum">      51 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;nwrqcache == 1);</span>
+<span class="lineNum">      52 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache == q1);</span>
+<span class="lineNum">      53 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next == NULL);</span>
+<span class="lineNum">      54 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(q1-&gt;next == NULL);</span>
 <span class="lineNum">      55 </span>                :            :         
-<span class="lineNum">      56 </span>                :<span class="lineCov">         20 :         gwprwrq_free(pr,fsrc,q2);</span>
-<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;nwrqcache == 2);</span>
-<span class="lineNum">      58 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache == q2);</span>
-<span class="lineNum">      59 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next == q1);</span>
-<span class="lineNum">      60 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next == NULL);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         27 :         gwprwrq_free(pr,fsrc,q2);</span>
+<span class="lineNum">      57 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;nwrqcache == 2);</span>
+<span class="lineNum">      58 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache == q2);</span>
+<span class="lineNum">      59 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next == q1);</span>
+<span class="lineNum">      60 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next == NULL);</span>
 <span class="lineNum">      61 </span>                :            :         
-<span class="lineNum">      62 </span>                :<span class="lineCov">         20 :         gwprwrq_free(pr,fsrc,q3);</span>
-<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;nwrqcache == 3);</span>
-<span class="lineNum">      64 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache == q3);</span>
-<span class="lineNum">      65 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next == q2);</span>
-<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next == q1);</span>
-<span class="lineNum">      67 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 20 times"> + </span>]:<span class="lineCov">         20 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next-&gt;next == NULL);</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">         27 :         gwprwrq_free(pr,fsrc,q3);</span>
+<span class="lineNum">      63 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;nwrqcache == 3);</span>
+<span class="lineNum">      64 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache == q3);</span>
+<span class="lineNum">      65 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next == q2);</span>
+<span class="lineNum">      66 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next == q1);</span>
+<span class="lineNum">      67 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(pr-&gt;wrqcache-&gt;next-&gt;next-&gt;next == NULL);</span>
 <span class="lineNum">      68 </span>                :            : 
-<span class="lineNum">      69 </span>                :<span class="lineCov">         20 :         return 0;</span>
+<span class="lineNum">      69 </span>                :<span class="lineCov">         27 :         return 0;</span>
 <span class="lineNum">      70 </span>                :            : }
 </pre>
       </td>

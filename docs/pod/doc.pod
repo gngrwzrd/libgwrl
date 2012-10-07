@@ -813,11 +813,9 @@ Here are all the supported operation ids you'll encounter:
      gwpr_read_op_id,
      gwpr_recv_op_id,
      gwpr_recvfrom_op_id,
-     gwpr_recvmsg_op_id,
      gwpr_write_op_id,
      gwpr_send_op_id,
-     gwpr_sendto_op_id,
-     gwpr_sendmsg_op_id,
+     gwpr_sendto_op_id
  } gwpr_io_op_id;
 
 =head2 Proactor Buffers
@@ -892,8 +890,7 @@ Initiate a read with any of these:
  gwpr_read(gwpr * pr, gwsrc_file * fsrc, gwprbuf * buf);
  gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
- gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-
+ 
 Any of those will intitiate a read, and upon completion call the gwpr_did_read_cb_id
 callback. The buffer provided should be a buffter from gwpr_buf_get, or a buffer you
 know you don't need anymore.
@@ -1002,7 +999,6 @@ Initiate a write with any of these:
  gwpr_write(gwpr * pr, gwsrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * addr, socklen_t socklen);
- gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
 
 Any of those will initiate a write, and upon completion call the gwpr_did_write_cb_id
 callback.
@@ -1514,7 +1510,12 @@ Example:
 
 =head1 UNIT AND COVERAGE TESTS
 
-GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.
+GWRL has some unit tests for testing data structure integridity internaly,
+and some tests just for coverage purposes.
+
+=head2 Running Unit Tests
+
+First 
 
 =head1 GLOBAL TYPES
 

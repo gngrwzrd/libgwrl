@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-09-25</td>
+            <td class="headerValue">2012-10-02</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -259,9 +259,9 @@
 <span class="lineNum">     188 </span>                :            : 
 <a name="189"><span class="lineNum">     189 </span>                :            : /* This inline avoids argument side-effect issues with FD_ISSET() */</a>
 <span class="lineNum">     190 </span>                :            : static __inline int
-<span class="lineNum">     191 </span>                :<span class="lineCov">       1362 : __darwin_fd_isset(int _n, const struct fd_set *_p)</span>
+<span class="lineNum">     191 </span>                :<span class="lineCov">       1371 : __darwin_fd_isset(int _n, const struct fd_set *_p)</span>
 <span class="lineNum">     192 </span>                :            : {
-<span class="lineNum">     193 </span>                :<span class="lineCov">       1362 :         return (_p-&gt;fds_bits[_n/__DARWIN_NFDBITS] &amp; (1&lt;&lt;(_n % __DARWIN_NFDBITS)));</span>
+<span class="lineNum">     193 </span>                :<span class="lineCov">       1371 :         return (_p-&gt;fds_bits[_n/__DARWIN_NFDBITS] &amp; (1&lt;&lt;(_n % __DARWIN_NFDBITS)));</span>
 <span class="lineNum">     194 </span>                :            : }
 <span class="lineNum">     195 </span>                :            : 
 <span class="lineNum">     196 </span>                :            : #define __DARWIN_FD_SET(n, p)   do { int __fd = (n); ((p)-&gt;fds_bits[__fd/__DARWIN_NFDBITS] |= (1&lt;&lt;(__fd % __DARWIN_NFDBITS))); } while(0)
