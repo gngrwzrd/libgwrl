@@ -327,6 +327,9 @@ gwpr_free(gwpr * pr) {
 	int i = 0;
 	gwrlsrc * src = NULL;
 	gwrlsrc_file * fsrc = NULL;
+	
+	gwrl_dispatch(pr->rl);
+
 	for(; i<GWRL_SRC_TYPES_COUNT; i++) {
 		src = pr->rl->sources[i];
 		while(src) {
