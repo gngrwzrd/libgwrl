@@ -70,8 +70,8 @@ if(NOT PLATFORM_WINDOWS)
 endif()
 
 if(${WIN32})
-	add_executable(event_wake_iocp event_wake_iocp.c)
-	target_link_libraries(event_wake_iocp gwrl)
+	add_executable(reactor_wake_iocp reactor_wake_iocp.c)
+	target_link_libraries(reactor_wake_iocp gwrl)
 endif()
 
 add_executable(proactor_buf proactor_buf.c)
@@ -88,3 +88,9 @@ target_link_libraries(proactor_tcp gwrl)
 
 add_executable(proactor_udp proactor_udp.c)
 target_link_libraries(proactor_udp gwrl)
+
+add_executable(proactor_src proactor_src.c)
+target_link_libraries(proactor_src gwrl)
+
+add_executable(proactor_cb proactor_cb.c)
+target_link_libraries(proactor_cb gwrl)

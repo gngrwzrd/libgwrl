@@ -9,3 +9,5 @@ endif()
 add_executable(proactor_echo proactor_echo.c)
 target_link_libraries(proactor_echo gwrl)
 
+#add_executable(proactor_bench proactor_bench.c)
+#target_link_libraries(proactor_bench gwrl pthread)
