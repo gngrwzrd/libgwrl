@@ -453,7 +453,7 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 		//write the buffer
 		int errnm = 0;
 		size_t written = 0;
-		gwpr_write_buffer(pr,fsrc,usedbuf,gwpr_write_op_id,peer,peerlen,&written,&errnm);
+		gwpr_write_buffer(pr,fsrc,usedbuf,op,peer,peerlen,&written,&errnm);
 		
 		if(written == usedbuf->len) {
 			//fullwrite success
