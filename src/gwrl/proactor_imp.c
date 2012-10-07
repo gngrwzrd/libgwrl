@@ -137,8 +137,6 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			if(pdata->connectcb) {
 				//the user wanted to know when a socket is writable after
 				//calling connect(), call it here and disable the connectcb.
-				bzero(&ioinfo,sizeof(ioinfo));
-				bzero(&errinfo,sizeof(errinfo));
 				ioinfo.src = fsrc;
 				ioinfo.peerlen = sizeof(ioinfo.peer);
 				getpeername(fsrc->fd,_sockaddr(&ioinfo.peer),&ioinfo.peerlen);
