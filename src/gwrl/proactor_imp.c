@@ -198,7 +198,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 						pdata->didwritecb(pr,&ioinfo);
 					}
 					
-					else if(written < q->buf->len) {
+					else if(written > 0 && written < q->buf->len) {
 						//partial write. the unwritten data is copied to a new
 						//buffer to put back in the write queue. notify the user
 						//of the partial write - only the written data is reported.
