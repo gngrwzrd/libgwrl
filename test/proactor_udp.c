@@ -27,11 +27,6 @@ void write_data(gwrl * rl, gwrlevt * evt) {
 	gwpr_sendto(pr,wrsrc,buf,&peer,peerlen);
 }
 
-void timeout(gwrl * rl, gwrlevt * evt) {
-	assert(rdcount > 0);
-	gwrl_stop(rl);
-}
-
 int main(int argc, char ** argv) {
 	socketpair(AF_UNIX,SOCK_DGRAM,0,sockets);
 	peerlen = sizeof(peer);
@@ -43,10 +38,9 @@ int main(int argc, char ** argv) {
 	wrsrc = gwpr_set_fd(pr,sockets[1],NULL);
 
 	gwrl_set_interval(rl,0,&write_data,NULL);
-	gwrl_set_timeout(rl,10000,false,&timeout,NULL);
-
+	
 	gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&didrd);
-	gwpr_set_cb(pr,rdsrc,gwpr_did_write_cb_id,&didwr);
+	gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&didwr);
 	gwpr_recvfrom(pr,rdsrc,gwpr_buf_get(pr,128));
 	
 	gwrl_run(rl);
