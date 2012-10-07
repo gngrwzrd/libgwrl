@@ -4,8 +4,7 @@
 -gwpr_free on Windows
 -gwrl_wake_activity and gwrl_wake can be called less frequently. see
  kcachegrind with data from test/reactor_events.
--valgrind memory tests
--valgrind callgrind tests
+-valgrind, callgrind
 
 DOCS:
 -Coverage Testing pod
