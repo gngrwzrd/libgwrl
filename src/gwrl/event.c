@@ -659,6 +659,10 @@ gwrl_run_once(gwrl * rl) {
 	if(rl->_qsrc) gwrl_install_queued_sources(rl);
 	if(rl->_qevt) gwrl_install_queued_events(rl);
 	gwrl_dispatch(rl);
+	if(flisset(rl->flags,GWRL_STOP)) {
+		flclr(rl->flags,GWRL_STOP);
+		return;
+	}
 	rl->backend->timeout.tv_sec = sec_min;
 	rl->backend->timeout.tv_nsec = nsec_min;
 	if(rl->sources[GWRL_SRC_TYPE_TIME]) gwrl_time_gather(rl);
