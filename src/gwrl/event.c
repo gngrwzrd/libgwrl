@@ -384,8 +384,12 @@ gwrl_evt_free_list(gwrl * rl, gwrlevt * evt) {
 
 void
 gwrl_allow_poll_sleep(gwrl * rl, int onoff) {
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(onoff) flclr(rl->flags,GWRL_NOSLEEP);
 	else flset(rl->flags,GWRL_NOSLEEP);
+	#else
+	flset(rl->flags,GWRL_NOSLEEP);
+	#endif
 }
 
 void
@@ -402,8 +406,10 @@ gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
 	gwrlsrc * head = NULL;
 	lockid_lock(&rl->_qsrclk);
 	head = rl->_qsrc;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(head) src->next = head;
 	else src->next = NULL;
+	#endif
 	rl->_qsrc = src;
 	lockid_unlock(&rl->_qsrclk);
 	if(rl->flags & GWRL_SLEEPING) gwrl_wake(rl);
@@ -414,8 +420,10 @@ gwrl_post_evt_safely(gwrl * rl, gwrlevt * evt) {
 	gwrlevt * head = NULL;
 	lockid_lock(&rl->_qevtlk);
 	head = rl->_qevt;
+	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(head) evt->next = head;
 	else evt->next = NULL;
+	#endif
 	rl->_qevt = evt;
 	lockid_unlock(&rl->_qevtlk);
 	if(rl->flags & GWRL_SLEEPING) gwrl_wake(rl);
@@ -656,8 +664,12 @@ gwrl_dispatch(gwrl * rl) {
 void
 gwrl_run_once(gwrl * rl) {
 	int i = 0;
-	if(rl->_qsrc) gwrl_install_queued_sources(rl);
-	if(rl->_qevt) gwrl_install_queued_events(rl);
+	if(rl->_qsrc) {
+		gwrl_install_queued_sources(rl);
+	}
+	if(rl->_qevt) {
+		gwrl_install_queued_events(rl);
+	}
 	gwrl_dispatch(rl);
 	if(flisset(rl->flags,GWRL_STOP)) {
 		flclr(rl->flags,GWRL_STOP);
