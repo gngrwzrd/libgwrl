@@ -133,12 +133,17 @@ typedef struct gwpr_error_info {
 } gwpr_error_info;
 
 //include some private and implementation specific headers.
-#include "gwrl/proactor_private.h"
+///(private) unused at the moment, but in place for future use if needed.
+typedef struct gwprbufctl {
+	size_t ____unused;
+} gwprbufctl;
+gwprbufctl * gwprbufctl_create();
 #ifdef PLATFORM_WINDOWS
 #	include "gwrl/proactor_imp_iocp.h"
 #else
 #	include "gwrl/proactor_imp.h"
 #endif
+///(end private)
 
 //buffers
 gwprbuf * gwpr_buf_get(gwpr * pr, size_t bufsize);
@@ -204,5 +209,8 @@ void gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid);
 
 //call read or write filters with ioinfo provided.
 void gwpr_filter_call(gwpr * pr, gwrlsrc_file * fsrc, gwpr_io_info * info, gwpr_filter_id fid);
+
+
+
 
 #endif
