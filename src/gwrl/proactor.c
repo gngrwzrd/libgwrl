@@ -138,13 +138,19 @@ gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc) {
 
 void
 gwpr_src_remove(gwpr * pr, gwrlsrc_file * src) {
-	if(src->pdata) free(src->pdata);
+	if(src->pdata) {
+		free(src->pdata);
+		src->pdata = NULL;
+	}
 	gwrl_src_remove(pr->rl,(gwrlsrc *)src);
 }
 
 void
 gwpr_src_del(gwpr * pr, gwrlsrc_file * src) {
-	if(src->pdata) free(src->pdata);
+	if(src->pdata) {
+		free(src->pdata);
+		src->pdata = NULL;
+	}
 	gwrl_src_del(pr->rl,(gwrlsrc *)src,NULL,true);
 }
 
