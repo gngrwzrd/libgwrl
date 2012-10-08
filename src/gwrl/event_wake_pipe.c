@@ -6,7 +6,11 @@ void gwrl_wake(gwrl * rl) {
 		ssize_t res = 0;
 		while(1) {
 			res = write(rl->fds[1],"wake",4);
-			if(res < 0 && errno == EINTR) continue;
+			if(res < 0 && errno == EINTR) {
+				#ifndef GWRL_HIDE_FROM_COVERAGE
+					continue;
+				#endif
+			}
 			break;
 		}
 	}
@@ -14,20 +18,30 @@ void gwrl_wake(gwrl * rl) {
 
 void gwrl_wake_init(gwrl * rl) {
 	gwrlsrc * fsrc = NULL;
-	while((pipe((int *)rl->fds)) < 0) {
-		#ifndef GWRL_HIDE_FROM_COVERAGE
-		gwprintsyserr("(3FG9D) pipe error",errno);
-		#endif
-	}
+	
+	#ifdef GWRL_HIDE_FROM_COVERAGE
+		pipe((int *)rl->fds);
+	#endif
+
+	#ifndef GWRL_HIDE_FROM_COVERAGE
+		int res = pipe((int *)rl->fds);
+		while(res < 0) {
+			pipe((int *)rl->fds);
+			gwprintsyserr("(3FG9D) pipe error",errno);
+		}
+	#endif
+	
 	fcntl(rl->fds[0],F_SETFL,O_NONBLOCK);
 	fcntl(rl->fds[1],F_SETFL,O_NONBLOCK);
 	fsrc = gwrl_src_file_create((fileid_t)rl->fds[0],GWRL_RD,&gwrl_wake_activity,NULL);
+	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!fsrc) {
 		gwerr("(3FDli) gwrl_wake_init couldn't create file input source");
 		return;
 	}
 	#endif
+	
 	gwrl_src_add(rl,fsrc);
 }
 
@@ -43,8 +57,15 @@ void gwrl_wake_activity(gwrl * rl, gwrlevt * evt) {
 		char buf[4];
 		while(1) {
 			res = read(evt->fd,buf,4);
-			if(res > 0) continue;
-			if(res <= 0 && errno != EAGAIN && errno != EWOULDBLOCK) reinit = true;
+			
+			if(res > 0) {
+				continue;
+			}
+			
+			if(res <= 0 && errno != EAGAIN && errno != EWOULDBLOCK) {
+				reinit = true;
+			}
+
 			break;
 		}
 		if(reinit) {
