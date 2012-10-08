@@ -44,7 +44,7 @@ int main(int argc, char ** argv) {
 	assert(pdata->wrq->next->next == q3);
 	assert(pdata->wrq->next->next->next == q4);
 	assert(pdata->wrqlast == q4);
-
+	
 	//assert free/cache
 	pdata->wrq = NULL;
 	gwprwrq_free(pr,fsrc,q1);
@@ -65,6 +65,12 @@ int main(int argc, char ** argv) {
 	assert(pr->wrqcache->next == q2);
 	assert(pr->wrqcache->next->next == q1);
 	assert(pr->wrqcache->next->next->next == NULL);
+
+	q4 = pr->wrqcache;
+	pr->wrqcache = NULL;
+	pr->nwrqcache = 0;
+	gwprwrq_free_list_no_cache(pr,q4);
+	assert(pr->wrqcache == NULL);
 
 	return 0;
 }

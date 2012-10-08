@@ -65,8 +65,14 @@ if(NOT PLATFORM_WINDOWS)
 	add_executable(proactor_wrq proactor_wrq.c)
 	target_link_libraries(proactor_wrq gwrl)
 
+	add_executable(proactor_gwprwrq_get proactor_gwprwrq_get.c)
+	target_link_libraries(proactor_gwprwrq_get gwrl)
+
 	add_executable(proactor_thread_specific_nix proactor_thread_specific_nix.c)
 	target_link_libraries(proactor_thread_specific_nix gwrl pthread)
+
+	add_executable(proactor_gwpr_src_activity_write_qitem_result proactor_gwpr_src_activity_write_qitem_result.c)
+	target_link_libraries(proactor_gwpr_src_activity_write_qitem_result gwrl)
 endif()
 
 if(${WIN32})

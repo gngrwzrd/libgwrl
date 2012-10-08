@@ -10,6 +10,8 @@ int main(int argc, char ** argv) {
 	gwrl_allow_poll_sleep(rl,0);
 	gwrl_run_once(rl);
 	assert(asserts_var2);
+	#else
+	printf(stderr,"reactor_no_sleep requires GWRL_COVERAGE_INTERNAL_ASSERT_VARS to be on in CMake.");
 	#endif
 	
 	return 0;

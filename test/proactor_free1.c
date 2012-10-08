@@ -33,7 +33,7 @@ int main(int argc, char ** argv) {
 	}
 	gwrl_free(NULL,&sources);
 	didrd(NULL,NULL);
-
+	
 	rl = gwrl_create();
 	pr = gwpr_create(rl);
 	rl->sources[GWRL_SRC_TYPE_FILE] = NULL;
