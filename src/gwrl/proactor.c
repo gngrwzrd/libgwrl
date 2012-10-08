@@ -214,7 +214,11 @@ gwpr_filter_id fid) {
 			}
 		}
 	} else if(fid == gwpr_wrfilter_id) {
-
+		int i = 0;
+		for(; i< GWPR_FILTERS_MAX; i++) {
+			if(!pdata->wrfilters[i]) break;
+			pdata->wrfilters[i](pr,ioinfo);
+		}
 	}
 }
 
