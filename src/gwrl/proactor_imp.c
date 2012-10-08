@@ -67,6 +67,7 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 
 	//setup vars
 	int _res = 0;
+	int _fnccnt = 0;
 	char errfnc[16];
 	gwprdata * pdata = fsrc->pdata;
 	gwprbuf * rd = pdata->rdbuf;
@@ -78,12 +79,14 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 
 	if(ioinfo->op == gwpr_read_op_id) {
 		//normal read
+		_fnccnt = 5;
 		memcpy(errfnc,"read\0",5);
 		while((_res=read(fsrc->fd,rd->buf,rd->bufsize)) < 0 && errno==EINTR);
 	}
 	
 	else if(pdata->rdop == gwpr_recvfrom_op_id) {
 		//recvfrom (probably udp)
+		_fnccnt = 9;
 		memcpy(errfnc,"recvfrom\0",9);
 		ioinfo->peerlen = sizeof(ioinfo->peer);
 		while((_res=recvfrom(fsrc->fd,rd->buf,rd->bufsize,0,
@@ -91,6 +94,7 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 	}
 	
 	else if(pdata->rdop == gwpr_recv_op_id) {
+		_fnccnt = 9;
 		memcpy(errfnc,"recv\0",5);
 		while((_res=recv(fsrc->fd,rd->buf,rd->bufsize,0)) < 0 && errno == EINTR);
 	}
@@ -98,7 +102,7 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 	if(_res < 0) {
 		//error, copy the name of the function that errored
 		//info the errinfo payload.
-		memcpy(errinfo->fnc,errfnc,16);
+		memcpy(errinfo->fnc,errfnc,_fnccnt);
 	}
 	
 	//update results
@@ -150,6 +154,121 @@ gwrlsrc_file * fsrc, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 	}
 }
 
+void
+gwpr_src_activity_write_qitem(gwpr * pr, gwrlsrc_file * fsrc,
+gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
+size_t * written, int * errnm) {
+	//this method writes only a single gwprwrq item
+
+	//setup vars
+	int _errnm = 0;
+	size_t _written = 0;
+	gwprdata * pdata = fsrc->pdata;
+	ioinfo->src = fsrc;
+	ioinfo->op = q->wrop;
+	ioinfo->buf = q->buf;
+	ioinfo->peerlen = q->peerlen;
+
+	//copy peer info if needed
+	if(q->wrop == gwpr_sendto_op_id) {
+		memcpy(&ioinfo->peer,&q->peer,q->peerlen);
+	} else {
+		bzero(&ioinfo->peer,sizeof(ioinfo->peer));
+	}
+	
+	//call write filters
+	if(pdata->wrfilters && pdata->wrfilters[0] != NULL) {
+		gwpr_filter_call(pr,fsrc,ioinfo,gwpr_wrfilter_id);
+	}
+	
+	//perform the write
+	gwpr_write_buffer(pr,fsrc,q->buf,q->wrop,&q->peer,q->peerlen,&_written,&_errnm);
+
+	//update the error fnc if an error occured
+	if(_written == 0 && errnm != 0) {
+		if(q->wrop == gwpr_write_op_id) memcpy(errinfo->fnc,"write\0",6);
+		else if(q->wrop == gwpr_sendto_op_id) memcpy(errinfo->fnc,"sendto\0",7);
+		else if(q->wrop == gwpr_send_op_id) memcpy(errinfo->fnc,"send\0",5);
+	}
+
+	//update results
+	*written = _written;
+	*errnm = _errnm;
+}
+
+bool
+gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc_file * fsrc,
+gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
+size_t written, int errnm, bool * stopwrite) {
+	bool continue_result = true;
+	gwprdata * pdata = fsrc->pdata;
+	gwprbuf * rembuf = NULL;
+	ioinfo->buf = q->buf;
+	
+	if(written == q->buf->len) {
+		//successfully wrote all data.
+		pdata->didwritecb(pr,ioinfo);
+	}
+	
+	else if(written > 0 && written < q->buf->len) {
+		//partial write. the unwritten data is copied to a new
+		//buffer to put back in the write queue. notify the user
+		//of the partial write - only the written data is reported.
+		size_t remain = q->buf->len - written;
+		rembuf = gwpr_buf_get(pr,remain);
+		while(!rembuf) rembuf = gwpr_buf_get(pr,remain);
+		memcpy(rembuf->buf,q->buf->buf+written,remain);
+		q->buf->len = written;
+		pdata->didwritecb(pr,ioinfo);
+
+		if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {
+			//all is ok, but since it's a partial write the
+			//queue has to be put back for writing again later
+			gwprwrq * rembufq = gwprwrq_get(pr,fsrc);
+			memcpy(&rembufq->peer,&q->peer,sizeof(rembufq->peer));
+			rembuf->len = remain;
+			rembufq->peerlen = q->peerlen;
+			rembufq->buf = rembuf;
+			rembufq->wrop = q->wrop;
+			rembufq->next = q->next;
+			gwprwrq_putback(pr,fsrc,rembufq);
+			continue_result = false;
+		}
+	}
+
+	if(errnm == ECONNRESET || errnm == EPIPE) {
+		//closed connection or pipe write with no read side connected.
+		//buf is nulled out because we should only give the user data
+		//that had been unwritten in the case of errors or closed fd.
+		if(written > 0) ioinfo->buf = rembuf;
+		else ioinfo->buf = NULL;
+		if(pdata->closedcb) pdata->closedcb(pr,ioinfo);
+	}
+
+	else if(written == 0 && (errnm == EWOULDBLOCK || errnm == EAGAIN)) {
+		//socket or file is non blocking and this would block.
+		//the socket or file is not-writable so restore the write
+		//queue starting from this q object for writing later.
+		gwprwrq_putback(pr,fsrc,q);
+		continue_result = false;
+	}
+
+	else if(errnm != 0 && pdata->errorcb) {
+		//error we don't want to handle. pass to the user.
+		errinfo->errnm = errno;
+		errinfo->src = fsrc;
+		errinfo->op = q->wrop;
+		errinfo->buf = q->buf;
+		if(written > 0) errinfo->buf = rembuf;
+		pdata->errorcb(pr,errinfo);
+		*stopwrite = true;
+		gwprwrq_putback(pr,fsrc,q);
+		continue_result = false;
+	}
+
+	return continue_result;
+}
+
 void 
 gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 	//this method is the callback method for all file input sources added
@@ -171,10 +290,12 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 		bzero(errfnc,sizeof(errfnc));
 		if(!pdata) return;
 
-		if(evt->flags & GWRL_RD) { //readable activity
+		if(evt->flags & GWRL_RD) {
+			//read activity is available
 			ssize_t res = 0;
+			
 			if(pdata->didreadcb) {
-				//did read callback is set so let's try and read data.
+				//did read callback is set, try and read data.
 				gwpr_src_activity_read(pr,fsrc,&res,&ioinfo,&errinfo);
 				gwpr_src_activity_read_result(res,pr,fsrc,&ioinfo,&errinfo);
 			} else if(pdata->acceptcb) {
@@ -185,7 +306,9 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			}
 		}
 		
-		if(evt->flags & GWRL_WR) { //writable activity
+		if(evt->flags & GWRL_WR) {
+			//write activity is available
+			
 			if(pdata->connectcb) {
 				//the user wanted to know when a socket is writable after
 				//calling connect(), call it here and disable the connectcb.
@@ -197,128 +320,51 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			}
 			
 			if(pdata->didwritecb) {
-				//write callback is set, let's try and write some data.
+				//write callback is set, try and write data.
+				
+				//setup vars
 				int errnm = 0;
 				bool stopwrite = false;
 				bool freebuf = false;
+				bool continue_result = true;
 				size_t written = 0;
+				
+				//save all write q items to write.
 				gwprwrq * q = pdata->wrq;
 				gwprwrq * qn = NULL;
-				gwprbuf * rembuf = NULL;
 				pdata->wrq = NULL;
-				if(pdata->didwritecb == &io_activity) freebuf = true;
-				bzero(&ioinfo,sizeof(ioinfo));
-				bzero(&errinfo,sizeof(errinfo));
-				ioinfo.src = fsrc;
-				
+
+				if(pdata->didwritecb == &io_activity) {
+					//didwrite is set to internal callback so the
+					//write buffers must be freed after every write.
+					freebuf = true;
+				}
+
 				while(q) {
-					//loop over the gwprwrq objects associated with the file
-					//input source - this is all the data queued for writing.
-					
+					//write all gwprwrq items.
 					qn = q->next;
-					ioinfo.op = q->wrop;
-					ioinfo.buf = q->buf;
-					if(q->wrop == gwpr_sendto_op_id) {
-						ioinfo.peerlen = q->peerlen;
-						memcpy(&ioinfo.peer,&q->peer,q->peerlen);
-					} else {
-						ioinfo.peerlen = 0;
-						bzero(&ioinfo.peer,sizeof(ioinfo.peer));
-					}
+					gwpr_src_activity_write_qitem(pr,fsrc,q,&ioinfo,&errinfo,&written,&errnm);
+					continue_result = gwpr_src_activity_write_qitem_result(pr,fsrc,q,&ioinfo,&errinfo,written,errnm,&stopwrite);
 					
-					if(pdata->wrfilters && pdata->wrfilters[0] != NULL) {
-						//call write filters before we send the data.
-						int i = 0;
-						for(; i< GWPR_FILTERS_MAX; i++) {
-							if(!pdata->wrfilters[i]) break;
-							pdata->wrfilters[i](pr,&ioinfo);
-						}
-					}
-					
-					//update the error fnc in case we need it.
-					if(q->wrop == gwpr_write_op_id) memcpy(errfnc,"write\0",6);
-					else if(q->wrop == gwpr_sendto_op_id) memcpy(errfnc,"sendto\0",7);
-					else if(q->wrop == gwpr_send_op_id) memcpy(errfnc,"send\0",5);
-					
-					//perform the write.
-					gwpr_write_buffer(pr,fsrc,q->buf,q->wrop,&q->peer,q->peerlen,&written,&errnm);
-					
-					if(written == q->buf->len) {
-						//successfully wrote all data.
-						pdata->didwritecb(pr,&ioinfo);
-					}
-					
-					else if(written > 0 && written < q->buf->len) {
-						//partial write. the unwritten data is copied to a new
-						//buffer to put back in the write queue. notify the user
-						//of the partial write - only the written data is reported.
-						size_t remain = q->buf->len - written;
-						rembuf = gwpr_buf_get(pr,remain);
-						while(!rembuf) rembuf = gwpr_buf_get(pr,remain);
-						memcpy(rembuf->buf,q->buf->buf+written,remain);
-						q->buf->len = written;
-						pdata->didwritecb(pr,&ioinfo);
-						
-						if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {
-							//all is ok, but since it's a partial write the
-							//queue has to be put back for writing again later
-							gwprwrq * rembufq = gwprwrq_get(pr,fsrc);
-							memcpy(&rembufq->peer,&q->peer,sizeof(rembufq->peer));
-							rembufq->peerlen = q->peerlen;
-							rembufq->buf = rembuf;
-							rembufq->wrop = q->wrop;
-							rembufq->next = q->next;
-							gwprwrq_putback(pr,fsrc,rembufq);
-							break;
-						}
-					}
-
-					if(errnm == ECONNRESET || errnm == EPIPE) {
-						//closed connection or pipe write with no read side connected.
-						//buf is nulled out because we should only give the user data
-						//that had been unwritten in the case of errors or closed fd.
-						if(written > 0) ioinfo.buf = rembuf;
-						else ioinfo.buf = NULL;
-						if(pdata->closedcb) pdata->closedcb(pr,&ioinfo);
-						break;
-					}
-
-					else if(written == 0 && (errnm == EWOULDBLOCK || errnm == EAGAIN)) {
-						//socket or file is non blocking and this would block.
-						//the socket or file is not-writable so restore the write
-						//queue starting from this q object for writing later.
-						gwprwrq_putback(pr,fsrc,q);
-						break;
-					}
-
-					else if(errnm != 0 && pdata->errorcb) {
-						//error we don't want to handle. pass to the user.
-						errinfo.errnm = errno;
-						errinfo.src = fsrc;
-						errinfo.op = q->wrop;
-						errinfo.buf = q->buf;
-						if(written > 0) errinfo.buf = rembuf;
-						memcpy(errinfo.fnc,errfnc,sizeof(errfnc));
-						pdata->errorcb(pr,&errinfo);
-						stopwrite = true;
-						gwprwrq_putback(pr,fsrc,q);
+					if(stopwrite || !continue_result) {
+						//continue_result - write events should stay installed
+						//but we should try again later, so break loop early.
 						break;
 					}
 					
 					if(freebuf) {
-						//there was no user provided did_write callback set, so
-						//the buffer that's associated with a write queue item will
-						//get lost unless freed here.
+						//no user provided didwrite callback so the
+						//buffer used to write the data needs to be freed.
 						gwpr_buf_free(pr,q->buf);
 					}
 
-					//give back the gwprwrq
+					//give back the gwprwrq item
 					gwprwrq_free(pr,fsrc,q);
 					q = qn;
 				}
 				
 				if(!pdata->wrq || stopwrite) {
-					//stop write events since there's nothing in the queue
+					//shut off write events for this input source.
 					gwrlsrc_flags_t flags = src->flags;
 					flclr(flags,GWRL_WR);
 					gwrl_src_file_update_flags(pr->rl,src,flags);
@@ -374,38 +420,43 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 
 void
 gwpr_free(gwpr * pr) {
+	//free a proactor. note that this does not free
+	//the input sources that are installed in the
+	//reactor, it only disables them.
+
 	int i = 0;
 	gwrlsrc * src = NULL;
 	gwrlsrc_file * fsrc = NULL;
-	
 	gwrl_dispatch(pr->rl);
 
 	for(; i<GWRL_SRC_TYPES_COUNT; i++) {
 		src = pr->rl->sources[i];
 		while(src) {
 			if(src->type == GWRL_SRC_TYPE_FILE) {
-				gwrl_src_disable(pr->rl,src);
 				fsrc = _gwrlsrcf(src);
-				src->callback = NULL;
 				if(fsrc->pdata) {
 					gwprdata * pdata = fsrc->pdata;
+					gwrl_src_disable(pr->rl,src);
+					src->callback = NULL;
+					
 					if(pdata->rdfilters) {
 						free(pdata->rdfilters);
-						pdata->rdfilters = NULL;
 					}
+					
 					if(pdata->wrfilters) {
 						free(pdata->wrfilters);
-						pdata->wrfilters = NULL;
 					}
+					
 					if(pdata->rdbuf) {
 						gwpr_buf_free(pr,pdata->rdbuf);
-						pdata->rdbuf = NULL;
 					}
+					
 					if(pdata->wrq) {
 						gwprwrq_free_list_no_cache(pr,pdata->wrq);
 						pdata->wrq = NULL;
 						pdata->wrqlast = NULL;
 					}
+
 					free(fsrc->pdata);
 					fsrc->pdata = NULL;
 				}
@@ -413,12 +464,15 @@ gwpr_free(gwpr * pr) {
 			src = src->next;
 		}
 	}
+	
 	if(pr->wrqcache) {
 		gwprwrq_free_list_no_cache(pr,pr->wrqcache);
 	}
+	
 	if(pr->bufctl) {
 		free(pr->bufctl);
 	}
+	
 	pr->rl->pr = NULL;
 	pr->rl = NULL;
 	free(pr);
@@ -436,11 +490,14 @@ size_t * written, int * errnm) {
 		*errnm = 0;
 		
 		if(op == gwpr_write_op_id) {
-			while((didwrite=write(fsrc->fd,_buf,towrite)) && didwrite < 0 && (errno == EINTR));
+			while((didwrite=write(fsrc->fd,_buf,towrite)) &&
+				didwrite < 0 && (errno == EINTR));
 		} else if(op == gwpr_send_op_id) {
-			while((didwrite=send(fsrc->fd,_buf,towrite,0)) && didwrite < 0 && (errno == EINTR));
+			while((didwrite=send(fsrc->fd,_buf,towrite,0)) &&
+				didwrite < 0 && (errno == EINTR));
 		} else if(op == gwpr_sendto_op_id) {
-			while((didwrite=sendto(fsrc->fd,_buf,towrite,0, _sockaddr(peer),peerlen)) && didwrite < 0 && (errno == EINTR));
+			while((didwrite=sendto(fsrc->fd,_buf,towrite,0,
+				_sockaddr(peer),peerlen)) && didwrite < 0 && (errno == EINTR));
 		}
 		
 		if(didwrite > 0) {
@@ -824,7 +881,7 @@ gwprwrq_free_list_no_cache(gwpr * pr, gwprwrq * wrq) {
 	while(_wrq) {
 		_del = _wrq;
 		_wrq = _wrq->next;
-		gwpr_buf_free(pr,_del->buf);
+		if(_del->buf) gwpr_buf_free(pr,_del->buf);
 		free(_del);
 	}
 }
