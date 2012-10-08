@@ -31,13 +31,13 @@
             <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">34</td>
-            <td class="headerCovTableEntry">43</td>
-            <td class="headerCovTableEntryMed">79.1 %</td>
+            <td class="headerCovTableEntry">45</td>
+            <td class="headerCovTableEntry">46</td>
+            <td class="headerCovTableEntryHi">97.8 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-02</td>
+            <td class="headerValue">2012-10-07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">7</td>
-            <td class="headerCovTableEntry">18</td>
-            <td class="headerCovTableEntryLo">38.9 %</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntry">16</td>
+            <td class="headerCovTableEntryLo">62.5 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -72,67 +72,88 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">        886 : void gwrl_wake(gwrl * rl) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">        886 :         if(flisset(rl-&gt;flags,GWRL_SLEEPING)) {</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">          2 :                 ssize_t res = 0;</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">          2 :                 while(1) {</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">          2 :                         res = write(rl-&gt;fds[1],&quot;wake&quot;,4);</span>
-<span class="lineNum">       9 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          2 :                         if(res &lt; 0 &amp;&amp; errno == EINTR) continue;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">          2 :                         break;</span>
-<span class="lineNum">      11 </span>                :            :                 }
-<span class="lineNum">      12 </span>                :<span class="lineCov">          2 :         }</span>
-<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">        886 : }</span></a>
-<span class="lineNum">      14 </span>                :            : 
-<span class="lineNum">      15 </span>                :<span class="lineCov">         29 : void gwrl_wake_init(gwrl * rl) {</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         29 :         gwrlsrc * fsrc = NULL;</span>
-<span class="lineNum">      17 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 29 times"> + </span>]:<span class="lineCov">         29 :         while((pipe((int *)rl-&gt;fds)) &lt; 0) {</span>
-<span class="lineNum">      18 </span>                :            :                 #ifndef GWRL_HIDE_FROM_COVERAGE
-<span class="lineNum">      19 </span>                :            :                 gwprintsyserr(&quot;(3FG9D) pipe error&quot;,errno);
-<span class="lineNum">      20 </span>                :            :                 #endif
-<span class="lineNum">      21 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         29 :         fcntl(rl-&gt;fds[0],F_SETFL,O_NONBLOCK);</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">         29 :         fcntl(rl-&gt;fds[1],F_SETFL,O_NONBLOCK);</span>
-<span class="lineNum">      24 </span>                :<span class="lineCov">         29 :         fsrc = gwrl_src_file_create((fileid_t)rl-&gt;fds[0],GWRL_RD,&amp;gwrl_wake_activity,NULL);</span>
-<span class="lineNum">      25 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
-<span class="lineNum">      26 </span>                :            :         if(!fsrc) {
-<span class="lineNum">      27 </span>                :            :                 gwerr(&quot;(3FDli) gwrl_wake_init couldn't create file input source&quot;);
-<span class="lineNum">      28 </span>                :            :                 return;
-<span class="lineNum">      29 </span>                :            :         }
-<span class="lineNum">      30 </span>                :            :         #endif
-<span class="lineNum">      31 </span>                :<span class="lineCov">         29 :         gwrl_src_add(rl,fsrc);</span>
-<a name="32"><span class="lineNum">      32 </span>                :<span class="lineCov">         29 : }</span></a>
-<span class="lineNum">      33 </span>                :            : 
-<span class="lineNum">      34 </span>                :<span class="lineCov">          8 : void gwrl_wake_free(gwrl * rl) {</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">          8 :         close((int)rl-&gt;fds[0]);</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">          8 :         close((int)rl-&gt;fds[1]);</span>
-<a name="37"><span class="lineNum">      37 </span>                :<span class="lineCov">          8 : }</span></a>
-<span class="lineNum">      38 </span>                :            : 
-<span class="lineNum">      39 </span>                :<span class="lineCov">          2 : void gwrl_wake_activity(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      40 </span>                :<span class="lineCov">          2 :         int res = 0;</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">          2 :         bool reinit = false;</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">          2 :         if(flisset(evt-&gt;flags,GWRL_RD)) {</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">          2 :                 char buf[4];</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">          2 :                 while(1) {</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">          4 :                         res = read(evt-&gt;fd,buf,4);</span>
-<span class="lineNum">      46 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :                         if(res &gt; 0) continue;</span>
-<span class="lineNum">      47 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                         if(res &lt;= 0 &amp;&amp; errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK) reinit = true;</span>
-<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
-<span class="lineNum">      48 </span>                :<span class="lineCov">          2 :                         break;</span>
-<span class="lineNum">      49 </span>                :            :                 }
-<span class="lineNum">      50 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :                 if(reinit) {</span>
-<span class="lineNum">      51 </span>                :            :                         #ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-<span class="lineNum">      52 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineNoCov">          0 :                         if(asserts_var1 == gwrl_assert_wake_reinit) {</span>
-<span class="lineNum">      53 </span>                :<span class="lineNoCov">          0 :                                 asserts_var2 = true;</span>
-<span class="lineNum">      54 </span>                :<span class="lineNoCov">          0 :                         }</span>
-<span class="lineNum">      55 </span>                :            :                         #endif
-<span class="lineNum">      56 </span>                :            : 
-<span class="lineNum">      57 </span>                :<span class="lineNoCov">          0 :                         close(rl-&gt;fds[0]);</span>
-<span class="lineNum">      58 </span>                :<span class="lineNoCov">          0 :                         close(rl-&gt;fds[1]);</span>
-<span class="lineNum">      59 </span>                :<span class="lineNoCov">          0 :                         gwrl_src_del(rl,evt-&gt;src,NULL,true);</span>
-<span class="lineNum">      60 </span>                :<span class="lineNoCov">          0 :                         gwrl_wake_init(rl);</span>
-<span class="lineNum">      61 </span>                :<span class="lineNoCov">          0 :                 }</span>
-<span class="lineNum">      62 </span>                :<span class="lineCov">          2 :         }</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">          2 : }</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">        596 : void gwrl_wake(gwrl * rl) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">        596 :         if(flisset(rl-&gt;flags,GWRL_SLEEPING)) {</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">          1 :                 ssize_t res = 0;</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">          1 :                 while(1) {</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">          1 :                         res = write(rl-&gt;fds[1],&quot;wake&quot;,4);</span>
+<span class="lineNum">       9 </span>[<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>][<span class="branchNoExec" title="Branch 2 was not executed"> # </span><span class="branchNoExec" title="Branch 3 was not executed"> # </span>]:<span class="lineCov">          1 :                         if(res &lt; 0 &amp;&amp; errno == EINTR) {</span>
+<span class="lineNum">      10 </span>                :            :                                 #ifndef GWRL_HIDE_FROM_COVERAGE
+<span class="lineNum">      11 </span>                :            :                                         continue;
+<span class="lineNum">      12 </span>                :            :                                 #endif
+<span class="lineNum">      13 </span>                :<span class="lineNoCov">          0 :                         }</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">          1 :                         break;</span>
+<span class="lineNum">      15 </span>                :            :                 }
+<span class="lineNum">      16 </span>                :<span class="lineCov">          1 :         }</span>
+<a name="17"><span class="lineNum">      17 </span>                :<span class="lineCov">        596 : }</span></a>
+<span class="lineNum">      18 </span>                :            : 
+<span class="lineNum">      19 </span>                :<span class="lineCov">         32 : void gwrl_wake_init(gwrl * rl) {</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         32 :         gwrlsrc * fsrc = NULL;</span>
+<span class="lineNum">      21 </span>                :            :         
+<span class="lineNum">      22 </span>                :            :         #ifdef GWRL_HIDE_FROM_COVERAGE
+<span class="lineNum">      23 </span>                :<span class="lineCov">         32 :                 pipe((int *)rl-&gt;fds);</span>
+<span class="lineNum">      24 </span>                :            :         #endif
+<span class="lineNum">      25 </span>                :            : 
+<span class="lineNum">      26 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
+<span class="lineNum">      27 </span>                :            :                 int res = pipe((int *)rl-&gt;fds);
+<span class="lineNum">      28 </span>                :            :                 while(res &lt; 0) {
+<span class="lineNum">      29 </span>                :            :                         pipe((int *)rl-&gt;fds);
+<span class="lineNum">      30 </span>                :            :                         gwprintsyserr(&quot;(3FG9D) pipe error&quot;,errno);
+<span class="lineNum">      31 </span>                :            :                 }
+<span class="lineNum">      32 </span>                :            :         #endif
+<span class="lineNum">      33 </span>                :            :         
+<span class="lineNum">      34 </span>                :<span class="lineCov">         32 :         fcntl(rl-&gt;fds[0],F_SETFL,O_NONBLOCK);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         32 :         fcntl(rl-&gt;fds[1],F_SETFL,O_NONBLOCK);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         32 :         fsrc = gwrl_src_file_create((fileid_t)rl-&gt;fds[0],GWRL_RD,&amp;gwrl_wake_activity,NULL);</span>
+<span class="lineNum">      37 </span>                :            :         
+<span class="lineNum">      38 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
+<span class="lineNum">      39 </span>                :            :         if(!fsrc) {
+<span class="lineNum">      40 </span>                :            :                 gwerr(&quot;(3FDli) gwrl_wake_init couldn't create file input source&quot;);
+<span class="lineNum">      41 </span>                :            :                 return;
+<span class="lineNum">      42 </span>                :            :         }
+<span class="lineNum">      43 </span>                :            :         #endif
+<span class="lineNum">      44 </span>                :            :         
+<span class="lineNum">      45 </span>                :<span class="lineCov">         32 :         gwrl_src_add(rl,fsrc);</span>
+<a name="46"><span class="lineNum">      46 </span>                :<span class="lineCov">         32 : }</span></a>
+<span class="lineNum">      47 </span>                :            : 
+<span class="lineNum">      48 </span>                :<span class="lineCov">          8 : void gwrl_wake_free(gwrl * rl) {</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">          8 :         close((int)rl-&gt;fds[0]);</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">          8 :         close((int)rl-&gt;fds[1]);</span>
+<a name="51"><span class="lineNum">      51 </span>                :<span class="lineCov">          8 : }</span></a>
+<span class="lineNum">      52 </span>                :            : 
+<span class="lineNum">      53 </span>                :<span class="lineCov">          3 : void gwrl_wake_activity(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">          3 :         int res = 0;</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">          3 :         bool reinit = false;</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">          3 :         if(flisset(evt-&gt;flags,GWRL_RD)) {</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">          3 :                 char buf[4];</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">          3 :                 while(1) {</span>
+<span class="lineNum">      59 </span>                :<span class="lineCov">          4 :                         res = read(evt-&gt;fd,buf,4);</span>
+<span class="lineNum">      60 </span>                :            :                         
+<span class="lineNum">      61 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          4 :                         if(res &gt; 0) {</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">          1 :                                 continue;</span>
+<span class="lineNum">      63 </span>                :            :                         }
+<span class="lineNum">      64 </span>                :            :                         
+<span class="lineNum">      65 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchCov" title="Branch 3 was taken 1 time"> + </span>]:<span class="lineCov">          3 :                         if(res &lt;= 0 &amp;&amp; errno != EAGAIN &amp;&amp; errno != EWOULDBLOCK) {</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<span class="lineNum">      66 </span>                :<span class="lineCov">          2 :                                 reinit = true;</span>
+<span class="lineNum">      67 </span>                :<span class="lineCov">          2 :                         }</span>
+<span class="lineNum">      68 </span>                :            : 
+<span class="lineNum">      69 </span>                :<span class="lineCov">          3 :                         break;</span>
+<span class="lineNum">      70 </span>                :            :                 }
+<span class="lineNum">      71 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          3 :                 if(reinit) {</span>
+<span class="lineNum">      72 </span>                :            :                         #ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
+<span class="lineNum">      73 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :                         if(asserts_var1 == gwrl_assert_wake_reinit) {</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">          2 :                                 asserts_var2 = true;</span>
+<span class="lineNum">      75 </span>                :<span class="lineCov">          2 :                         }</span>
+<span class="lineNum">      76 </span>                :            :                         #endif
+<span class="lineNum">      77 </span>                :            : 
+<span class="lineNum">      78 </span>                :<span class="lineCov">          2 :                         close(rl-&gt;fds[0]);</span>
+<span class="lineNum">      79 </span>                :<span class="lineCov">          2 :                         close(rl-&gt;fds[1]);</span>
+<span class="lineNum">      80 </span>                :<span class="lineCov">          2 :                         gwrl_src_del(rl,evt-&gt;src,NULL,true);</span>
+<span class="lineNum">      81 </span>                :<span class="lineCov">          2 :                         gwrl_wake_init(rl);</span>
+<span class="lineNum">      82 </span>                :<span class="lineCov">          2 :                 }</span>
+<span class="lineNum">      83 </span>                :<span class="lineCov">          3 :         }</span>
+<span class="lineNum">      84 </span>                :<span class="lineCov">          3 : }</span>
 </pre>
       </td>
     </tr>

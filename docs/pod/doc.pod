@@ -1513,9 +1513,31 @@ Example:
 GWRL has some unit tests for testing data structure integridity internaly,
 and some tests just for coverage purposes.
 
-=head2 Running Unit Tests
+Coverage tests are only supported on Mac OS X and Linux, and only
+with Makefiles.
 
-First 
+=head2 Coverage Tests on Mac OS X
+
+Set the CMAKE_C_COMPILER to "/usr/bin/clang".
+
+Configure and regenerate the Makefile.
+
+Set the CMAKE_BUILD_TYPE to Debug.
+
+Set GWRL_BUILD_COVERAGE on.
+
+Set GWRL_COVERAGE_INTERNAL_ASSERT_VARS on.
+
+Set CMAKE_C_FLAGS_DEBUG to "-g -Wall -fprofile-arcs -ftest-coverage".
+
+Configure and regenerate the Makefile.
+
+Now do this at the commandline:
+
+ make
+ ../../scripts/coverage.sh kqueue
+
+When that's all done the generated lcov files are in gwrl/docs/lcov/.
 
 =head1 GLOBAL TYPES
 

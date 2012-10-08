@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-02</td>
+            <td class="headerValue">2012-10-07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,25 +72,25 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         27 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         27 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">         27 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">         27 :         gwprbuf * buf1 = gwpr_buf_get(pr,128);</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         27 :         gwprbuf * buf2 = gwpr_buf_get(pr,256);</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         27 :         gwprbuf * buf3 = gwpr_buf_get(pr,512);</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         28 :         gwprbuf * buf1 = gwpr_buf_get(pr,128);</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         gwprbuf * buf2 = gwpr_buf_get(pr,256);</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         gwprbuf * buf3 = gwpr_buf_get(pr,512);</span>
 <span class="lineNum">      10 </span>                :            :         
-<span class="lineNum">      11 </span>[<span class="branchCov" title="Branch 0 was taken 27 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf1 &amp;&amp; buf2 &amp;&amp; buf3);</span>
-<span class="lineNum">      12 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf1-&gt;bufsize == 128);</span>
-<span class="lineNum">      13 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf2-&gt;bufsize == 256);</span>
-<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf3-&gt;bufsize == 512);</span>
+<span class="lineNum">      11 </span>[<span class="branchCov" title="Branch 0 was taken 28 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf1 &amp;&amp; buf2 &amp;&amp; buf3);</span>
+<span class="lineNum">      12 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf1-&gt;bufsize == 128);</span>
+<span class="lineNum">      13 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf2-&gt;bufsize == 256);</span>
+<span class="lineNum">      14 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf3-&gt;bufsize == 512);</span>
 <span class="lineNum">      15 </span>                :            :         
-<span class="lineNum">      16 </span>                :<span class="lineCov">         27 :         buf1 = gwpr_buf_get_tagged(pr,128,10);</span>
-<span class="lineNum">      17 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf1-&gt;tag == 10);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         buf1 = gwpr_buf_get_tagged(pr,128,10);</span>
+<span class="lineNum">      17 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf1-&gt;tag == 10);</span>
 <span class="lineNum">      18 </span>                :            :         
-<span class="lineNum">      19 </span>                :<span class="lineCov">         27 :         buf1 = gwpr_buf_get_with_data(pr,10,&quot;word&quot;,100);</span>
-<span class="lineNum">      20 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(buf1 == NULL);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         28 :         buf1 = gwpr_buf_get_with_data(pr,10,&quot;word&quot;,100);</span>
+<span class="lineNum">      20 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(buf1 == NULL);</span>
 <span class="lineNum">      21 </span>                :            :         
-<span class="lineNum">      22 </span>                :<span class="lineCov">         27 :         return 0;</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         28 :         return 0;</span>
 <span class="lineNum">      23 </span>                :            : }
 </pre>
       </td>

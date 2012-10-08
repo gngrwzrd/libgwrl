@@ -4,7 +4,7 @@
 
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-  <title>LCOV - lcov1.info - test/reactor_no_sleep.c</title>
+  <title>LCOV - lcov1.info - test/proactor_gwprwrq_get.c</title>
   <link rel="stylesheet" type="text/css" href="../gcov.css">
 </head>
 
@@ -19,7 +19,7 @@
         <table cellpadding=1 border=0 width="100%">
           <tr>
             <td width="10%" class="headerItem">Current view:</td>
-            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">test</a> - reactor_no_sleep.c<span style="font-size: 80%;"> (source / <a href="reactor_no_sleep.c.func.html">functions</a>)</span></td>
+            <td width="35%" class="headerValue"><a href="../index.html">top level</a> - <a href="index.html">test</a> - proactor_gwprwrq_get.c<span style="font-size: 80%;"> (source / <a href="proactor_gwprwrq_get.c.func.html">functions</a>)</span></td>
             <td width="5%"></td>
             <td width="15%"></td>
             <td width="10%" class="headerCovTableHead">Hit</td>
@@ -31,8 +31,8 @@
             <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">8</td>
-            <td class="headerCovTableEntry">8</td>
+            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">13</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntry">0</td>
-            <td class="headerCovTableEntryHi">-</td>
+            <td class="headerCovTableEntry">1</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -70,23 +70,22 @@
 <pre class="sourceHeading">           Branch data     Line data    Source code</pre>
 <pre class="source">
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
-<a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
+<a name="2"><span class="lineNum">       2 </span>                :            : #include &lt;gwrl/proactor.h&gt;</a>
 <span class="lineNum">       3 </span>                :            : 
 <span class="lineNum">       4 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :            :         
-<span class="lineNum">       6 </span>                :            :         #ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-<span class="lineNum">       7 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         asserts_var2 = false;</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         asserts_var1 = gwrlbkd_no_sleep_assert_true;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwrl_allow_poll_sleep(rl,0);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 :         gwrl_run_once(rl);</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         assert(asserts_var2);</span>
-<span class="lineNum">      13 </span>                :            :         #else
-<span class="lineNum">      14 </span>                :            :         printf(stderr,&quot;reactor_no_sleep requires GWRL_COVERAGE_INTERNAL_ASSERT_VARS to be on in CMake.&quot;);
-<span class="lineNum">      15 </span>                :            :         #endif
-<span class="lineNum">      16 </span>                :            :         
-<span class="lineNum">      17 </span>                :<span class="lineCov">         28 :         return 0;</span>
-<span class="lineNum">      18 </span>                :            : }
+<span class="lineNum">       5 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         28 :         gwrlsrc_file * fsrc1 = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         gwprwrq * q1 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         gwprwrq * q2 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwprwrq_free(pr,fsrc1,q1);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         28 :         gwprwrq_free(pr,fsrc1,q2);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         q1 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         28 :         assert(q1);</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         28 :         q2 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      15 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(q2);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      17 </span>                :            : }
 </pre>
       </td>
     </tr>

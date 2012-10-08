@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-02</td>
+            <td class="headerValue">2012-10-07</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">2</td>
@@ -74,21 +74,21 @@
 <span class="lineNum">       3 </span>                :            : 
 <a name="4"><span class="lineNum">       4 </span>                :            : int count = 0;</a>
 <span class="lineNum">       5 </span>                :            : 
-<span class="lineNum">       6 </span>                :<span class="lineCov">        270 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">        270 :         count++;</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">        270 :         if(count == 10) {</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         27 :                 gwrl_stop(rl);</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         27 :         } else {</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">        243 :                 gwrl_src_enable(rl,evt-&gt;src);</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">        280 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">        280 :         count++;</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">        280 :         if(count == 10) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :                 gwrl_stop(rl);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         } else {</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">        252 :                 gwrl_src_enable(rl,evt-&gt;src);</span>
 <span class="lineNum">      12 </span>                :            :         }
-<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">        270 : }</span></a>
+<a name="13"><span class="lineNum">      13 </span>                :<span class="lineCov">        280 : }</span></a>
 <span class="lineNum">      14 </span>                :            : 
-<span class="lineNum">      15 </span>                :<span class="lineCov">         27 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         27 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         27 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         27 :         gwrl_run(rl);</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         27 :         assert(count == 10);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         27 :         return 0;</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         28 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         28 :         gwrl_run(rl);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         28 :         assert(count == 10);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         28 :         return 0;</span>
 <span class="lineNum">      21 </span>                :            : }
 </pre>
       </td>

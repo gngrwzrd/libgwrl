@@ -200,6 +200,11 @@
 
 	<li><a href="#worker_threads">WORKER THREADS</a></li>
 	<li><a href="#unit_and_coverage_tests">UNIT AND COVERAGE TESTS</a></li>
+	<ul>
+
+		<li><a href="#coverage_tests_on_mac_os_x">Coverage Tests on Mac OS X</a></li>
+	</ul>
+
 	<li><a href="#global_types">GLOBAL TYPES</a></li>
 	<ul>
 
@@ -999,11 +1004,9 @@ performed the operation.</p>
      gwpr_read_op_id,
      gwpr_recv_op_id,
      gwpr_recvfrom_op_id,
-     gwpr_recvmsg_op_id,
      gwpr_write_op_id,
      gwpr_send_op_id,
-     gwpr_sendto_op_id,
-     gwpr_sendmsg_op_id,
+     gwpr_sendto_op_id
  } gwpr_io_op_id;</pre>
 <p>
 </p>
@@ -1070,10 +1073,10 @@ the data and more information.</p>
  gwpr_read(gwpr * pr, gwsrc_file * fsrc, gwprbuf * buf);
  gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
- gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);</pre>
-<p>Any of those will intitiate a read, and upon completion call the gwpr_did_read_cb_id
+ 
+Any of those will intitiate a read, and upon completion call the gwpr_did_read_cb_id
 callback. The buffer provided should be a buffter from gwpr_buf_get, or a buffer you
-know you don't need anymore.</p>
+know you don't need anymore.</pre>
 <p>Example:</p>
 <pre>
  void did_read(gwpr * pr, gwpr_io_info * info) {
@@ -1169,8 +1172,7 @@ the data and more information.</p>
 <pre>
  gwpr_write(gwpr * pr, gwsrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
- gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * addr, socklen_t socklen);
- gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);</pre>
+ gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * addr, socklen_t socklen);</pre>
 <p>Any of those will initiate a write, and upon completion call the gwpr_did_write_cb_id
 callback.</p>
 <p>Example:</p>
@@ -1650,7 +1652,25 @@ your worker threads.</p>
 </p>
 <hr />
 <h1><a name="unit_and_coverage_tests">UNIT AND COVERAGE TESTS</a></h1>
-<p>GWRL Uses gcov and lcov to create and generate HTML output for coverage reports.</p>
+<p>GWRL has some unit tests for testing data structure integridity internaly,
+and some tests just for coverage purposes.</p>
+<p>Coverage tests are only supported on Mac OS X and Linux, and only
+with Makefiles.</p>
+<p>
+</p>
+<h2><a name="coverage_tests_on_mac_os_x">Coverage Tests on Mac OS X</a></h2>
+<p>Set the CMAKE_C_COMPILER to &quot;/usr/bin/clang&quot;.</p>
+<p>Configure and regenerate the Makefile.</p>
+<p>Set the CMAKE_BUILD_TYPE to Debug.</p>
+<p>Set GWRL_BUILD_COVERAGE on.</p>
+<p>Set GWRL_COVERAGE_INTERNAL_ASSERT_VARS on.</p>
+<p>Set CMAKE_C_FLAGS_DEBUG to &quot;-g -Wall -fprofile-arcs -ftest-coverage&quot;.</p>
+<p>Configure and regenerate the Makefile.</p>
+<p>Now do this at the commandline:</p>
+<pre>
+ make
+ ../../scripts/coverage.sh kqueue</pre>
+<p>When that's all done the generated lcov files are in gwrl/docs/lcov/.</p>
 <p>
 </p>
 <hr />
