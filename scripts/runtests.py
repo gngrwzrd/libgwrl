@@ -28,6 +28,7 @@ add_test("proactor_buf")
 add_test("proactor_cb")
 add_test("proactor_filters")
 add_test("proactor_free1")
+add_test("proactor_gwpr_src_activity_write_qitem_result")
 add_test("proactor_gwprwrq_get");
 add_test("proactor_src")
 add_test("proactor_tcp")
