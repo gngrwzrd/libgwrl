@@ -200,6 +200,8 @@ bool
 gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc_file * fsrc,
 gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
 size_t written, int errnm, bool * stopwrite) {
+	size_t remain = 0;
+	bool handled = false;
 	bool continue_result = true;
 	gwprdata * pdata = fsrc->pdata;
 	gwprbuf * rembuf = NULL;
@@ -210,60 +212,71 @@ size_t written, int errnm, bool * stopwrite) {
 		pdata->didwritecb(pr,ioinfo);
 	}
 	
-	else if(written > 0 && written < q->buf->len) {
+	if(written > 0 && written < q->buf->len) {
 		//partial write. the unwritten data is copied to a new
 		//buffer to put back in the write queue. notify the user
 		//of the partial write - only the written data is reported.
-		size_t remain = q->buf->len - written;
+		remain = q->buf->len - written;
 		rembuf = gwpr_buf_get(pr,remain);
 		while(!rembuf) rembuf = gwpr_buf_get(pr,remain);
 		memcpy(rembuf->buf,q->buf->buf+written,remain);
 		q->buf->len = written;
 		pdata->didwritecb(pr,ioinfo);
-
-		if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {
-			//all is ok, but since it's a partial write the
-			//queue has to be put back for writing again later
-			gwprwrq * rembufq = gwprwrq_get(pr,fsrc);
-			memcpy(&rembufq->peer,&q->peer,sizeof(rembufq->peer));
-			rembuf->len = remain;
-			rembufq->peerlen = q->peerlen;
-			rembufq->buf = rembuf;
-			rembufq->wrop = q->wrop;
-			rembufq->next = q->next;
-			gwprwrq_putback(pr,fsrc,rembufq);
-			continue_result = false;
-		}
 	}
-
+	
+	if(remain > 0 && (errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN)) {
+		//all is ok, but since it's a partial write the
+		//queue has to be put back for writing again later
+		handled = true;
+		gwprwrq * rembufq = gwprwrq_get(pr,fsrc);
+		memcpy(&rembufq->peer,&q->peer,sizeof(rembufq->peer));
+		rembuf->len = remain;
+		rembufq->peerlen = q->peerlen;
+		rembufq->buf = rembuf;
+		rembufq->wrop = q->wrop;
+		rembufq->next = q->next;
+		gwprwrq_putback(pr,fsrc,rembufq);
+		continue_result = false;
+	}
+	
+	if(written == 0 && (errnm == EWOULDBLOCK || errnm == EAGAIN)) {
+		//socket or file is non blocking and this would block.
+		//the socket or file is not-writable so restore the write
+		//queue starting from this q object for writing later.
+		handled = true;
+		gwprwrq_putback(pr,fsrc,q);
+		continue_result = false;
+	}
+	
 	if(errnm == ECONNRESET || errnm == EPIPE) {
 		//closed connection or pipe write with no read side connected.
 		//buf is nulled out because we should only give the user data
 		//that had been unwritten in the case of errors or closed fd.
-		if(written > 0) ioinfo->buf = rembuf;
-		else ioinfo->buf = NULL;
-		if(pdata->closedcb) pdata->closedcb(pr,ioinfo);
+		
+		handled = true;
+
+		if(remain > 0) {
+			ioinfo->buf = rembuf;
+		} else {
+			ioinfo->buf = NULL;
+		}
+		
+		if(pdata->closedcb) {
+			pdata->closedcb(pr,ioinfo);
+		}
 	}
 
-	else if(written == 0 && (errnm == EWOULDBLOCK || errnm == EAGAIN)) {
-		//socket or file is non blocking and this would block.
-		//the socket or file is not-writable so restore the write
-		//queue starting from this q object for writing later.
-		gwprwrq_putback(pr,fsrc,q);
-		continue_result = false;
-	}
-
-	else if(errnm != 0 && pdata->errorcb) {
+	if(!handled && errnm != 0 && pdata->errorcb) {
 		//error we don't want to handle. pass to the user.
-		errinfo->errnm = errno;
+		errinfo->errnm = errnm;
 		errinfo->src = fsrc;
 		errinfo->op = q->wrop;
 		errinfo->buf = q->buf;
-		if(written > 0) errinfo->buf = rembuf;
+		if(remain > 0) errinfo->buf = rembuf;
 		pdata->errorcb(pr,errinfo);
-		*stopwrite = true;
 		gwprwrq_putback(pr,fsrc,q);
 		continue_result = false;
+		*stopwrite = true;
 	}
 
 	return continue_result;
