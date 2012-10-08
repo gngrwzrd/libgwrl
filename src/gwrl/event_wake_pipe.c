@@ -6,11 +6,11 @@ void gwrl_wake(gwrl * rl) {
 		ssize_t res = 0;
 		while(1) {
 			res = write(rl->fds[1],"wake",4);
+			#ifndef GWRL_HIDE_FROM_COVERAGE
 			if(res < 0 && errno == EINTR) {
-				#ifndef GWRL_HIDE_FROM_COVERAGE
-					continue;
-				#endif
+				continue;
 			}
+			#endif
 			break;
 		}
 	}
