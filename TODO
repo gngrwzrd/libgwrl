@@ -1,6 +1,4 @@
-
--add options for putting gcov data into a backend folder, then each test in there.
--put lcov handling for each backend
+-breakup gwpr_synchronous_write - it's too big to test easily
 -gwpr_free on Windows
 -gwrl_wake_activity and gwrl_wake can be called less frequently. see
  kcachegrind with data from test/reactor_events.
