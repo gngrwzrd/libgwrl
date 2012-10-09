@@ -13,5 +13,6 @@ int main(int argc, char ** argv) {
 	assert(q1);
 	q2 = gwprwrq_get(pr,fsrc1);
 	assert(q2);
+	assert(pr->wrqcache == NULL);
 	return 0;
 }
