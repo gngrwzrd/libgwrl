@@ -100,7 +100,7 @@ supports so many generators you can read CMake docs for more information.
 Here's how to generate a Makefile on Linux or Mac:
 
  cd libgwrl
- mkdir build; cd build
+ mkdir build/make/; cd build/make/
  cmake ..
  make
 
