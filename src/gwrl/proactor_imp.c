@@ -587,6 +587,8 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 		size_t written = 0;
 		gwpr_write_buffer(pr,fsrc,usedbuf,op,peer,peerlen,&written,&errnm);
 		
+		//TODO: should check for -1 and errors first.
+
 		if(written == usedbuf->len) {
 			//fullwrite success
 
@@ -619,7 +621,7 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 			rembuf = gwpr_buf_get(pr,remaining);
 			while(!rembuf) rembuf = gwpr_buf_get(pr,remaining);
 			memcpy(rembuf->buf,usedbuf->buf + written,remaining);
-
+			
 			//get a wrq for the user data
 			gwprwrq * q = gwprwrq_get(pr,fsrc);
 			q->buf = usedbuf;
