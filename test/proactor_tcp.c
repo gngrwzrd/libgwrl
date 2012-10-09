@@ -41,10 +41,15 @@ void rdfilter2(gwpr * pr, gwpr_io_info * info) {
 void write_data(gwrl * rl, gwrlevt * evt) {
 	gwprbuf * buf = gwpr_buf_get_with_data(pr,32,"hello world",12);
 	buf->buf[11] = '\0';
-	if(rdcount > 50) {
+	if(rdcount > 10) {
 		pr->options.gwpr_synchronous_write_max_bytes = 0;
+		gwpr_write(pr,wrsrc,buf);
+	} else if(rdcount > 25) {
+		pr->options.gwpr_synchronous_write_max_bytes = 256;
 		gwpr_recv(pr,rdsrc,gwpr_buf_get(pr,128));
 		gwpr_send(pr,wrsrc,buf);
+	} else if(rdcount > 50) {
+		pr->options.gwpr_synchronous_write_max_bytes = 0;
 	} else {
 		gwpr_write(pr,wrsrc,buf);
 	}
