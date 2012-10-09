@@ -503,14 +503,23 @@ size_t * written, int * errnm) {
 		*errnm = 0;
 		
 		if(op == gwpr_write_op_id) {
-			while((didwrite=write(fsrc->fd,_buf,towrite)) &&
-				didwrite < 0 && (errno == EINTR));
+			
+			do {
+				didwrite = write(fsrc->fd,_buf,towrite);
+			} while(didwrite < 0 && errno == EINTR);
+
 		} else if(op == gwpr_send_op_id) {
-			while((didwrite=send(fsrc->fd,_buf,towrite,0)) &&
-				didwrite < 0 && (errno == EINTR));
+			
+			do {
+				didwrite = send(fsrc->fd,_buf,towrite,0);
+			} while(didwrite < 0 && errno == EINTR);
+
 		} else if(op == gwpr_sendto_op_id) {
-			while((didwrite=sendto(fsrc->fd,_buf,towrite,0,
-				_sockaddr(peer),peerlen)) && didwrite < 0 && (errno == EINTR));
+			
+			do {
+				didwrite = sendto(fsrc->fd,_buf,towrite,0,_sockaddr(peer),peerlen);
+			} while(didwrite < 0 && errno == EINTR);
+			
 		}
 		
 		if(didwrite > 0) {
