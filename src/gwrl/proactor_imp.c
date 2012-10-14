@@ -67,8 +67,6 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 
 	//setup vars
 	int _res = 0;
-	int _fnccnt = 0;
-	char errfnc[16];
 	gwprdata * pdata = fsrc->pdata;
 	gwprbuf * rd = pdata->rdbuf;
 	while(!rd) rd = gwpr_buf_get(pr,pdata->rdbufsize);
@@ -79,30 +77,34 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 
 	if(ioinfo->op == gwpr_read_op_id) {
 		//normal read
-		_fnccnt = 5;
-		memcpy(errfnc,"read\0",5);
-		while((_res=read(fsrc->fd,rd->buf,rd->bufsize)) < 0 && errno==EINTR);
+		do {
+			_res=read(fsrc->fd,rd->buf,rd->bufsize);
+		} while(_res < 0 && errno == EINTR);
 	}
 	
-	else if(pdata->rdop == gwpr_recvfrom_op_id) {
+	else if(ioinfo->op == gwpr_recvfrom_op_id) {
 		//recvfrom (probably udp)
-		_fnccnt = 9;
-		memcpy(errfnc,"recvfrom\0",9);
 		ioinfo->peerlen = sizeof(ioinfo->peer);
-		while((_res=recvfrom(fsrc->fd,rd->buf,rd->bufsize,0,
-			_sockaddr(&ioinfo->peer),&ioinfo->peerlen)) < 0 && errno == EINTR);
+		do {
+			_res=recvfrom(fsrc->fd,rd->buf,rd->bufsize,0,_sockaddr(&ioinfo->peer),&ioinfo->peerlen);
+		} while(_res < 0 && errno == EINTR);
 	}
 	
-	else if(pdata->rdop == gwpr_recv_op_id) {
-		_fnccnt = 9;
-		memcpy(errfnc,"recv\0",5);
-		while((_res=recv(fsrc->fd,rd->buf,rd->bufsize,0)) < 0 && errno == EINTR);
+	else if(ioinfo->op == gwpr_recv_op_id) {
+		do {
+			_res=recv(fsrc->fd,rd->buf,rd->bufsize,0);
+		} while(_res < 0 && errno == EINTR);
 	}
 
 	if(_res < 0) {
 		//error, copy the name of the function that errored
-		//info the errinfo payload.
-		memcpy(errinfo->fnc,errfnc,_fnccnt);
+		if(ioinfo->op == gwpr_read_op_id) {
+			memcpy(errinfo->fnc,"read\0",5);
+		} else if(ioinfo->op == gwpr_recvfrom_op_id) {
+			memcpy(errinfo->fnc,"recvfrom\0",9);
+		} else if(ioinfo->op == gwpr_recv_op_id) {
+			memcpy(errinfo->fnc,"recv\0",5);
+		}
 	}
 	
 	//update results
