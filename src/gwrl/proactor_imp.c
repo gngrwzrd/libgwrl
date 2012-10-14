@@ -737,22 +737,36 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 void
 gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
+	//this method puts buffer data into the write queue
+
+	//setup vars
 	gwrlsrc * src = _gwrlsrc(fsrc);
 	gwprwrq * q = gwprwrq_get(pr,fsrc);
 	gwrlsrc_flags_t flags = src->flags;
+	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	gwprdata * pdata = fsrc->pdata;
+
+	//make sure we've got a valid callback even if it's internal.
 	if(!pdata->didwritecb) {
 		pdata->didwritecb = &io_activity;
 	}
 	#endif
+	
+	//setup the write queue entry
 	q->buf = buf;
 	q->wrop = op;
 	if(op == gwpr_sendto_op_id) {
 		q->peerlen = peerlen;
 		memcpy(&q->peer,peer,sizeof(q->peer));
 	}
+	
+	//add it to the q
 	gwprwrq_add(pr,fsrc,q);
+
+	//enable write events on this input source - as soon
+	//as the fd is writable we'll be notified and will
+	//write data from the q.
 	flset(flags,GWRL_ENABLED|GWRL_WR);
 	gwrl_src_file_update_flags(pr->rl,src,flags);
 }
