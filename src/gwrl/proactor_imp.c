@@ -540,32 +540,165 @@ size_t * written, int * errnm) {
 }
 
 bool
+gwpr_synchronous_write_result(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_io_op_id op, ssize_t written, int errnm, struct sockaddr_storage * peer,
+socklen_t peerlen) {
+	//this method checks and handles the result from
+	//a call to gwpr_synchronous_write().
+
+	bool didwr = false;
+	size_t remaining = 0;
+	gwrlsrc * src = _gwrlsrc(fsrc);
+	gwprwrq * q = NULL;
+	gwrlevt * evt = NULL;
+	gwprbuf * rembuf = NULL;
+
+	if(written == buf->len) {
+		//fullwrite success
+
+		//get a wrq for the event userdata
+		q = gwprwrq_get(pr,fsrc);
+
+		//get an event to post
+		evt = gwrl_evt_createp(pr->rl,src,&gwpr_src_activity,q,fsrc->fd,GWRL_SYNC_WRITE);
+
+		//post the event back to the proactor to catch.
+		q->buf = buf;
+		q->wrop = op;
+		if(op == gwpr_sendto_op_id) {
+			q->peerlen = peerlen;
+			memcpy(&q->peer,peer,sizeof(q->peer));
+		}
+		gwrl_post_evt(pr->rl,evt);
+		
+		//set result
+		didwr = true;
+
+	} else if(written < buf->len) {
+		//partial write, copy the unwritten data to a new buffer.
+		//post a write event back to the proactor and queue the
+		//remaining data buffer for writing.
+		
+		//copy the remaining buffer data
+		remaining = buf->len - written;
+		rembuf = gwpr_buf_getp(pr,remaining);
+		memcpy(rembuf->buf,buf->buf+written,remaining);
+		
+		//get a wrq for the user data
+		q = gwprwrq_get(pr,fsrc);
+		q->buf = buf;
+		q->wrop = op;
+
+		//update the used buffer to reflect what was actually written.
+		//even though the remaining unwritten buffer data is still in
+		//the buffer it won't matter. users should only use what's in
+		//the len property.
+		buf->len = written;
+
+		//update wrq for udp
+		if(op == gwpr_sendto_op_id) {
+			q->peerlen = peerlen;
+			memcpy(&q->peer,peer,sizeof(q->peer));
+		}
+
+		//get event and post it
+		evt = gwrl_evt_createp(pr->rl,_gwrlsrc(fsrc),&gwpr_src_activity,q,fsrc->fd,GWRL_SYNC_WRITE);
+		gwrl_post_evt(pr->rl,evt);
+		
+		if(errnm == 0 || errnm == EWOULDBLOCK || errnm == EAGAIN) {
+			//either no errors, or the partial write errored out by
+			//the kernel telling us there's no more room to write.
+			//post the remaining buffer data to the write queue for later.
+
+			gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);
+		}
+		
+		//set result
+		didwr =  true;
+	} else {
+		didwr = false;
+	}
+
+	if(errnm == ECONNRESET || errnm == EPIPE) {
+		//closed file descriptor or eof, post close event back to
+		//proactor. for dispatching to the user. If there was a partial
+		//write earlier we pass back the remaining data buffer in
+		//case the user needs to handle it.
+
+		//get a wrq for user data
+		q = gwprwrq_get(pr,fsrc);
+		if(remaining > 0) q->buf = rembuf;
+		q->wrop = op;
+
+		//get event and post it
+		evt = gwrl_evt_createp(pr->rl,_gwrlsrc(fsrc),&gwpr_src_activity,q,fsrc->fd,GWRL_SYNC_CLOSE);
+		gwrl_post_evt(pr->rl,evt);
+
+		//set result
+		didwr = true;
+	}
+
+	else if(written == 0 && (errnm == EWOULDBLOCK || errnm == EAGAIN)) {
+		//socket or fd is marked as non-blocking and no data could
+		//be written without blocking, post it all in the queue for
+		//writing later when the file descriptor is writable.
+		gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);
+	}
+
+	else if(errnm != 0) {
+		//other error we don't want to handle. post this back
+		//to the proactor for dispatching to the user.
+
+		//create err info for the event.
+		gwpr_error_info * errinfo = calloc(1,sizeof(gwpr_error_info));
+		errinfo->errnm = errnm;
+		errinfo->src = fsrc;
+		errinfo->op = op;
+		errinfo->buf = buf;
+		if(remaining > 0) errinfo->buf = rembuf;
+		
+		//copoy function that errored
+		if(op == gwpr_write_op_id) memcpy(errinfo->fnc,"write\0",6);
+		else if(op == gwpr_send_op_id) memcpy(errinfo->fnc,"send\0",5);
+		else if(op == gwpr_sendto_op_id) memcpy(errinfo->fnc,"sendto\0",7);
+
+		//get an event and post it
+		evt = gwrl_evt_createp(pr->rl,src,&gwpr_src_activity,errinfo,fsrc->fd,GWRL_SYNC_ERROR);
+		gwrl_post_evt(pr->rl,evt);
+	}
+
+	return didwr;
+}
+
+bool
 gwpr_synchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	bool didwr = false;
 	
 	#if defined(GWPR_TRY_SYNCHRONOUS_WRITE_UNIX)
 	
-	if(buf->len <= pr->options.gwpr_synchronous_write_max_bytes
-		&& pr->options.gwpr_synchronous_write_max_bytes > 0) {
-		//the buffer requested is smaller than the maximum allowed
-		//bytes to allow synchronous writes with, so give it a shot.
+	int maxbytes = pr->options.gwpr_synchronous_write_max_bytes;
+
+	if(buf->len <= maxbytes && maxbytes > 0) {
+		//try synchronouse write
 		
 		//setup vars
 		gwrlsrc * src = _gwrlsrc(fsrc);
 		gwprdata * pdata = fsrc->pdata;
 		gwprbuf * usedbuf = buf;
 		gwprbuf * rembuf = NULL;
+		gwprbuf * bfcp = NULL;
 		gwprwrq * q = NULL;
 		gwrlevt * evt = NULL;
 
+		//check if we should call write filters
 		if(pdata->wrfilters && pdata->wrfilters[0] != NULL) {
-			//call write filters
 
 			//copy buffer before calling write filters, this is in case
-			//everything fails and we need to queue writing for later.
-			gwprbuf * bfcp = gwpr_buf_get(pr,buf->bufsize);
-			while(!bfcp) bfcp = gwpr_buf_get(pr,buf->bufsize);
+			//everything fails and we need to queue writing for later,
+			//in which case, the write filters need to be called again on
+			//the un-altered buffer data.
+			bfcp = gwpr_buf_getp(pr,buf->bufsize);
 			bfcp->len = buf->len;
 			memcpy(bfcp->buf,buf->buf,buf->len);
 			usedbuf = bfcp;
