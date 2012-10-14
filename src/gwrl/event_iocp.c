@@ -120,8 +120,7 @@ void gwrl_bkd_gather(gwrl * rl) {
 		fsrc = ovlp->src;
 		src = _gwrlsrc(fsrc);
 		ovlp->buf->len = numOfBytes;
-		evt = gwrl_evt_create(rl,src,src->callback,ovlp,fsrc->fd,GWRL_IOCP);
-		while(!evt) evt = gwrl_evt_create(rl,src,src->callback,ovlp,fsrc->fd,GWRL_IOCP);
+		evt = gwrl_evt_createp(rl,src,src->callback,ovlp,fsrc->fd,GWRL_IOCP);
 		gwrl_post_evt(rl,evt);
 	}
 }

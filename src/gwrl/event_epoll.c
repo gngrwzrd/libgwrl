@@ -138,8 +138,7 @@ void gwrl_bkd_gather(gwrl * rl) {
 				if((src->flags & GWRL_WR) && (event->events & EPOLLOUT)) newflags |= GWRL_WR;
 			}
 			if(newflags > 0) {
-				evt = gwrl_evt_create(rl,src,src->callback,src->userdata,_gwrlsrcf(src)->fd,newflags);
-				while(!evt) evt = gwrl_evt_create(rl,src,src->callback,src->userdata,_gwrlsrcf(src)->fd,newflags);
+				evt = gwrl_evt_createp(rl,src,src->callback,src->userdata,_gwrlsrcf(src)->fd,newflags);
 				gwrl_post_evt(rl,evt);
 			}
 			i++;

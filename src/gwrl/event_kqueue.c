@@ -223,14 +223,12 @@ void gwrl_bkd_gather(gwrl * rl) {
 				}
 					
 				if(postread) {
-					evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
-					while(!evt) evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
+					evt = gwrl_evt_createp(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
 					gwrl_post_evt(rl,evt);
 				}
 				
 				else if(postwrite) {
-					evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_WR);
-					while(!evt) evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_WR);
+					evt = gwrl_evt_createp(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_WR);
 					gwrl_post_evt(rl,evt);
 				}
 			}

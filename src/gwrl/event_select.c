@@ -44,8 +44,7 @@ void gwrl_src_file_find_badfd_post_evt(gwrl * rl) {
 	gwrlsrc * src = rl->sources[GWRL_SRC_TYPE_FILE];
 	while(fsrc) {
 		if(!fcntl_is_valid_fd(fsrc->fd)) {
-			gwrlevt * evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
-			while(!evt) evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
+			gwrlevt * evt = gwrl_evt_createp(rl,src,src->callback,src->userdata,fsrc->fd,GWRL_RD);
 			gwrl_post_evt(rl,evt);
 			gwrl_src_disable(rl,_gwrlsrc(fsrc));
 		}
@@ -202,8 +201,7 @@ void gwrl_bkd_gather(gwrl * rl) {
 			if(FD_ISSET(fsrc->fd,&fds[2])) flset(newflags,GWRL_RD);
 			
 			if(newflags > 0) {
-				evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,newflags);
-				while(!evt) evt = gwrl_evt_create(rl,src,src->callback,src->userdata,fsrc->fd,newflags);
+				evt = gwrl_evt_createp(rl,src,src->callback,src->userdata,fsrc->fd,newflags);
 				gwrl_post_evt(rl,evt);
 			}
 			
