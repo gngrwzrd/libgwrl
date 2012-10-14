@@ -480,7 +480,7 @@ gwrl_src_add(gwrl * rl, gwrlsrc * src) {
 	if(head) src->next = head;
 	rl->sources[src->type] = src;
 	if(src->type == GWRL_SRC_TYPE_FILE) gwrl_bkd_src_add(rl,src);
-	gwrl_wake(rl);
+	//gwrl_wake(rl);
 }
 
 void
@@ -495,7 +495,7 @@ gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
 	#endif
 	rl->_qsrc = src;
 	lockid_unlock(&rl->_qsrclk);
-	if(rl->flags & GWRL_SLEEPING) gwrl_wake(rl);
+	gwrl_wake(rl);
 }
 
 void
@@ -510,7 +510,7 @@ gwrl_post_evt_safely(gwrl * rl, gwrlevt * evt) {
 	#endif
 	rl->_qevt = evt;
 	lockid_unlock(&rl->_qevtlk);
-	if(rl->flags & GWRL_SLEEPING) gwrl_wake(rl);
+	gwrl_wake(rl);
 }
 
 void
@@ -602,14 +602,12 @@ gwrl_src_enable(gwrl * rl, gwrlsrc * src) {
 	} else if(src->type == GWRL_SRC_TYPE_FILE) {
 		gwrl_bkd_enable_src(rl,src);
 	}
-	gwrl_wake(rl);
 }
 
 void
 gwrl_src_disable(gwrl * rl, gwrlsrc * src) {
 	flclr(src->flags,GWRL_ENABLED);
 	if(src->type == GWRL_SRC_TYPE_FILE) gwrl_bkd_disable_src(rl,src);
-	gwrl_wake(rl);
 }
 
 void
