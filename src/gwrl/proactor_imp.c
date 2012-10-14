@@ -442,41 +442,43 @@ gwpr_free(gwpr * pr) {
 	int i = 0;
 	gwrlsrc * src = NULL;
 	gwrlsrc_file * fsrc = NULL;
+	gwprdata * pdata = NULL;
 	gwrl_dispatch(pr->rl);
 
 	for(; i<GWRL_SRC_TYPES_COUNT; i++) {
 		src = pr->rl->sources[i];
+		
 		while(src) {
-			if(src->type == GWRL_SRC_TYPE_FILE) {
-				fsrc = _gwrlsrcf(src);
-				if(fsrc->pdata) {
-					gwprdata * pdata = fsrc->pdata;
-					gwrl_src_disable(pr->rl,src);
-					src->callback = NULL;
-					
-					if(pdata->rdfilters) {
-						free(pdata->rdfilters);
-					}
-					
-					if(pdata->wrfilters) {
-						free(pdata->wrfilters);
-					}
-					
-					if(pdata->rdbuf) {
-						gwpr_buf_free(pr,pdata->rdbuf);
-					}
-					
-					if(pdata->wrq) {
-						gwprwrq_free_list_no_cache(pr,pdata->wrq);
-						pdata->wrq = NULL;
-						pdata->wrqlast = NULL;
-					}
-
-					free(fsrc->pdata);
-					fsrc->pdata = NULL;
+		if(src->type == GWRL_SRC_TYPE_FILE) {
+			fsrc = _gwrlsrcf(src);
+			if(fsrc->pdata) {
+				pdata = fsrc->pdata;
+				gwrl_src_disable(pr->rl,src);
+				src->callback = NULL;
+				
+				if(pdata->rdfilters) {
+					free(pdata->rdfilters);
 				}
+				
+				if(pdata->wrfilters) {
+					free(pdata->wrfilters);
+				}
+				
+				if(pdata->rdbuf) {
+					gwpr_buf_free(pr,pdata->rdbuf);
+				}
+				
+				if(pdata->wrq) {
+					gwprwrq_free_list_no_cache(pr,pdata->wrq);
+					pdata->wrq = NULL;
+					pdata->wrqlast = NULL;
+				}
+
+				free(fsrc->pdata);
+				fsrc->pdata = NULL;
 			}
-			src = src->next;
+		}
+		src = src->next;
 		}
 	}
 	
