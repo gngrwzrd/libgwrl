@@ -108,3 +108,7 @@ void gwrl_wake(gwrl * rl);
 void gwrl_wake_init(gwrl * rl);
 void gwrl_wake_activity(gwrl * rl, gwrlevt * evt);
 void gwrl_wake_free(gwrl * rl);
+
+gwrlevt *
+gwrl_evt_createp(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,
+void * userdata, fileid_t fd, gwrlevt_flags_t flags);
