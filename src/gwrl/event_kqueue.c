@@ -46,9 +46,15 @@ gwrlbkd * gwrl_bkd_init(gwrl * rl) {
 
 void gwrl_bkd_set_options(gwrl * rl,gwrl_options * opts) {
 	gwrlbkd_kqueue * kbkd = _gwrlbkdk(rl->backend);
+	
 	if(opts->gwrl_kqueue_kevent_count > kbkd->maxkevents) {
 		kbkd->maxkevents = opts->gwrl_kqueue_kevent_count;
 	}
+	
+	if(kbkd->maxkevents < 1) {
+		kbkd->maxkevents = GWRL_KQUEUE_KEVENT_COUNT;
+	}
+	
 	void * tmp = gwrl_mem_realloc(kbkd->kevents,sizeof(struct kevent) * kbkd->maxkevents);
 	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
