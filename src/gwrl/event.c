@@ -716,8 +716,12 @@ gwrl_run(gwrl * rl) {
 	int i = 0;
 	flclr(rl->flags,GWRL_STOP);
 	for(;;) {
-		if(rl->_qsrc) gwrl_install_queued_sources(rl);
-		if(rl->_qevt) gwrl_install_queued_events(rl);
+		if(rl->_qsrc) {
+			gwrl_install_queued_sources(rl);
+		}
+		if(rl->_qevt) {
+			gwrl_install_queued_events(rl);
+		}
 		gwrl_dispatch(rl);
 		if(flisset(rl->flags,GWRL_STOP)) {
 			flclr(rl->flags,GWRL_STOP);
