@@ -1,7 +1,8 @@
 -breakup gwpr_synchronous_write - it's too big to test easily
+
+-gwrl_free might be able to use double pointers too
+-gwrl_del_persistent_timeouts can use pointer to pointer like I did in gwrl_src_del
 -gwpr_free on Windows
--gwrl_wake_activity and gwrl_wake can be called less frequently. see
- kcachegrind with data from test/reactor_events.
 -valgrind, callgrind
 
 DOCS:
