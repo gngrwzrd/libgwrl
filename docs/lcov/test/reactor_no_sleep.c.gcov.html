@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-07</td>
+            <td class="headerValue">2012-10-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -72,20 +72,20 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         10 : int main(int argc, char ** argv) {</span>
 <span class="lineNum">       5 </span>                :            :         
 <span class="lineNum">       6 </span>                :            :         #ifdef GWRL_COVERAGE_INTERNAL_ASSERT_VARS
-<span class="lineNum">       7 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         asserts_var2 = false;</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         asserts_var1 = gwrlbkd_no_sleep_assert_true;</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwrl_allow_poll_sleep(rl,0);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 :         gwrl_run_once(rl);</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         assert(asserts_var2);</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         10 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         10 :         asserts_var2 = false;</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         10 :         asserts_var1 = gwrlbkd_no_sleep_assert_true;</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         10 :         gwrl_allow_poll_sleep(rl,0);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         10 :         gwrl_run_once(rl);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         10 :         assert(asserts_var2);</span>
 <span class="lineNum">      13 </span>                :            :         #else
 <span class="lineNum">      14 </span>                :            :         printf(stderr,&quot;reactor_no_sleep requires GWRL_COVERAGE_INTERNAL_ASSERT_VARS to be on in CMake.&quot;);
 <span class="lineNum">      15 </span>                :            :         #endif
 <span class="lineNum">      16 </span>                :            :         
-<span class="lineNum">      17 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         10 :         return 0;</span>
 <span class="lineNum">      18 </span>                :            : }
 </pre>
       </td>

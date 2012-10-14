@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-07</td>
+            <td class="headerValue">2012-10-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -72,39 +72,39 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
 <a name="3"><span class="lineNum">       3 </span>                :            : </a>
-<a name="4"><span class="lineNum">       4 </span>                :<span class="lineCov">         28 : void filter(gwpr * pr, gwpr_io_info * info){}</span></a>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         28 : void filter2(gwpr * pr, gwpr_io_info * info){}</span>
-<a name="6"><span class="lineNum">       6 </span>                :<span class="lineCov">         28 : void filter3(gwpr * pr, gwpr_io_info * info){}</span></a>
+<a name="4"><span class="lineNum">       4 </span>                :<span class="lineCov">         27 : void filter(gwpr * pr, gwpr_io_info * info){}</span></a>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         27 : void filter2(gwpr * pr, gwpr_io_info * info){}</span>
+<a name="6"><span class="lineNum">       6 </span>                :<span class="lineCov">         27 : void filter3(gwpr * pr, gwpr_io_info * info){}</span></a>
 <span class="lineNum">       7 </span>                :            : 
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 :         gwrlsrc_file * src1 = _gwrlsrcf(gwrl_src_file_create(0,0,NULL,NULL));</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         27 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         27 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         27 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         27 :         gwrlsrc_file * src1 = _gwrlsrcf(gwrl_src_file_create(0,0,NULL,NULL));</span>
 <span class="lineNum">      12 </span>                :            :         
 <span class="lineNum">      13 </span>                :            :         if(GWPR_FILTERS_MAX &lt; 2) {
 <span class="lineNum">      14 </span>                :            :                 printf(&quot;error: GWPR_FILTERS_MAX must be at least 2 for this test.\n&quot;);
 <span class="lineNum">      15 </span>                :            :                 return -1;
 <span class="lineNum">      16 </span>                :            :         }
 <span class="lineNum">      17 </span>                :            :         
-<span class="lineNum">      18 </span>                :<span class="lineCov">         28 :         gwpr_src_add(pr,src1);</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         28 :         gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&amp;filter);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         28 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters != NULL);</span>
-<span class="lineNum">      21 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters[0] == &amp;filter);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         27 :         gwpr_src_add(pr,src1);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         27 :         gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&amp;filter);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         27 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters != NULL);</span>
+<span class="lineNum">      21 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters[0] == &amp;filter);</span>
 <span class="lineNum">      22 </span>                :            :         
-<span class="lineNum">      23 </span>                :<span class="lineCov">         28 :         gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&amp;filter2);</span>
-<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(_gwprdata(src1-&gt;pdata)-&gt;rdfilters != NULL);</span>
-<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(_gwprdata(src1-&gt;pdata)-&gt;rdfilters[1] == &amp;filter2);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">         27 :         gwpr_filter_add(pr,src1,gwpr_rdfilter_id,&amp;filter2);</span>
+<span class="lineNum">      24 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(_gwprdata(src1-&gt;pdata)-&gt;rdfilters != NULL);</span>
+<span class="lineNum">      25 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(_gwprdata(src1-&gt;pdata)-&gt;rdfilters[1] == &amp;filter2);</span>
 <span class="lineNum">      26 </span>                :            :         
-<span class="lineNum">      27 </span>                :<span class="lineCov">         28 :         gwpr_filter_reset(pr,src1,gwpr_rdfilter_id);</span>
-<span class="lineNum">      28 </span>                :<span class="lineCov">         28 :         gwpr_filter_reset(pr,src1,gwpr_wrfilter_id);</span>
-<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters[0] == NULL);</span>
-<span class="lineNum">      30 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;wrfilters[0] == NULL);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         27 :         gwpr_filter_reset(pr,src1,gwpr_rdfilter_id);</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         27 :         gwpr_filter_reset(pr,src1,gwpr_wrfilter_id);</span>
+<span class="lineNum">      29 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;rdfilters[0] == NULL);</span>
+<span class="lineNum">      30 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">         27 :         assert(((gwprdata *)src1-&gt;pdata)-&gt;wrfilters[0] == NULL);</span>
 <span class="lineNum">      31 </span>                :            :         
-<span class="lineNum">      32 </span>                :<span class="lineCov">         28 :         filter(NULL,NULL);</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">         28 :         filter2(NULL,NULL);</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         28 :         filter3(NULL,NULL);</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         27 :         filter(NULL,NULL);</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">         27 :         filter2(NULL,NULL);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         27 :         filter3(NULL,NULL);</span>
 <span class="lineNum">      35 </span>                :            :         
-<span class="lineNum">      36 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         27 :         return 0;</span>
 <span class="lineNum">      37 </span>                :            : }
 </pre>
       </td>

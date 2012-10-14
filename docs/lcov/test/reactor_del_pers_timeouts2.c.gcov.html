@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-07</td>
+            <td class="headerValue">2012-10-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -72,21 +72,21 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/event.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         28 : void timeout2(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         28 :         gwrl_del_persistent_timeouts(rl);</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">         28 :         gwrl_stop(rl);</span>
-<a name="7"><span class="lineNum">       7 </span>                :<span class="lineCov">         28 : }</span></a>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         18 : void timeout2(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         18 :         gwrl_del_persistent_timeouts(rl);</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         18 :         gwrl_stop(rl);</span>
+<a name="7"><span class="lineNum">       7 </span>                :<span class="lineCov">         18 : }</span></a>
 <span class="lineNum">       8 </span>                :            : 
-<span class="lineNum">       9 </span>                :<span class="lineCov">         28 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwrl_set_timeout(rl,10,true,&amp;timeout2,NULL);</span>
-<a name="11"><span class="lineNum">      11 </span>                :<span class="lineCov">         28 : }</span></a>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         18 : void timeout1(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         18 :         gwrl_set_timeout(rl,10,true,&amp;timeout2,NULL);</span>
+<a name="11"><span class="lineNum">      11 </span>                :<span class="lineCov">         18 : }</span></a>
 <span class="lineNum">      12 </span>                :            : 
-<span class="lineNum">      13 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         28 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         gwrl_run(rl);</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         28 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_TIME] == NULL);</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         18 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         18 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         18 :         gwrl_set_timeout(rl,10,true,&amp;timeout1,NULL);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         18 :         gwrl_run(rl);</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         18 :         assert(rl-&gt;sources[GWRL_SRC_TYPE_TIME] == NULL);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         18 :         return 0;</span>
 <span class="lineNum">      19 </span>                :            : }
 </pre>
       </td>

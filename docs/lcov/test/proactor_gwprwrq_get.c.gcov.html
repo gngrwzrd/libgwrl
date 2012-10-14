@@ -31,13 +31,13 @@
             <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">13</td>
-            <td class="headerCovTableEntry">13</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntry">14</td>
             <td class="headerCovTableEntryHi">100.0 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-07</td>
+            <td class="headerValue">2012-10-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">1</td>
@@ -49,8 +49,8 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">1</td>
             <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntry">4</td>
             <td class="headerCovTableEntryLo">50.0 %</td>
           </tr>
           <tr><td><img src="../glass.png" width=3 height=3 alt=""></td></tr>
@@ -72,20 +72,21 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &lt;gwrl/proactor.h&gt;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">       5 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">       6 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">       7 </span>                :<span class="lineCov">         28 :         gwrlsrc_file * fsrc1 = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         gwprwrq * q1 = gwprwrq_get(pr,fsrc1);</span>
-<span class="lineNum">       9 </span>                :<span class="lineCov">         28 :         gwprwrq * q2 = gwprwrq_get(pr,fsrc1);</span>
-<span class="lineNum">      10 </span>                :<span class="lineCov">         28 :         gwprwrq_free(pr,fsrc1,q1);</span>
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 :         gwprwrq_free(pr,fsrc1,q2);</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         q1 = gwprwrq_get(pr,fsrc1);</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         28 :         assert(q1);</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         28 :         q2 = gwprwrq_get(pr,fsrc1);</span>
-<span class="lineNum">      15 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         28 :         assert(q2);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         return 0;</span>
-<span class="lineNum">      17 </span>                :            : }
+<span class="lineNum">       4 </span>                :<span class="lineCov">         24 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">       5 </span>                :<span class="lineCov">         24 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">       6 </span>                :<span class="lineCov">         24 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         24 :         gwrlsrc_file * fsrc1 = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         24 :         gwprwrq * q1 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">       9 </span>                :<span class="lineCov">         24 :         gwprwrq * q2 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      10 </span>                :<span class="lineCov">         24 :         gwprwrq_free(pr,fsrc1,q1);</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         24 :         gwprwrq_free(pr,fsrc1,q2);</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         24 :         q1 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         24 :         assert(q1);</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         24 :         q2 = gwprwrq_get(pr,fsrc1);</span>
+<span class="lineNum">      15 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         24 :         assert(q2);</span>
+<span class="lineNum">      16 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 24 times"> + </span>]:<span class="lineCov">         24 :         assert(pr-&gt;wrqcache == NULL);</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         24 :         return 0;</span>
+<span class="lineNum">      18 </span>                :            : }
 </pre>
       </td>
     </tr>

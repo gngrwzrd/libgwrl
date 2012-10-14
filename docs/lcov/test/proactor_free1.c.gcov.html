@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-07</td>
+            <td class="headerValue">2012-10-14</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">3</td>
@@ -72,61 +72,61 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
 <span class="lineNum">       3 </span>                :            : 
-<span class="lineNum">       4 </span>                :<span class="lineCov">         28 : void didrd(gwpr * pr, gwpr_io_info * info) {</span>
-<a name="5"><span class="lineNum">       5 </span>                :<span class="lineCov">         28 : }</span></a>
+<span class="lineNum">       4 </span>                :<span class="lineCov">         26 : void didrd(gwpr * pr, gwpr_io_info * info) {</span>
+<a name="5"><span class="lineNum">       5 </span>                :<span class="lineCov">         26 : }</span></a>
 <span class="lineNum">       6 </span>                :            : 
-<span class="lineNum">       7 </span>                :<span class="lineCov">         28 : void stop(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 :         gwrl_stop(rl);</span>
-<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">         28 : }</span></a>
+<span class="lineNum">       7 </span>                :<span class="lineCov">         26 : void stop(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         26 :         gwrl_stop(rl);</span>
+<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">         26 : }</span></a>
 <span class="lineNum">      10 </span>                :            : 
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         28 :         gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         28 :         gwrlsrc * sources = NULL;</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         gwrlsrc * del = NULL;</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         26 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         26 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         26 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         26 :         gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         26 :         gwrlsrc * sources = NULL;</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         26 :         gwrlsrc * del = NULL;</span>
 <span class="lineNum">      17 </span>                :            :         
 <span class="lineNum">      18 </span>                :            :         //setup proactor and run
-<span class="lineNum">      19 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&amp;didrd);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         28 :         gwpr_read(pr,fsrc,gwpr_buf_get(pr,128));</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         28 :         gwrl_post_function(rl,&amp;stop,NULL);</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         28 :         gwrl_run(rl);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&amp;didrd);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         26 :         gwpr_read(pr,fsrc,gwpr_buf_get(pr,128));</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         26 :         gwrl_post_function(rl,&amp;stop,NULL);</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         26 :         gwrl_run(rl);</span>
 <span class="lineNum">      23 </span>                :            :         
 <span class="lineNum">      24 </span>                :            :         //free everything
-<span class="lineNum">      25 </span>                :<span class="lineCov">         28 :         gwpr_free(pr);</span>
-<span class="lineNum">      26 </span>                :<span class="lineCov">         28 :         gwrl_free(rl,&amp;sources);</span>
-<span class="lineNum">      27 </span>                :<span class="lineCov">         28 :         del = sources;</span>
-<span class="lineNum">      28 </span>        [<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchCov" title="Branch 1 was taken 28 times"> + </span>]:<span class="lineCov">         84 :         while(del) {</span>
-<span class="lineNum">      29 </span>        [<span class="branchCov" title="Branch 0 was taken 56 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         56 :                 if(del-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
-<span class="lineNum">      30 </span>                :<span class="lineCov">         56 :                         close(_gwrlsrcf(del)-&gt;fd);</span>
-<span class="lineNum">      31 </span>                :<span class="lineCov">         56 :                 }</span>
-<span class="lineNum">      32 </span>                :<span class="lineCov">         56 :                 del = del-&gt;next;</span>
-<span class="lineNum">      33 </span>                :<span class="lineCov">         56 :         }</span>
-<span class="lineNum">      34 </span>                :<span class="lineCov">         28 :         gwrl_free(NULL,&amp;sources);</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">         28 :         didrd(NULL,NULL);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">         26 :         gwpr_free(pr);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         26 :         gwrl_free(rl,&amp;sources);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         26 :         del = sources;</span>
+<span class="lineNum">      28 </span>        [<span class="branchCov" title="Branch 0 was taken 52 times"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>]:<span class="lineCov">         78 :         while(del) {</span>
+<span class="lineNum">      29 </span>        [<span class="branchCov" title="Branch 0 was taken 52 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         52 :                 if(del-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">      30 </span>                :<span class="lineCov">         52 :                         close(_gwrlsrcf(del)-&gt;fd);</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">         52 :                 }</span>
+<span class="lineNum">      32 </span>                :<span class="lineCov">         52 :                 del = del-&gt;next;</span>
+<span class="lineNum">      33 </span>                :<span class="lineCov">         52 :         }</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         26 :         gwrl_free(NULL,&amp;sources);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         26 :         didrd(NULL,NULL);</span>
 <span class="lineNum">      36 </span>                :            :         
-<span class="lineNum">      37 </span>                :<span class="lineCov">         28 :         rl = gwrl_create();</span>
-<span class="lineNum">      38 </span>                :<span class="lineCov">         28 :         pr = gwpr_create(rl);</span>
-<span class="lineNum">      39 </span>                :<span class="lineCov">         28 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
-<span class="lineNum">      40 </span>                :<span class="lineCov">         28 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
-<span class="lineNum">      41 </span>                :<span class="lineCov">         28 :         gwpr_src_add_safely(pr,fsrc);</span>
-<span class="lineNum">      42 </span>                :<span class="lineCov">         28 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
-<span class="lineNum">      43 </span>                :<span class="lineCov">         28 :         gwpr_src_add_safely(pr,fsrc);</span>
-<span class="lineNum">      44 </span>                :<span class="lineCov">         28 :         gwpr_free(pr);</span>
-<span class="lineNum">      45 </span>                :<span class="lineCov">         28 :         gwrl_free(rl,NULL);</span>
+<span class="lineNum">      37 </span>                :<span class="lineCov">         26 :         rl = gwrl_create();</span>
+<span class="lineNum">      38 </span>                :<span class="lineCov">         26 :         pr = gwpr_create(rl);</span>
+<span class="lineNum">      39 </span>                :<span class="lineCov">         26 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         26 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
+<span class="lineNum">      41 </span>                :<span class="lineCov">         26 :         gwpr_src_add_safely(pr,fsrc);</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         26 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
+<span class="lineNum">      43 </span>                :<span class="lineCov">         26 :         gwpr_src_add_safely(pr,fsrc);</span>
+<span class="lineNum">      44 </span>                :<span class="lineCov">         26 :         gwpr_free(pr);</span>
+<span class="lineNum">      45 </span>                :<span class="lineCov">         26 :         gwrl_free(rl,NULL);</span>
 <span class="lineNum">      46 </span>                :            : 
-<span class="lineNum">      47 </span>                :<span class="lineCov">         28 :         rl = gwrl_create();</span>
-<span class="lineNum">      48 </span>                :<span class="lineCov">         28 :         pr = gwpr_create(rl);</span>
-<span class="lineNum">      49 </span>                :<span class="lineCov">         28 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
-<span class="lineNum">      50 </span>                :<span class="lineCov">         28 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
-<span class="lineNum">      51 </span>                :<span class="lineCov">         28 :         gwpr_src_add_safely(pr,fsrc);</span>
-<span class="lineNum">      52 </span>                :<span class="lineCov">         28 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
-<span class="lineNum">      53 </span>                :<span class="lineCov">         28 :         gwpr_src_add_safely(pr,fsrc);</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">         28 :         gwpr_free(pr);</span>
-<span class="lineNum">      55 </span>                :<span class="lineCov">         28 :         gwrl_free(rl,&amp;sources);</span>
-<span class="lineNum">      56 </span>                :<span class="lineCov">         28 :         gwrl_free(NULL,&amp;sources);</span>
+<span class="lineNum">      47 </span>                :<span class="lineCov">         26 :         rl = gwrl_create();</span>
+<span class="lineNum">      48 </span>                :<span class="lineCov">         26 :         pr = gwpr_create(rl);</span>
+<span class="lineNum">      49 </span>                :<span class="lineCov">         26 :         rl-&gt;sources[GWRL_SRC_TYPE_FILE] = NULL;</span>
+<span class="lineNum">      50 </span>                :<span class="lineCov">         26 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
+<span class="lineNum">      51 </span>                :<span class="lineCov">         26 :         gwpr_src_add_safely(pr,fsrc);</span>
+<span class="lineNum">      52 </span>                :<span class="lineCov">         26 :         fsrc = _gwrlsrcf(gwrl_src_file_create(STDIN_FILENO,0,NULL,NULL));</span>
+<span class="lineNum">      53 </span>                :<span class="lineCov">         26 :         gwpr_src_add_safely(pr,fsrc);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">         26 :         gwpr_free(pr);</span>
+<span class="lineNum">      55 </span>                :<span class="lineCov">         26 :         gwrl_free(rl,&amp;sources);</span>
+<span class="lineNum">      56 </span>                :<span class="lineCov">         26 :         gwrl_free(NULL,&amp;sources);</span>
 <span class="lineNum">      57 </span>                :            : 
-<span class="lineNum">      58 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">         26 :         return 0;</span>
 <span class="lineNum">      59 </span>                :            : }
 </pre>
       </td>
