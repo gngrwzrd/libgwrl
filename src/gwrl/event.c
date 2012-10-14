@@ -530,10 +530,9 @@ gwrl_del_persistent_timeouts(gwrl * rl) {
 
 void
 gwrl_post_evt(gwrl * rl, gwrlevt * evt) {
-	gwrlevt * head = rl->events;
-	if(head) evt->next = head;
+	//post an event
+	if(rl->events) evt->next = rl->events;
 	rl->events = evt;
-	gwrl_wake(rl);
 }
 
 void
