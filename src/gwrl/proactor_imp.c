@@ -528,11 +528,11 @@ size_t * written, int * errnm) {
 			
 		}
 		
-		if(didwrite > 0) {
+		if(didwrite >= 0) {
 			*written += didwrite;
 			towrite -= didwrite;
 			_buf += didwrite;
-		} else if(didwrite < 0) {
+		} else {
 			*errnm = errno;
 			break;
 		}
