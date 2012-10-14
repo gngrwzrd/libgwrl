@@ -464,33 +464,28 @@ gwrl_post_evt_safely(gwrl * rl, gwrlevt * evt) {
 void
 gwrl_src_del(gwrl * rl, gwrlsrc * src, gwrlsrc * prev, bool freesrc) {
 	gwrlsrc * head = rl->sources[src->type];
-	gwrlsrc * search = head;
-	gwrlsrc * _prev = prev;
-	
-	if(!prev) {
-		if(src == head && head->next) {
-			rl->sources[src->type] = head->next;
-			src->next = NULL;
-		} else if(src == head) {
-			rl->sources[src->type] = NULL;
-			src->next = NULL;
-		} else {
-			while(search) {
-				if(search == src) break;
-				_prev = search;
-				search = search->next;
+	gwrlsrc ** search = &head;
+
+	if(prev) {
+		prev->next = src->next;
+		src->next = NULL;
+	} else if(src == head) {
+		rl->sources[src->type] = head->next;
+		src->next = NULL;
+	} else {
+		while(*search != NULL) {
+			if(*search == src) {
+				*search = (*search)->next;
+				src->next = NULL;
+				break;
+			} else {
+				search = &(*search)->next;
 			}
 		}
 	}
-	
-	if(_prev) {
-		_prev->next = src->next;
-		src->next = NULL;
-	}
-	
+
 	if(src->type == GWRL_SRC_TYPE_FILE) gwrl_bkd_del_src(rl,src);
 	if(freesrc) free(src);
-	gwrl_wake(rl);
 }
 
 void
