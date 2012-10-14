@@ -12,6 +12,8 @@ bool asserts_var2 = 0;
 
 gwrl *
 gwrl_create() {
+	//create a new reactor.
+
 	gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));
 	gwrl_options defaults = GWRL_DEFAULT_OPTIONS;
 	
@@ -59,13 +61,18 @@ gwrl_create() {
 gwrlevt *
 gwrl_evt_create(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,
 void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
+	//create a new gwrlevt for posting
+
 	gwrlevt * evt = NULL;
+
 	if(rl->cevents) {
+		//use a cached event
 		evt = rl->cevents;
 		rl->cevents = evt->next;
 		rl->ncevents--;
 		evt->next = NULL;
 	} else {
+		//create a new one
 		evt = _gwrlevt(gwrl_mem_calloc(1,sizeof(*evt)));
 		#ifndef GWRL_HIDE_FROM_COVERAGE
 		if(!evt) {
@@ -74,6 +81,8 @@ void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
 		}
 		#endif
 	}
+
+	//initialize the event
 	evt->callback = callback;
 	evt->userdata = userdata;
 	evt->src = src;
@@ -97,55 +106,71 @@ void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
 gwrlsrc *
 gwrl_src_time_create(int64_t ms, bool repeat, int whence,
 bool persist, gwrlevt_cb * callback, void * userdata) {
+	//create a time input source
+	
+	//setup vars
 	gwrlsrc_time * tsrc = _gwrlsrct(gwrl_mem_calloc(1,sizeof(gwrlsrc_time)));
 	gwrlsrc * src = _gwrlsrc(tsrc);
+	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!tsrc) {
 		gwerr("(5Gn3K) caloc error");
 		return NULL;
 	}
 	#endif
+	
+	//initialize the source
 	src->type = GWRL_SRC_TYPE_TIME;
 	src->userdata = userdata;
 	src->callback = callback;
 	tsrc->ms = ms;
+	if(persist) flset(src->flags,GWRL_PERSIST);
 	if(repeat && whence != GWRL_ABS) flset(src->flags,GWRL_REPEAT);
+	flset(src->flags,GWRL_ENABLED);
+
+	//set the tsrc->when parameter to the time it should expire.
 	if(whence == GWRL_NOW) {
 		tsrc->when.tv_sec = sec_min;
 		tsrc->when.tv_nsec = nsec_min;
-	}
-	else if(whence == GWRL_ABS) {
+	} else if(whence == GWRL_ABS) {
 		flset(src->flags,GWRL_WHENCE_ABS);
 		gwtm_ms_to_timespec(ms,&tsrc->when);
 	}
-	flset(src->flags,GWRL_ENABLED);
-	if(persist) flset(src->flags,GWRL_PERSIST);
+	
 	return src;
 }
 
 gwrlsrc *
 gwrl_src_file_create(fileid_t fd, gwrlsrc_flags_t flags,
 gwrlevt_cb * callback, void * userdata) {
+	//create a file input source
+
+	//setup vars
 	gwrlsrc_file * fsrc = _gwrlsrcf(gwrl_mem_calloc(1,sizeof(gwrlsrc_file)));
 	gwrlsrc * src = _gwrlsrc(fsrc);
+	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!src) {
 		gwerr("(25FnG) calloc error");
 		return NULL;
 	}
 	#endif
+
+	//initialize the source
 	src->flags = flags;
 	src->type = GWRL_SRC_TYPE_FILE;
 	src->userdata = userdata;
 	src->callback = callback;
 	flset(src->flags,GWRL_ENABLED);
 	fsrc->fd = fd;
+
 	return src;
 }
 
 gwrlsrc *
 gwrl_set_fd(gwrl * rl, fileid_t fd, gwrlsrc_flags_t flags,
 gwrlevt_cb * callback, void * userdata) {
+	//shortcut method to create a file input source and register it.
 	gwrlsrc * fsrc = gwrl_src_file_create(fd,flags,callback,userdata);
 	while(!fsrc) fsrc = gwrl_src_file_create(fd,flags,callback,userdata);
 	gwrl_src_add(rl,fsrc);
@@ -155,6 +180,7 @@ gwrlevt_cb * callback, void * userdata) {
 gwrlsrc *
 gwrl_set_timeout(gwrl * rl, int64_t ms, bool persist,
 gwrlevt_cb * callback, void * userdata) {
+	//shortcut to create a timeout input source and register it.
 	gwrlsrc * tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);
 	while(!tsrc) tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);
 	gwrl_src_add(rl,tsrc);
@@ -164,6 +190,7 @@ gwrlevt_cb * callback, void * userdata) {
 gwrlsrc *
 gwrl_set_interval(gwrl * rl, int64_t ms, gwrlevt_cb * callback,
 void * userdata) {
+	//shortcut to create an interval input source and register it.
 	gwrlsrc * tsrc = gwrl_src_time_create(ms,true,GWRL_NOW,false,callback,userdata);
 	while(!tsrc) tsrc = gwrl_src_time_create(ms,true,GWRL_NOW,false,callback,userdata);
 	gwrl_src_add(rl,tsrc);
@@ -173,6 +200,7 @@ void * userdata) {
 gwrlsrc *
 gwrl_set_date_timeout(gwrl * rl, int64_t ms, gwrlevt_cb * callback,
 void * userdata) {
+	//a shortcut to create a future date timeout input source and register it.
 	gwrlsrc * tsrc = gwrl_src_time_create(ms,false,GWRL_ABS,false,callback,userdata);
 	while(!tsrc) tsrc = gwrl_src_time_create(ms,false,GWRL_ABS,false,callback,userdata);
 	gwrl_src_add(rl,tsrc);
@@ -181,6 +209,7 @@ void * userdata) {
 
 void
 gwrl_post_function(gwrl * rl, gwrlevt_cb * cb, void * userdata) {
+	//post a function call event.
 	gwrlevt * evt = gwrl_evt_create(rl,NULL,cb,userdata,0,0);
 	while(!evt) evt = gwrl_evt_create(rl,NULL,cb,userdata,0,0);
 	gwrl_post_evt(rl,evt);
@@ -188,6 +217,7 @@ gwrl_post_function(gwrl * rl, gwrlevt_cb * cb, void * userdata) {
 
 void
 gwrl_post_function_safely(gwrl * rl, gwrlevt_cb * cb, void * userdata) {
+	//safely post a function call event with thread synchronization.
 	gwrlevt * evt = gwrl_evt_create(rl,NULL,cb,userdata,0,0);
 	while(!evt) evt = gwrl_evt_create(rl,NULL,cb,userdata,0,0);
 	gwrl_post_evt_safely(rl,evt);
@@ -240,8 +270,13 @@ gwrl_set_options(gwrl * rl, gwrl_options * opts) {
 
 void
 gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
+	//add a gather function to the reactor.
 	int i = 0;
 	bool added = false;
+	
+	//have to loop over all of the entries and find an
+	//empty spot. this is used so infrequently that this
+	//loop isn't a problem.
 	for(; i < rl->options.gwrl_gather_funcs_max; i++) {
 		if(!rl->gatherfncs[i]) {
 			rl->gatherfncs[i] = fnc;
@@ -249,6 +284,7 @@ gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
 			break;
 		}
 	}
+	
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!added) {
 		gwerr("(3F85R) no open gather slots.");
@@ -259,6 +295,7 @@ gwrl_add_gather_fnc(gwrl * rl, gwrl_gather_fnc * fnc) {
 
 void
 gwrl_reset_gather_fncs(gwrl * rl) {
+	//zero out all gather functions.
 	if(rl->options.gwrl_gather_funcs_max > 0) {
 		bzero(rl->gatherfncs,sizeof(gwrl_gather_fnc*)*rl->options.gwrl_gather_funcs_max);
 	}
@@ -266,6 +303,13 @@ gwrl_reset_gather_fncs(gwrl * rl) {
 
 void
 gwrl_free(gwrl * rl, gwrlsrc ** sources) {
+	//this frees a reactor and has three possible uses.
+	//1. rl!=null, sources !=null: link all input sources
+	//   and give them to the user to loop over and handle.
+	//2. rl!=null, sources = null: free everything internally.
+	//3. rl=null, sources!=null: loop over *sources and free them.
+
+	//setup vars
 	int i = 0;
 	gwrlevt * del = NULL;
 	gwrlevt * evt = NULL;
@@ -379,9 +423,12 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 		}
 	}
 	
+	//give the list to the user
 	if(sources) {
 		*sources = head;
 	}
+
+	//release and free everything
 	lockid_free(&rl->_qevtlk);
 	lockid_free(&rl->_qsrclk);
 	gwrl_bkd_free(rl);
@@ -406,6 +453,7 @@ gwrl_evt_free(gwrl * rl, gwrlevt * evt) {
 
 void
 gwrl_evt_free_list(gwrl * rl, gwrlevt * evt) {
+	//free an entire list of gwrlevt
 	gwrlevt * nev = NULL;
 	while(evt) {
 		nev = evt->next;
@@ -416,6 +464,7 @@ gwrl_evt_free_list(gwrl * rl, gwrlevt * evt) {
 
 void
 gwrl_allow_poll_sleep(gwrl * rl, int onoff) {
+	//whether or not to let the backend sleep
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(onoff) flclr(rl->flags,GWRL_NOSLEEP);
 	else flset(rl->flags,GWRL_NOSLEEP);
@@ -426,6 +475,7 @@ gwrl_allow_poll_sleep(gwrl * rl, int onoff) {
 
 void
 gwrl_src_add(gwrl * rl, gwrlsrc * src) {
+	//add an input source
 	gwrlsrc * head = rl->sources[src->type];
 	if(head) src->next = head;
 	rl->sources[src->type] = src;
@@ -435,6 +485,7 @@ gwrl_src_add(gwrl * rl, gwrlsrc * src) {
 
 void
 gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
+	//add an input source safely with thread synchronization
 	gwrlsrc * head = NULL;
 	lockid_lock(&rl->_qsrclk);
 	head = rl->_qsrc;
@@ -449,6 +500,7 @@ gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {
 
 void
 gwrl_post_evt_safely(gwrl * rl, gwrlevt * evt) {
+	//post an event safely with thread synchronization
 	gwrlevt * head = NULL;
 	lockid_lock(&rl->_qevtlk);
 	head = rl->_qevt;
@@ -490,11 +542,14 @@ gwrl_src_del(gwrl * rl, gwrlsrc * src, gwrlsrc * prev, bool freesrc) {
 
 void
 gwrl_src_remove(gwrl * rl, gwrlsrc * src) {
+	//remove but don't free an input source
 	gwrl_src_del(rl,src,NULL,false);
 }
 
 void
 gwrl_del_persistent_timeouts(gwrl * rl) {
+	//delete all persistent timeouts
+
 	gwrlsrc * src = rl->sources[GWRL_SRC_TYPE_TIME];
 	gwrlsrc * shead = src;
 	gwrlsrc * phead = NULL;
