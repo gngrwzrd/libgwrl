@@ -594,7 +594,7 @@ void
 gwrl_src_enable(gwrl * rl, gwrlsrc * src) {
 	flset(src->flags,GWRL_ENABLED);
 	if(src->type == GWRL_SRC_TYPE_TIME) {
-		gwrlsrc_time * tsrc = (gwrlsrc_time *)src;
+		gwrlsrc_time * tsrc = _gwrlsrct(src);
 		if(!flisset(src->flags,GWRL_WHENCE_ABS)) {
 			gwtm_gettimeofday_timespec(&tsrc->when);
 			gwtm_add_ms_to_timespec(tsrc->ms,&tsrc->when);
