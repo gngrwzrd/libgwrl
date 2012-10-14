@@ -391,14 +391,13 @@ gwrl_free(gwrl * rl, gwrlsrc ** sources) {
 
 void
 gwrl_evt_free(gwrl * rl, gwrlevt * evt) {
-	if(rl->ncevents >= (rl->options.gwrl_event_cache_max)) {
+	//cache or free a gwrlevt
+	if(rl->ncevents >= rl->options.gwrl_event_cache_max) {
 		free(evt);
 	} else {
-		gwrlevt * head = NULL;
 		bzero(evt,sizeof(*evt));
-		head = rl->cevents;
-		if(head) {
-			evt->next = head;
+		if(rl->cevents) {
+			evt->next = rl->cevents;
 		}
 		rl->cevents = evt;
 		rl->ncevents++;
