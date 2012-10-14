@@ -82,6 +82,18 @@ void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
 	return evt;
 }
 
+gwrlevt *
+gwrl_evt_createp(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,
+void * userdata, fileid_t fd, gwrlevt_flags_t flags) {
+	//creates a new event but keeps trying if it's null.
+	gwrlevt * evt = gwrl_evt_create(rl,src,callback,userdata,fd,flags);
+	while(!evt) {
+		gwerr("(4LOP0) evt error");
+		evt = gwrl_evt_create(rl,src,callback,userdata,fd,flags);
+	}
+	return evt;
+}
+
 gwrlsrc *
 gwrl_src_time_create(int64_t ms, bool repeat, int whence,
 bool persist, gwrlevt_cb * callback, void * userdata) {
