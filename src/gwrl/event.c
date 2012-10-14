@@ -195,25 +195,46 @@ gwrl_post_function_safely(gwrl * rl, gwrlevt_cb * cb, void * userdata) {
 
 void
 gwrl_set_options(gwrl * rl, gwrl_options * opts) {
-	if(opts->gwrl_gather_funcs_max > rl->options.gwrl_gather_funcs_max) {
+	//set runtime overridable options.
+	if(opts->gwrl_gather_funcs_max > 0) {
+
+		//this always callocs a new chunk of memory for the new options
+		//and just copies old stuff in if needed. old memory is freed. this
+		//is used so infrequently that using calloc vs realloc doesn't matter.
+
 		int orig = rl->options.gwrl_gather_funcs_max;
 		int diff = opts->gwrl_gather_funcs_max - orig;
-		void * tmp = NULL;
-		if(rl->options.gwrl_gather_funcs_max < 1) {
-			tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
-			while(!tmp) tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
+		void * tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc*) * opts->gwrl_gather_funcs_max);
+		while(!tmp) tmp = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc*) * opts->gwrl_gather_funcs_max);
+		
+		if(diff < 0) {
+			//the new memory chunk is smaller than the old (original) one.
+			gwerr("(L3JF8) gather function(s) were truncated");
+			memcpy(tmp,rl->gatherfncs,sizeof(gwrl_gather_fnc*) * opts->gwrl_gather_funcs_max);
 		} else {
-			tmp = gwrl_mem_realloc(rl->gatherfncs,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
-			while(!tmp) tmp = gwrl_mem_realloc(rl->gatherfncs,sizeof(gwrl_gather_fnc *) * opts->gwrl_gather_funcs_max);
+			//new memory chunk is same or bigger.
+			memcpy(tmp,rl->gatherfncs,sizeof(gwrl_gather_fnc*) * orig);
 		}
-		if(diff > 0 && orig > 0) {
-			char * buf = (char *)tmp;
-			buf += (sizeof(gwrl_gather_fnc *) * orig);
-			bzero(buf,sizeof(gwrl_gather_fnc *) * diff);
+
+		//if there was an old gatherfncs just free it.
+		if(rl->gatherfncs) {
+			free(rl->gatherfncs);
 		}
+		
 		rl->gatherfncs = (gwrl_gather_fnc **)tmp;
+	} else {
+		//all gatherfnc memory will be freed and not re-allocated.
+		if(rl->gatherfncs) {
+			gwerr("(35FH8) gather function(s) were all truncated");
+			free(rl->gatherfncs);
+			rl->gatherfncs = NULL;
+		}
 	}
+
+	//copy new options into reactor.
 	memcpy(&rl->options,opts,sizeof(rl->options));
+
+	//let the backend operate on new options
 	gwrl_bkd_set_options(rl,opts);
 }
 
