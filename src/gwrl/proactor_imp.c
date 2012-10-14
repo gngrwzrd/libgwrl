@@ -16,7 +16,7 @@ void
 gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 	//this method does the accept logic when a read
 	//event is available for a descriptor that has an
-	//accept callback set.
+	//accept callback set
 
 	//setup vars
 	int i = 0;
@@ -289,7 +289,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 	//this is the equivalent method that they would have to write. here I just
 	//provide all the logic for the user with reads and writes on their behalf.
 
-	//make sure the event is indeed a file input source
+	//make sure the event is a file input source
 	if(evt->src->type == GWRL_SRC_TYPE_FILE) {
 		
 		//setup vars
@@ -495,6 +495,8 @@ void
 gwpr_write_buffer(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen,
 size_t * written, int * errnm) {
+	//this function writes a single buffer based on the op.
+
 	ssize_t didwrite = 0;
 	size_t towrite = buf->len;
 	char * _buf = buf->buf;
