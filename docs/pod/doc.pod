@@ -85,13 +85,14 @@ Compilers and Workspaces:
 
 If a particular operating system or compiler isn't listed here, give it
 a shot anyway - either it'll work or it wont. If you know enough about
-C and are willing to try and add support for your platform or compiler,
+C and CMake and are willing to try and add support for your platform or compiler,
 it'd be something worth contributing to GWRL.
 
-I'm willing to help get GWRL compiling on other systems, you'd have to
-dedicate some resources on a server over SSH with git and compiler installed.
-I won't drop everything to add support for a target operating system or
-compiler though - when I get free time I would, unless you want to pay me.
+I'm willing to help get GWRL compiling on other systems - you'd have to
+dedicate some resources on a server over SSH with git, CMake, and a compiler
+installed. I won't be able to drop everything and add support for a target
+operating system or compiler though - I'd do it when I get free time,    unless
+you want to pay me.
 
 =head2 Quick Start - Generate a Makefile
 
@@ -106,8 +107,8 @@ Here's how to generate a Makefile on Linux or Mac:
 
 =head2 CMake Output
 
-By default CMake is configured to create a static .a archive and a dyld
-for Linux and Mac. On Windows CMake creates a .lib file and .dll.
+By default CMake is configured to create a static I<.a> archive and a I<dyld>
+for Linux and Mac. On Windows CMake creates a I<lib> file and I<dll>.
 
 =head1 REACTOR AND PROACTOR
 
@@ -127,12 +128,12 @@ successfully, but it's up to you to initiate it.
 Proactor is a pattern that notifies you about events being I<completed>, passing
 data back to you. An example file IO event is a I<read complete> event -
 you're notified from the kernel that a read completed and would pass you a buffer
-with that data for you to use.
+with data for you to use.
 
 =head2 Kernel API Differences
 
 On Unix, kernel event polling mechanisms are reactor based. On Windows,
-kernel event polling mechanisms are proactor based.
+asynchronous kernel event polling mechanisms are proactor based.
 
 =head2 Implementation Overview
 
@@ -156,28 +157,29 @@ Windows.
 
 =head1 REACTOR
 
-The reactor is the core to gwrl - it manages all input sources, event dispatching,
+The reactor is the core to GWRL - it manages all input sources, event dispatching,
 event gathering, and synchronous kernel polling. This section describes as much
 as possible about it.
 
-The reactor is not intended to be used on Windows by itself. You should read
-documentation about the reactor as most of the API's are still used on Windows,
-just not file input sources which you'll read about shortly.
+The reactor is not intended to be used on Windows by itself. You should still read
+documentation about the reactor as most of the API's are still used on Windows.
 
 =head2 Creating, Running, and Stopping the Reactor
 
-You create a reactor with:
+Create a reactor with:
 
  gwrl * gwrl_create();
 
-You run the reactor with one of these:
+Run a reactor with these:
 
  void gwrl_run_once(gwrl * rl);
  void gwrl_run(gwrl * rl);
 
 If you use gwrl_run() the reactor will run indefinitely until it's stopped.
+If you use gwrl_run_once() the reactor will only run once, then return from
+the function.
 
-You can stop the reactor with:
+Stop the reactor with:
 
  void gwrl_stop(gwrl * rl);
 
@@ -190,7 +192,7 @@ separate C file. Only one can be included at compile time.
 =head3 Backend Sleeping
 
 Each backend will cause the current thread to sleep until an event is received
-from the kernel, or a timeout occurs. This behavior can be shut off so that the
+from the kernel or a timeout occurs. This behavior can be shut off so that the
 backend will I<not> put the thread to sleep.
 
 Disable backend sleeping with this:
@@ -218,10 +220,10 @@ events occur.
 
 You create a timeout input source with either of these:
 
- //create and register a timeout input source
+ //creates a timeout input source and adds it to the reactor for you.
  gwrlsrc * gwrl_set_timeout(gwrl * rl, int64_t ms, bool persist, gwrlevt_cb * cb, void * userdata);
  
- //create a time input source that you must register manually
+ //creates a time input source that you must add to the reactor with gwrl_src_add.
  gwrlsrc * gwrl_src_time_create(int64_t ms, bool repeat, int whence, bool persist, gwrlevt_cb * callback, void * userdata);
 
 Example:
@@ -242,7 +244,7 @@ Example:
      //create a persistent timeout which can be re-armed
      gwrlsrc * timeout1 = gwrl_set_timeout(rl,1000,true,&my_callback,NULL);
      
-     //create another timeout that isn't persistent.
+     //create another timeout that isn't persistent - can't be re-armed.
      gwrlsrc * timeout2 = gwrl_src_time_create(3000,false,GWRL_NOW,false,&timeout2,NULL);
      gwrl_src_add(rl,timeout2);
      
@@ -263,12 +265,12 @@ You can use the userdata parameter to pass any opaque user data to keep associat
 with the input source. The user data will get passed back to you when any
 events occur for this input source.
 
-You create an interval input source with any of these:
+Create an interval input source with any of these:
 
- //create and register a repeating interval input source
+ //creates a repeating interval input source and adds it to the reactor for you.
  gwrlsrc * gwrl_set_interval(gwrl * rl, int64_t ms, gwrlevt_cb * callback, void * userdata);
  
- //create a time input source that you must register manually
+ //create a time input source that you must add to the reactor with gwrl_src_add.
  gwrlsrc * gwrl_src_time_create(int64_t ms, bool repeat, int whence, bool persist, gwrlevt_cb * callback, void * userdata);
 
 Examples:
@@ -301,10 +303,10 @@ events occur for this input source.
 
 Create a future date timeout with any of these:
 
- //create and register a future date timeout
+ //creates a future date timeout and adds it to the reactor for you.
  gwrlsrc * gwrl_set_date_timeout(gwrl * rl, int64_t ms, gwrlevt_cb * cb, void * userdata);
  
- //create a time input source that you must register manually
+ //create a time input source that you must add to the reactor with gwrl_src_add.
  gwrlsrc * gwrl_src_time_create(int64_t ms, bool repeat, int whence, bool persist, gwrlevt_cb * callback, void * userdata);
 
 Example:
@@ -319,30 +321,34 @@ Example:
  
  int main(int argc,c har ** argv) {
      gwrl * rl = gwrl_create();
+     
      int64_t ms = 0;
      struct timespec ts;
      gwtm_gettimeofday_timespec(&ts);
      gwtm_timespec_to_ms(&ts,&ms);
-     ms += 86400000;
+     
+     ms += 86400000; //+ 1 day
      gwrlsrc * timeout1 = gwrl_set_date_timeout(rl,ms,&day_later,NULL);
-     ms += 86400000;
+     
+     ms += 86400000; //+ 1 day
      gwrlsrc * timeou2 = gwrl_src_time_create(ms,false,GWRL_ABS,false,&day2_later,NULL);
      gwrl_src_add(rl,timeout2);
+     
      gwrl_run(rl);
      return 0;
  }
 
 =head3 File Input Sources
 
-File input sources can generate read and write events. The interest flags
+File input sources can generate read and write events. The flags
 you use to indicate which events you want to be notified about are GWRL_RD | GWRL_WR.
 
 Create a file input source with either of these:
 
- //create and register a file input source
+ //creates a file input source and adds it to the reactor for you.
  gwrlsrc * gwrl_set_fd(gwrl * rl, fileid_t fd, uint16_t flags, gwrlevt_cb * cb, void * userdata);
  
- //create a file input source that you must register manually
+ //create a file input source that you must add to the reactor with gwrl_src_add.
  gwrlsrc * gwrl_src_file_create(fileid_t fd, uint16_t flags, gwrlevt_cb * callback, void * userdata);
 
 Example:
@@ -385,8 +391,8 @@ Example:
 
 =head3 Adding Input Sources
 
-If you created an input source with any functions that don't automatically
-add it to the reactor, you can use this function:
+Any input sources you create that aren't automatically added to the reactor
+can be added with this:
 
  //add any input source
  void gwrl_src_add(gwrl * rl, gwrlsrc * src);
@@ -424,7 +430,7 @@ This is useful in callbacks or with the gwrl_free function described below.
 
 All reactor callbacks use this function prototype:
 
- typedef void (gwrlevt_cb)(struct gwrl * rl, struct gwrlevt * evt);
+ typedef void (gwrlevt_cb)(gwrl * rl, gwrlevt * evt);
 
 For any event that the reactor dispatches, it passes you a gwrlevt object
 that contains more information about the event:
@@ -434,8 +440,7 @@ that contains more information about the event:
      fileid_t fd;           //file descriptor
      void * userdata;       //opaque user data for users of the API
      
-     //gwrlsrc that generated the event, can be NULL.
-     //src->fd is the same as fd above.
+     //gwrlsrc that generated the event, can be NULL. src->fd is the same as fd above.
      struct gwrlsrc * src;
  } gwrlevt;
 
@@ -445,11 +450,11 @@ a valid source.
 
 =head2 Custom Events
 
-You can create and post events at any time. Create an event with this:
+You can create and post events at any time.
+
+Create an event with this: (only I<rl> and I<callback> are required.)
 
  gwrlevt * gwrl_evt_create(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback, fileid_t fd, gwrlevt_flags_t flags);
-
-Only rl and callback is required.
 
 After you've created an event, post it with:
 
@@ -498,7 +503,7 @@ loop iteration.
 This phase gathers time events from all time input sources and appends any
 found events to the dispatch queue to dispatch on the next loop iteration. It
 also finds and stores the shortest period of time before a time event will
-occur. That time period is used as a timeout value for the event IO backend.
+occur. That time period is used as a timeout value for the IO event backend.
 
 =head3 Gather IO Events
 
@@ -537,10 +542,13 @@ Example:
  
  int main(int argc, char ** argv) {
      gwrl * rl = gwrl_create();
+     
      my_input_src * mis = calloc(1,sizeof(my_input_src));
      gwrlsrc * src = (gwrlsrc *)mis;
+     
      src->type = MY_INPUT_SRC_TYPE;
      gwrl_src_add(rl,src);
+     
      gwrl_run(rl);
      return;
  }
@@ -548,8 +556,8 @@ Example:
 =head2 Custom Event Gathering
 
 Users of GWRL can create their own event gathering functions. These functions
-get called on every loop iteration for you to poll for any events that need to
-be posted.
+get called on every loop iteration for you to poll your own input sources for
+any events that need to be posted.
 
 Example:
 
@@ -584,14 +592,18 @@ Example:
  
  int main(int argc, char ** argv) {
     gwrl * rl = gwrl_create();
+    
     my_source * msrc = gwrl_mem_calloc(1,sizeof(my_source));
     gwrlsrc * src = _gwrlsrc(msrc);
     msrc->something = 0;
     src->type = MY_SOURCE_TYPE;
     src->callback = &my_callback;
+    
     gwrl_add_gather_fnc(rl,&my_gather);
+    
     gwrl_allow_poll_sleep(rl,0);
     gwrl_src_add(rl,src);
+    
     gwrl_run(rl);
     return 0;
  }
@@ -624,15 +636,21 @@ what to do with an input source.
 
 Example:
 
+ #include "gwrl/event.h"
+ 
  void did_read(gwrl * rl, gwrlevt * evt) {
  }
  
  int main(int argc, char ** argv) {
      gwrl * rl = gwrl_create();
+     
      gwrl_set_fd(rl,STDIN_FILENO,GWRL_RD,&didrd,NULL);
+     
      gwrlsrc * sources = NULL;
      gwrlsrc_file * fsrc = NULL;
+     
      gwrl_free(rl,&sources);
+     
      while(sources) {
          fsrc = (gwrlsrc_file *)sources;
          //possibly use source->tag to switch on something.
@@ -642,7 +660,9 @@ Example:
          }
          sources = sources->next;
      }
+     
      gwrl_free(NULL,&sources);
+     
      return 0;
  }
 
@@ -651,7 +671,7 @@ like this provides the simplest API for GWRL, and more flexibility for the user.
 
 =head2 Reactor CMAKE Compile-Time Options
 
-There are some cmake compile time options you can use to control some internal
+There are some cmake compile time options you can use to control internal
 mechanisms that may effect performance.
 
 =head3 GWRL_EVENT_CACHE_MAX
@@ -664,7 +684,9 @@ then they are freed rather than cached. The default is 128.
 =head3 GWRL_EPOLL_EVENT_COUNT
 
 The number of events to accept from epoll_wait. This does not grow internally
-as more input sources are added. The default is 64.
+as more input sources are added. This doesn't limit the number of file descriptors
+that can be monitiored - only the number of events that can be returned from
+epoll_wait with one call. The default is 64. See epoll_wait for more info.
 
 =head3 GWRL_GATHER_FUNCS_MAX
 
@@ -674,7 +696,9 @@ Gathering section for more information. The default is 0.
 =head3 GWRL_KQUEUE_KEVENT_COUNT
 
 The number of events to accept from kevent. This does not grow internally as
-more input sources are added. The default is 64.
+more input sources are added. This doesn't limit the number of file descriptors
+that can be monitiored - only the number of events that can be returned from
+kevent with one call. The default is 64. See kqueue for more info.
 
 =head3 GWRL_POLLFD_COUNT
 
@@ -721,13 +745,13 @@ the reactor internally. Instead of receiving callbacks when an IO operation is
 ready or can complete successfully, the IO operation is done for you internally
 and you're notified when it's completed.
 
-When working with a proactor, you still use most of the reactor API's with the
+When working with a proactor, you still use most of the reactor APIs with the
 exception of file IO input sources - Those must be added with the proactor API.
 
 =head2 Creating a Proactor
 
 When you create a proactor you need to supply it with a reactor which will
-dispatch the proactor with events.
+supply the proactor with events.
 
 Example:
 
@@ -749,6 +773,8 @@ You can register them with:
 
 Example:
 
+ #include "gwrl/event.h"
+ 
  int main(int argc, char ** argv) {
      gwrl * rl = gwrl_create();
      gwpr * pr = gwpr_create(pr);
@@ -826,10 +852,11 @@ You are always responsible for freeing buffers when you don't need them anymore.
 The proactor will create buffers internally and pass them to your callbacks,
 you are still responsible for freeing them.
 
-You can get a buffer with:
+You can get a new buffer with:
 
  gwprbuf * gwpr_buf_get(gwpr * pr, size_t size);
  gwprbuf * gwpr_buf_get_tagged(gwpr * pr, size_t size, int tag);
+ gwprbuf * gwpr_buf_get_with_data(gwpr * pr, size_t size, char * data, size_t datasize);
 
 You can free a buffer with:
 
@@ -846,35 +873,6 @@ the public structure members you have at your disposal:
      char * buf;
  } gwprbuf;
 
-Some other utility buffer methods exist:
-
- ssize_t gwpr_buf_cpyin(gwprbuf * to, char * from, size_t len);
- ssize_t gwpr_buf_cpyout(gwprbuf * from, char * to, size_t len);
- ssize_t gwpr_buf_cpy(gwprbuf * to, gwprbuf * from, size_t len);
-
-=head3 Buffer Tagging
-
-Each gwprbuf object contains a "tag" member you can use at your disposal.
-
-A contrived example:
-
- #define FROM_STDIN 1
- 
- void didrd(gwpr * pr, gwpr_io_info * info) {
-     if(info->buf->tag == FROM_STDIN) {
-         //data was from stdin
-     }
- }
- 
- int main(int argc, char ** argv) {
-     gwrl * rl = gwrl_create();
-     gwpr * pr = gwpr_create(rl);
-     gwrlsrc_file * stdin_src = gwpr_set_fd(pr,STDIN_FILENO,NULL);
-     gwpr_set_cb(pr,stdin_src,gwpr_did_read_cb_id,&didrd);
-     gwpr_read(pr,stdin_src,gwpr_buf_get_tagged(pr,128,FROM_STDIN));
-     gwrl_run(rl);
- }
-
 =head2 Reading
 
 On Unix, initiating a read tells the event backend to wait for a readable event.
@@ -890,7 +888,7 @@ Initiate a read with any of these:
  gwpr_read(gwpr * pr, gwsrc_file * fsrc, gwprbuf * buf);
  gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
  gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
- 
+
 Any of those will intitiate a read, and upon completion call the gwpr_did_read_cb_id
 callback. The buffer provided should be a buffter from gwpr_buf_get, or a buffer you
 know you don't need anymore.
@@ -930,6 +928,8 @@ needed to re-order the filters you'd have to reset and re-add all filters.
 
 Example:
 
+ #include "gwrl/proactor.h"
+ 
  void my_read_filter(gwpr * pr, gwpr_io_info * info) {
      printf("1. called read filter!\n");
      char * buf = info->buf->buf;
@@ -966,8 +966,8 @@ take place. This section describes those errors.
 =head4 Closed Sockets, Pipe Errors and EOF
 
 On Unix, when a read is attempted on a socket or a file descriptor, the proactor
-will check for EOF, which on a socket indicates a disconnected state,for a regular
-file means there's nothing left to read, for a pipe means the other end of the
+will check for EOF, which on a socket indicates a disconnected state, for a regular
+file it means there's nothing left to read, for a pipe means the other end of the
 pipe isn't connected.
 
 On Windows, the result of an overlapped read indicates socket closure or EOF.
@@ -1005,6 +1005,8 @@ callback.
 
 Example:
 
+ #include "gwrl/proactor.h"
+ 
  gwrlsrc_file * stdin_src;
  gwrlsrc_file * stdout_src;
  
@@ -1035,6 +1037,8 @@ filters which allows you to alter the buffer data somehow before it's written.
 
 Example:
 
+ #include "gwrl/proactor.h"
+ 
  gwprsrc_file * stdin_src;
  gwprsrc_file * stdout_src;
  
@@ -1074,7 +1078,9 @@ updates the write queue to write starting where it left off, and wait for the
 file descriptor to be writable again.
 
 The buffer you receive in the callback will only contain the data that was
-actually written.
+actually written - and you can safely free the buffer if you don't need it
+anymore. The data that still needs to be written is copied to the write queue
+internally.
 
 =head3 Synchronous Writes with Unix
 
@@ -1106,7 +1112,7 @@ time options for this feature.
 =head3 Synchronous Writes Warning
 
 Something to keep in mind when using the synchronous write attempts on Unix is
-that if your file descriptor is I<not> nset as non-blocking, this method will block
+that if your file descriptor is I<not> set to non-blocking, this method will block
 indefinitely. Your descriptors should always be non-blocking before using this
 functionality.
 
@@ -1175,22 +1181,18 @@ Example:
      gwrl_run(rl);
  }
 
-=head2 Making Connections
-
 =head2 Freeing a Proactor
 
-Freeing a proactor only frees the internal resources the proactor requires,
-it does not free the file input sources you added to it, or any of the reactor
-resources internally.
-
-Freeing a proactor disables all file input sources that were added to with the
-proactor API's.
-
-To continue freeing and 
+Freeing a proactor only frees the resources used internally but does not
+free the file input sources - since those technically belong to the
+reactor.
 
 Free a proactor with:
 
  void gwpr_free(gwpr * pr);
+
+If you're intentions of freeing the proactor are to free all resources, including
+the reactor, then you also need to use gwrl_free().
 
 =head2 Proactor CMAKE Compile-Time Options
 
@@ -1255,8 +1257,7 @@ Overridable Properties:
 
 =head1 MEMORY FUNCTIONS
 
-GWRL allows you to set memory allocation and freeing functions so if you ever
-wanted to use custom memory allocators you can.
+GWRL allows you to set memory allocation and freeing functions if needed.
 
 =head2 Setting Allocators
 

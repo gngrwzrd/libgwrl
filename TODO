@@ -1,3 +1,7 @@
+-need to make sure the time input source is expired in gwrl_del_persistent_timeouts.
+-possibly change proactor api's to use gwrlsrc for public functions.
+-change proactor read functions to use buffer size not an actual gwprbuf
+
 -breakup gwpr_synchronous_write - it's too big to test easily
 
 -gwrl_free might be able to use double pointers too
