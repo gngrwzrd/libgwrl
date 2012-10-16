@@ -557,28 +557,31 @@ gwrl_del_persistent_timeouts(gwrl * rl) {
 	gwrlsrc * del = NULL;
 	gwrlsrc * deltmp = NULL;
 	rl->sources[GWRL_SRC_TYPE_TIME] = NULL;
-
+	
 	//first gather all the ones to free, and
 	//take them out of the source list
 	while(src) {
-		if(src->flags & GWRL_PERSIST) {
-			del = src;
-			if(src == shead) shead = shead->next;
-			if(psrc) psrc->next = src->next;
-			if(!phead) phead = del;
-			else phead->next = del, phead = del;
+		if((src->flags & GWRL_PERSIST) && !flisset(src->flags,GWRL_ENABLED)) {
+			if(_gwrlsrct(src)->when.tv_sec == sec_min &&
+			_gwrlsrct(src)->when.tv_nsec == nsec_min) {
+				del = src;
+				if(src == shead) shead = shead->next;
+				if(psrc) psrc->next = src->next;
+				if(!phead) phead = del;
+				else phead->next = del, phead = del;
+			}
 		}
 		psrc = src;
 		src = src->next;
 	}
-
+	
 	//delete the persistent ones
 	while(phead) {
 		deltmp = phead->next;
 		free(phead);
 		phead = deltmp;
 	}
-
+	
 	//replace time input sources with updated list
 	rl->sources[GWRL_SRC_TYPE_TIME] = shead;
 }
