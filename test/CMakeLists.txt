@@ -37,14 +37,8 @@ target_link_libraries(reactor_free3 gwrl)
 add_executable(reactor_free4 reactor_free4.c)
 target_link_libraries(reactor_free4 gwrl)
 
-add_executable(reactor_del_pers_timeouts reactor_del_pers_timeouts.c)
-target_link_libraries(reactor_del_pers_timeouts gwrl)
-
-add_executable(reactor_del_pers_timeouts2 reactor_del_pers_timeouts2.c)
-target_link_libraries(reactor_del_pers_timeouts2 gwrl)
-
-add_executable(reactor_del_pers_timeouts3 reactor_del_pers_timeouts3.c)
-target_link_libraries(reactor_del_pers_timeouts3 gwrl)
+add_executable(reactor_pers_timeouts reactor_pers_timeouts.c)
+target_link_libraries(reactor_pers_timeouts gwrl)
 
 add_executable(reactor_timer_interval reactor_timer_interval.c)
 target_link_libraries(reactor_timer_interval gwrl)
