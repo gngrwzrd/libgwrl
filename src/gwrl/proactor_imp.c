@@ -680,7 +680,7 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	int maxbytes = pr->options.gwpr_synchronous_write_max_bytes;
 
 	if(buf->len <= maxbytes && maxbytes > 0) {
-		//try synchronouse write
+		//try synchronous write
 		
 		//setup vars
 		gwrlsrc * src = _gwrlsrc(fsrc);
