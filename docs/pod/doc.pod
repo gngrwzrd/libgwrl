@@ -14,7 +14,7 @@ proactor interface to create a unified cross-platform API for Unix and Windows.
 
 This document explains as much as possible about GWRL - how to use it,
 and how it works. If you have suggestions, comments, spelling corrections,
-or gramar nazi corrections  you can email me at gngrwzrd@gmail.com.
+or gramar nazi corrections you can email me at gngrwzrd@gmail.com.
 But please don't email me for technical support.
 
 =head1 LICENSE
