@@ -10,7 +10,7 @@ char * protocol;
 bool istcp;
 bool isserver;
 skctlinfo skinfo;
-gwrlsrc_file * client = NULL;
+gwrlsrc * client = NULL;
 fileid_t stdinid = 0;
 fileid_t stdoutid = 0;
 
@@ -42,15 +42,15 @@ void did_write(gwpr * pr, gwpr_io_info * info) {
 }
 
 void did_disconnect(gwpr * pr, gwpr_io_info * info) {
-	gwsk_close((sockid_t)info->src->fd);
+	gwsk_close((sockid_t)_gwrlsrcf(info->src)->fd);
 	gwpr_src_del(pr,info->src);
 	printf("disconnected!\n");
 }
 
 void did_connect(gwpr * pr, gwpr_io_info * info) {
-	gwrlsrc_file * stdinfd = gwpr_set_fd(pr,stdinid,NULL);
+	gwrlsrc * stdinfd = gwpr_set_fd(pr,stdinid,NULL);
 	gwpr_set_cb(pr,stdinfd,gwpr_did_read_cb_id,&did_read_stdin);
-	gwpr_read(pr,stdinfd,gwpr_buf_get(pr,128));
+	gwpr_read(pr,stdinfd,128);
 	printf("connected!\n");
 }
 
@@ -60,12 +60,12 @@ void did_accept(gwpr * pr, gwpr_io_info * info) {
 	gwpr_set_cb(pr,info->peersrc,gwpr_closed_cb_id,&did_disconnect);
 	gwpr_set_cb(pr,info->peersrc,gwpr_did_read_cb_id,&did_read);
 	gwpr_set_cb(pr,info->peersrc,gwpr_did_write_cb_id,&did_write);
-	gwpr_read(pr,info->peersrc,gwpr_buf_get(pr,128));
+	gwpr_read(pr,info->peersrc,128);
 	printf("did accept!\n");
 }
 
 void setup_server() {
-	gwrlsrc_file * fsrc = NULL;
+	gwrlsrc * fsrc = NULL;
 	
 	if(istcp) {
 		if((skctl_tcp_server(&skinfo,NULL,service,AF_INET,true)) < 0) exit(-1);
@@ -78,22 +78,22 @@ void setup_server() {
 		gwpr_set_cb(pr,fsrc,gwpr_error_cb_id,&_error);
 		gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&did_read);
 		gwpr_set_cb(pr,fsrc,gwpr_did_write_cb_id,&did_write);
-		gwpr_recvfrom(pr,fsrc,gwpr_buf_get(pr,512));
+		gwpr_recvfrom(pr,fsrc,512);
 	}
 	
 	skctlinfo_free(&skinfo,false);
 }
 
 void setup_client() {
-	gwrlsrc_file * fsrc = NULL;
-	gwrlsrc_file * stdinfd = NULL;
+	gwrlsrc * fsrc = NULL;
+	gwrlsrc * stdinfd = NULL;
 	
 	if(istcp) {
 		if((skctl_tcp_client(&skinfo,node,service,AF_INET,true)) < 0) exit(-1);
 		
 		stdinfd = gwpr_set_fd(pr,stdinid,NULL);
 		gwpr_set_cb(pr,stdinfd,gwpr_did_read_cb_id,&did_read_stdin);
-		gwpr_read(pr,stdinfd,gwpr_buf_get(pr,128));
+		gwpr_read(pr,stdinfd,128);
 		
 		fsrc = gwpr_set_fd(pr,(fileid_t)skinfo.sockfd,NULL);
 		client = fsrc;
@@ -107,14 +107,14 @@ void setup_client() {
 		
 		stdinfd = gwpr_set_fd(pr,stdinid,NULL);
 		gwpr_set_cb(pr,stdinfd,gwpr_did_read_cb_id,&did_read_stdin);
-		gwpr_read(pr,stdinfd,gwpr_buf_get(pr,128));
+		gwpr_read(pr,stdinfd,128);
 		
 		fsrc = gwpr_set_fd(pr,(fileid_t)skinfo.sockfd,NULL);
 		client = fsrc;
 		gwpr_set_cb(pr,fsrc,gwpr_error_cb_id,&_error);
 		gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&did_read);
 		gwpr_set_cb(pr,fsrc,gwpr_did_write_cb_id,&did_write);
-		gwpr_recvfrom(pr,fsrc,gwpr_buf_get(pr,128));
+		gwpr_recvfrom(pr,fsrc,128);
 	}
 	
 	skctlinfo_free(&skinfo,false);
