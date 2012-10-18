@@ -10,11 +10,9 @@ typedef enum gwpr_ovlp_op {
 	gwpr_ovlp_op_read,
 	gwpr_ovlp_op_recv,
 	gwpr_ovlp_op_recvfrom,
-	gwpr_ovlp_op_recvmsg,
 	gwpr_ovlp_op_write,
 	gwpr_ovlp_op_send,
-	gwpr_ovlp_op_sendto,
-	gwpr_ovlp_op_sendmsg
+	gwpr_ovlp_op_sendto
 } gwpr_ovlp_op;
 
 //proactor

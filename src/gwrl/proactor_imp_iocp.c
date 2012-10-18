@@ -30,8 +30,6 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 		else if(ovlp->op == gwpr_ovlp_op_sendto) op = gwpr_sendto_op_id;
 		else if(ovlp->op == gwpr_ovlp_op_recv) op = gwpr_recv_op_id;
 		else if(ovlp->op == gwpr_ovlp_op_send) op = gwpr_send_op_id;
-		else if(ovlp->op == gwpr_ovlp_op_recvmsg) op = gwpr_recvmsg_op_id;
-		else if(ovlp->op == gwpr_ovlp_op_sendmsg) op = gwpr_sendmsg_op_id;
 
 		bzero(&ioinfo,sizeof(ioinfo));
 		bzero(&errinfo,sizeof(errinfo));
@@ -257,17 +255,6 @@ gwpr_ovlp_op op) {
 		}
 	}
 	
-	else if(op == gwpr_ovlp_op_recvmsg) {
-		ovlp->wsabuf.buf = buf->buf;
-		ovlp->wsabuf.len = (ULONG)buf->bufsize;
-		ovlp->peerlen = sizeof(ovlp->peer);
-		res = WSARecvFrom((SOCKET)fsrc->fd,&ovlp->wsabuf,1,NULL,&flags,_sockaddr(&ovlp->peer),&ovlp->peerlen,(WSAOVERLAPPED*)ovlp,NULL);
-		if(res == SOCKET_ERROR && WSAGetLastError() != WSA_IO_PENDING) {
-			gwprintsyserr("(3FDsK) recvfrom error",WSAGetLastError());
-			res = WSAGetLastError();
-		}
-	}
-
 	return res;
 }
 
@@ -344,11 +331,6 @@ gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 }
 
 int
-gwpr_recvmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return 0;
-}
-
-int
 gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	return gwpr_asynchronous_write(pr,fsrc,buf,NULL,0,gwpr_ovlp_op_write);
 }
@@ -363,11 +345,6 @@ gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_stora
 	return gwpr_asynchronous_write(pr,fsrc,buf,peer,peerlen,gwpr_ovlp_op_sendto);
 }
 
-int
-gwpr_sendmsg(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return 0;
-}
-
 gwpr_ovlp *
 gwpr_ovlp_get(gwpr * pr) {
 	gwpr_ovlp * ovlp = NULL;
@@ -375,7 +352,6 @@ gwpr_ovlp_get(gwpr * pr) {
 		ovlp = _gwprovlp(gwrl_mem_calloc(1,sizeof(*ovlp)));
 		while(!ovlp) {
 			gwerr("(3FGkd) calloc error");
-			Sleep(100);
 			ovlp = _gwprovlp(gwrl_mem_calloc(1,sizeof(*ovlp)));
 		}
 		return ovlp;
