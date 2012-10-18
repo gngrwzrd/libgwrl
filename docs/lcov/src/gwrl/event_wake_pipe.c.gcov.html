@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-14</td>
+            <td class="headerValue">2012-10-17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">4</td>
@@ -87,11 +87,11 @@
 <span class="lineNum">      16 </span>                :<span class="lineCov">          1 :         }</span>
 <a name="17"><span class="lineNum">      17 </span>                :<span class="lineCov">         10 : }</span></a>
 <span class="lineNum">      18 </span>                :            : 
-<span class="lineNum">      19 </span>                :<span class="lineCov">         38 : void gwrl_wake_init(gwrl * rl) {</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         38 :         gwrlsrc * fsrc = NULL;</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         36 : void gwrl_wake_init(gwrl * rl) {</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         36 :         gwrlsrc * fsrc = NULL;</span>
 <span class="lineNum">      21 </span>                :            :         
 <span class="lineNum">      22 </span>                :            :         #ifdef GWRL_HIDE_FROM_COVERAGE
-<span class="lineNum">      23 </span>                :<span class="lineCov">         38 :                 pipe((int *)rl-&gt;fds);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">         36 :                 pipe((int *)rl-&gt;fds);</span>
 <span class="lineNum">      24 </span>                :            :         #endif
 <span class="lineNum">      25 </span>                :            : 
 <span class="lineNum">      26 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
@@ -102,9 +102,9 @@
 <span class="lineNum">      31 </span>                :            :                 }
 <span class="lineNum">      32 </span>                :            :         #endif
 <span class="lineNum">      33 </span>                :            :         
-<span class="lineNum">      34 </span>                :<span class="lineCov">         38 :         fcntl(rl-&gt;fds[0],F_SETFL,O_NONBLOCK);</span>
-<span class="lineNum">      35 </span>                :<span class="lineCov">         38 :         fcntl(rl-&gt;fds[1],F_SETFL,O_NONBLOCK);</span>
-<span class="lineNum">      36 </span>                :<span class="lineCov">         38 :         fsrc = gwrl_src_file_create((fileid_t)rl-&gt;fds[0],GWRL_RD,&amp;gwrl_wake_activity,NULL);</span>
+<span class="lineNum">      34 </span>                :<span class="lineCov">         36 :         fcntl(rl-&gt;fds[0],F_SETFL,O_NONBLOCK);</span>
+<span class="lineNum">      35 </span>                :<span class="lineCov">         36 :         fcntl(rl-&gt;fds[1],F_SETFL,O_NONBLOCK);</span>
+<span class="lineNum">      36 </span>                :<span class="lineCov">         36 :         fsrc = gwrl_src_file_create((fileid_t)rl-&gt;fds[0],GWRL_RD,&amp;gwrl_wake_activity,NULL);</span>
 <span class="lineNum">      37 </span>                :            :         
 <span class="lineNum">      38 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">      39 </span>                :            :         if(!fsrc) {
@@ -113,8 +113,8 @@
 <span class="lineNum">      42 </span>                :            :         }
 <span class="lineNum">      43 </span>                :            :         #endif
 <span class="lineNum">      44 </span>                :            :         
-<span class="lineNum">      45 </span>                :<span class="lineCov">         38 :         gwrl_src_add(rl,fsrc);</span>
-<a name="46"><span class="lineNum">      46 </span>                :<span class="lineCov">         38 : }</span></a>
+<span class="lineNum">      45 </span>                :<span class="lineCov">         36 :         gwrl_src_add(rl,fsrc);</span>
+<a name="46"><span class="lineNum">      46 </span>                :<span class="lineCov">         36 : }</span></a>
 <span class="lineNum">      47 </span>                :            : 
 <span class="lineNum">      48 </span>                :<span class="lineCov">          8 : void gwrl_wake_free(gwrl * rl) {</span>
 <span class="lineNum">      49 </span>                :<span class="lineCov">          8 :         close((int)rl-&gt;fds[0]);</span>

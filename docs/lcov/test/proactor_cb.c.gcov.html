@@ -37,7 +37,7 @@
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-14</td>
+            <td class="headerValue">2012-10-17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">7</td>
@@ -72,30 +72,30 @@
 <a name="1"><span class="lineNum">       1 </span>                :            : </a>
 <a name="2"><span class="lineNum">       2 </span>                :            : #include &quot;gwrl/proactor.h&quot;</a>
 <a name="3"><span class="lineNum">       3 </span>                :            : </a>
-<a name="4"><span class="lineNum">       4 </span>                :<span class="lineCov">         28 : void cb1(gwpr * pr, gwpr_io_info * info){}</span></a>
-<a name="5"><span class="lineNum">       5 </span>                :<span class="lineCov">         28 : void cb2(gwpr * pr, gwpr_io_info * info){}</span></a>
-<a name="6"><span class="lineNum">       6 </span>                :<span class="lineCov">         28 : void cb3(gwpr * pr, gwpr_io_info * info){}</span></a>
-<a name="7"><span class="lineNum">       7 </span>                :<span class="lineCov">         28 : void cb4(gwpr * pr, gwpr_io_info * info){}</span></a>
-<span class="lineNum">       8 </span>                :<span class="lineCov">         28 : void cb5(gwpr * pr, gwpr_io_info * info){}</span>
-<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">         28 : void cb6(gwpr * pr, gwpr_io_info * info){}</span></a>
+<a name="4"><span class="lineNum">       4 </span>                :<span class="lineCov">         26 : void cb1(gwpr * pr, gwpr_io_info * info){}</span></a>
+<a name="5"><span class="lineNum">       5 </span>                :<span class="lineCov">         26 : void cb2(gwpr * pr, gwpr_io_info * info){}</span></a>
+<a name="6"><span class="lineNum">       6 </span>                :<span class="lineCov">         26 : void cb3(gwpr * pr, gwpr_io_info * info){}</span></a>
+<a name="7"><span class="lineNum">       7 </span>                :<span class="lineCov">         26 : void cb4(gwpr * pr, gwpr_io_info * info){}</span></a>
+<span class="lineNum">       8 </span>                :<span class="lineCov">         26 : void cb5(gwpr * pr, gwpr_io_info * info){}</span>
+<a name="9"><span class="lineNum">       9 </span>                :<span class="lineCov">         26 : void cb6(gwpr * pr, gwpr_io_info * info){}</span></a>
 <span class="lineNum">      10 </span>                :            : 
-<span class="lineNum">      11 </span>                :<span class="lineCov">         28 : int main(int argc, char ** argv) {</span>
-<span class="lineNum">      12 </span>                :<span class="lineCov">         28 :         gwrl * rl = gwrl_create();</span>
-<span class="lineNum">      13 </span>                :<span class="lineCov">         28 :         gwpr * pr = gwpr_create(rl);</span>
-<span class="lineNum">      14 </span>                :<span class="lineCov">         28 :         gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
-<span class="lineNum">      15 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_error_cb_id,&amp;cb1);</span>
-<span class="lineNum">      16 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_accept_cb_id,&amp;cb2);</span>
-<span class="lineNum">      17 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&amp;cb3);</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_did_write_cb_id,&amp;cb4);</span>
-<span class="lineNum">      19 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_closed_cb_id,&amp;cb5);</span>
-<span class="lineNum">      20 </span>                :<span class="lineCov">         28 :         gwpr_set_cb(pr,fsrc,gwpr_connect_cb_id,&amp;cb6);</span>
-<span class="lineNum">      21 </span>                :<span class="lineCov">         28 :         cb1(NULL,NULL);</span>
-<span class="lineNum">      22 </span>                :<span class="lineCov">         28 :         cb2(NULL,NULL);</span>
-<span class="lineNum">      23 </span>                :<span class="lineCov">         28 :         cb3(NULL,NULL);</span>
-<span class="lineNum">      24 </span>                :<span class="lineCov">         28 :         cb4(NULL,NULL);</span>
-<span class="lineNum">      25 </span>                :<span class="lineCov">         28 :         cb5(NULL,NULL);</span>
-<span class="lineNum">      26 </span>                :<span class="lineCov">         28 :         cb6(NULL,NULL);</span>
-<span class="lineNum">      27 </span>                :<span class="lineCov">         28 :         return 0;</span>
+<span class="lineNum">      11 </span>                :<span class="lineCov">         26 : int main(int argc, char ** argv) {</span>
+<span class="lineNum">      12 </span>                :<span class="lineCov">         26 :         gwrl * rl = gwrl_create();</span>
+<span class="lineNum">      13 </span>                :<span class="lineCov">         26 :         gwpr * pr = gwpr_create(rl);</span>
+<span class="lineNum">      14 </span>                :<span class="lineCov">         26 :         gwrlsrc * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);</span>
+<span class="lineNum">      15 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_error_cb_id,&amp;cb1);</span>
+<span class="lineNum">      16 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_accept_cb_id,&amp;cb2);</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&amp;cb3);</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_did_write_cb_id,&amp;cb4);</span>
+<span class="lineNum">      19 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_closed_cb_id,&amp;cb5);</span>
+<span class="lineNum">      20 </span>                :<span class="lineCov">         26 :         gwpr_set_cb(pr,fsrc,gwpr_connect_cb_id,&amp;cb6);</span>
+<span class="lineNum">      21 </span>                :<span class="lineCov">         26 :         cb1(NULL,NULL);</span>
+<span class="lineNum">      22 </span>                :<span class="lineCov">         26 :         cb2(NULL,NULL);</span>
+<span class="lineNum">      23 </span>                :<span class="lineCov">         26 :         cb3(NULL,NULL);</span>
+<span class="lineNum">      24 </span>                :<span class="lineCov">         26 :         cb4(NULL,NULL);</span>
+<span class="lineNum">      25 </span>                :<span class="lineCov">         26 :         cb5(NULL,NULL);</span>
+<span class="lineNum">      26 </span>                :<span class="lineCov">         26 :         cb6(NULL,NULL);</span>
+<span class="lineNum">      27 </span>                :<span class="lineCov">         26 :         return 0;</span>
 <span class="lineNum">      28 </span>                :            : }
 </pre>
       </td>

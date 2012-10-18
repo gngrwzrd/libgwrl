@@ -31,13 +31,13 @@
             <td class="headerValue">lcov1.info</td>
             <td></td>
             <td class="headerItem">Lines:</td>
-            <td class="headerCovTableEntry">462</td>
-            <td class="headerCovTableEntry">487</td>
-            <td class="headerCovTableEntryHi">94.9 %</td>
+            <td class="headerCovTableEntry">473</td>
+            <td class="headerCovTableEntry">492</td>
+            <td class="headerCovTableEntryHi">96.1 %</td>
           </tr>
           <tr>
             <td class="headerItem">Date:</td>
-            <td class="headerValue">2012-10-14</td>
+            <td class="headerValue">2012-10-17</td>
             <td></td>
             <td class="headerItem">Functions:</td>
             <td class="headerCovTableEntry">34</td>
@@ -49,9 +49,9 @@
             <td></td>
             <td></td>
             <td class="headerItem">Branches:</td>
-            <td class="headerCovTableEntry">138</td>
-            <td class="headerCovTableEntry">180</td>
-            <td class="headerCovTableEntryMed">76.7 %</td>
+            <td class="headerCovTableEntry">143</td>
+            <td class="headerCovTableEntry">186</td>
+            <td class="headerCovTableEntryMed">76.9 %</td>
           </tr>
           <tr><td><img src="../../glass.png" width=3 height=3 alt=""></td></tr>
         </table>
@@ -85,8 +85,8 @@
 <span class="lineNum">      14 </span>                :            : gwrl_create() {
 <span class="lineNum">      15 </span>                :            :         //create a new reactor.
 <span class="lineNum">      16 </span>                :            : 
-<span class="lineNum">      17 </span>                :<span class="lineCov">         36 :         gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));</span>
-<span class="lineNum">      18 </span>                :<span class="lineCov">         36 :         gwrl_options defaults = GWRL_DEFAULT_OPTIONS;</span>
+<span class="lineNum">      17 </span>                :<span class="lineCov">         34 :         gwrl * rl = _gwrl(gwrl_mem_calloc(1,sizeof(gwrl)));</span>
+<span class="lineNum">      18 </span>                :<span class="lineCov">         34 :         gwrl_options defaults = GWRL_DEFAULT_OPTIONS;</span>
 <span class="lineNum">      19 </span>                :            :         
 <span class="lineNum">      20 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">      21 </span>                :            :         if(!rl) {
@@ -96,10 +96,10 @@
 <span class="lineNum">      25 </span>                :            :         #endif
 <span class="lineNum">      26 </span>                :            :         
 <span class="lineNum">      27 </span>                :            :         //setup default options.
-<span class="lineNum">      28 </span>                :<span class="lineCov">         36 :         memcpy(&amp;rl-&gt;options,&amp;defaults,sizeof(defaults));</span>
+<span class="lineNum">      28 </span>                :<span class="lineCov">         34 :         memcpy(&amp;rl-&gt;options,&amp;defaults,sizeof(defaults));</span>
 <span class="lineNum">      29 </span>                :            :         
 <span class="lineNum">      30 </span>                :            :         //initialize the backend.
-<span class="lineNum">      31 </span>                :<span class="lineCov">         36 :         rl-&gt;backend = gwrl_bkd_init(rl);</span>
+<span class="lineNum">      31 </span>                :<span class="lineCov">         34 :         rl-&gt;backend = gwrl_bkd_init(rl);</span>
 <span class="lineNum">      32 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">      33 </span>                :            :         if(!rl-&gt;backend) {
 <span class="lineNum">      34 </span>                :            :                 free(rl);
@@ -108,9 +108,9 @@
 <span class="lineNum">      37 </span>                :            :         #endif
 <span class="lineNum">      38 </span>                :            :         
 <span class="lineNum">      39 </span>                :            :         //setup the custom gather functions.
-<span class="lineNum">      40 </span>                :<span class="lineCov">         36 :         rl-&gt;gatherfncs = NULL;</span>
+<span class="lineNum">      40 </span>                :<span class="lineCov">         34 :         rl-&gt;gatherfncs = NULL;</span>
 <span class="lineNum">      41 </span>                :            :         if(GWRL_GATHER_FUNCS_MAX &gt; 0) {
-<span class="lineNum">      42 </span>                :<span class="lineCov">         36 :                 rl-&gt;gatherfncs = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * GWRL_GATHER_FUNCS_MAX);</span>
+<span class="lineNum">      42 </span>                :<span class="lineCov">         34 :                 rl-&gt;gatherfncs = gwrl_mem_calloc(1,sizeof(gwrl_gather_fnc *) * GWRL_GATHER_FUNCS_MAX);</span>
 <span class="lineNum">      43 </span>                :            :                 #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">      44 </span>                :            :                 if(!rl-&gt;gatherfncs) {
 <span class="lineNum">      45 </span>                :            :                         gwerr(&quot;(7VB3R) calloc error&quot;);
@@ -121,30 +121,30 @@
 <span class="lineNum">      50 </span>                :            :         }
 <span class="lineNum">      51 </span>                :            :         
 <span class="lineNum">      52 </span>                :            :         //initialize locks for thread safe functions.
-<span class="lineNum">      53 </span>                :<span class="lineCov">         36 :         lockid_init(&amp;rl-&gt;_qsrclk);</span>
-<span class="lineNum">      54 </span>                :<span class="lineCov">         36 :         lockid_init(&amp;rl-&gt;_qevtlk);</span>
-<span class="lineNum">      55 </span>                :            :         
+<span class="lineNum">      53 </span>                :<span class="lineCov">         34 :         lockid_init(&amp;rl-&gt;_qsrclk);</span>
+<span class="lineNum">      54 </span>                :<span class="lineCov">         34 :         lockid_init(&amp;rl-&gt;_qevtlk);</span>
+<span class="lineNum">      55 </span>                :            : 
 <span class="lineNum">      56 </span>                :            :         //initialize the backend waking mechanism.
-<span class="lineNum">      57 </span>                :<span class="lineCov">         36 :         gwrl_wake_init(rl);</span>
-<span class="lineNum">      58 </span>                :<span class="lineCov">         36 :         return rl;</span>
+<span class="lineNum">      57 </span>                :<span class="lineCov">         34 :         gwrl_wake_init(rl);</span>
+<span class="lineNum">      58 </span>                :<span class="lineCov">         34 :         return rl;</span>
 <span class="lineNum">      59 </span>                :            : }
 <a name="60"><span class="lineNum">      60 </span>                :            : </a>
 <span class="lineNum">      61 </span>                :            : gwrlevt *
-<span class="lineNum">      62 </span>                :<span class="lineCov">        793 : gwrl_evt_create(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,</span>
-<span class="lineNum">      63 </span>                :<span class="lineCov">        793 : void * userdata, fileid_t fd, gwrlevt_flags_t flags) {</span>
+<span class="lineNum">      62 </span>                :<span class="lineCov">        768 : gwrl_evt_create(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,</span>
+<span class="lineNum">      63 </span>                :<span class="lineCov">        768 : void * userdata, fileid_t fd, gwrlevt_flags_t flags) {</span>
 <span class="lineNum">      64 </span>                :            :         //create a new gwrlevt for posting
 <span class="lineNum">      65 </span>                :            : 
-<span class="lineNum">      66 </span>                :<span class="lineCov">        793 :         gwrlevt * evt = NULL;</span>
+<span class="lineNum">      66 </span>                :<span class="lineCov">        768 :         gwrlevt * evt = NULL;</span>
 <span class="lineNum">      67 </span>                :            : 
-<span class="lineNum">      68 </span>                :<span class="lineCov">        793 :         if(rl-&gt;cevents) {</span>
+<span class="lineNum">      68 </span>                :<span class="lineCov">        768 :         if(rl-&gt;cevents) {</span>
 <span class="lineNum">      69 </span>                :            :                 //use a cached event
-<span class="lineNum">      70 </span>                :<span class="lineCov">        541 :                 evt = rl-&gt;cevents;</span>
-<span class="lineNum">      71 </span>                :<span class="lineCov">        541 :                 rl-&gt;cevents = evt-&gt;next;</span>
-<span class="lineNum">      72 </span>                :<span class="lineCov">        541 :                 rl-&gt;ncevents--;</span>
-<span class="lineNum">      73 </span>                :<span class="lineCov">        541 :                 evt-&gt;next = NULL;</span>
-<span class="lineNum">      74 </span>                :<span class="lineCov">        541 :         } else {</span>
+<span class="lineNum">      70 </span>                :<span class="lineCov">        518 :                 evt = rl-&gt;cevents;</span>
+<span class="lineNum">      71 </span>                :<span class="lineCov">        518 :                 rl-&gt;cevents = evt-&gt;next;</span>
+<span class="lineNum">      72 </span>                :<span class="lineCov">        518 :                 rl-&gt;ncevents--;</span>
+<span class="lineNum">      73 </span>                :<span class="lineCov">        518 :                 evt-&gt;next = NULL;</span>
+<span class="lineNum">      74 </span>                :<span class="lineCov">        518 :         } else {</span>
 <span class="lineNum">      75 </span>                :            :                 //create a new one
-<span class="lineNum">      76 </span>                :<span class="lineCov">        252 :                 evt = _gwrlevt(gwrl_mem_calloc(1,sizeof(*evt)));</span>
+<span class="lineNum">      76 </span>                :<span class="lineCov">        250 :                 evt = _gwrlevt(gwrl_mem_calloc(1,sizeof(*evt)));</span>
 <span class="lineNum">      77 </span>                :            :                 #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">      78 </span>                :            :                 if(!evt) {
 <span class="lineNum">      79 </span>                :            :                         gwerr(&quot;(8FxlC) calloc error&quot;);
@@ -154,34 +154,34 @@
 <span class="lineNum">      83 </span>                :            :         }
 <span class="lineNum">      84 </span>                :            : 
 <span class="lineNum">      85 </span>                :            :         //initialize the event
-<span class="lineNum">      86 </span>                :<span class="lineCov">        793 :         evt-&gt;callback = callback;</span>
-<span class="lineNum">      87 </span>                :<span class="lineCov">        793 :         evt-&gt;userdata = userdata;</span>
-<span class="lineNum">      88 </span>                :<span class="lineCov">        793 :         evt-&gt;src = src;</span>
-<span class="lineNum">      89 </span>                :<span class="lineCov">        793 :         evt-&gt;fd = fd;</span>
-<span class="lineNum">      90 </span>                :<span class="lineCov">        793 :         evt-&gt;flags = flags;</span>
-<span class="lineNum">      91 </span>                :<span class="lineCov">        793 :         return evt;</span>
+<span class="lineNum">      86 </span>                :<span class="lineCov">        768 :         evt-&gt;callback = callback;</span>
+<span class="lineNum">      87 </span>                :<span class="lineCov">        768 :         evt-&gt;userdata = userdata;</span>
+<span class="lineNum">      88 </span>                :<span class="lineCov">        768 :         evt-&gt;src = src;</span>
+<span class="lineNum">      89 </span>                :<span class="lineCov">        768 :         evt-&gt;fd = fd;</span>
+<span class="lineNum">      90 </span>                :<span class="lineCov">        768 :         evt-&gt;flags = flags;</span>
+<span class="lineNum">      91 </span>                :<span class="lineCov">        768 :         return evt;</span>
 <span class="lineNum">      92 </span>                :            : }
 <a name="93"><span class="lineNum">      93 </span>                :            : </a>
 <span class="lineNum">      94 </span>                :            : gwrlevt *
-<span class="lineNum">      95 </span>                :<span class="lineCov">        306 : gwrl_evt_createp(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,</span>
-<span class="lineNum">      96 </span>                :<span class="lineCov">        306 : void * userdata, fileid_t fd, gwrlevt_flags_t flags) {</span>
+<span class="lineNum">      95 </span>                :<span class="lineCov">        295 : gwrl_evt_createp(gwrl * rl, gwrlsrc * src, gwrlevt_cb * callback,</span>
+<span class="lineNum">      96 </span>                :<span class="lineCov">        295 : void * userdata, fileid_t fd, gwrlevt_flags_t flags) {</span>
 <span class="lineNum">      97 </span>                :            :         //creates a new event but keeps trying if it's null.
-<span class="lineNum">      98 </span>                :<span class="lineCov">        306 :         gwrlevt * evt = gwrl_evt_create(rl,src,callback,userdata,fd,flags);</span>
-<span class="lineNum">      99 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 306 times"> + </span>]:<span class="lineCov">        306 :         while(!evt) {</span>
+<span class="lineNum">      98 </span>                :<span class="lineCov">        295 :         gwrlevt * evt = gwrl_evt_create(rl,src,callback,userdata,fd,flags);</span>
+<span class="lineNum">      99 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 295 times"> + </span>]:<span class="lineCov">        295 :         while(!evt) {</span>
 <span class="lineNum">     100 </span>                :<span class="lineNoCov">          0 :                 gwerr(&quot;(4LOP0) evt error&quot;);</span>
 <span class="lineNum">     101 </span>                :<span class="lineNoCov">          0 :                 evt = gwrl_evt_create(rl,src,callback,userdata,fd,flags);</span>
 <span class="lineNum">     102 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     103 </span>                :<span class="lineCov">        306 :         return evt;</span>
+<span class="lineNum">     103 </span>                :<span class="lineCov">        295 :         return evt;</span>
 <span class="lineNum">     104 </span>                :            : }
 <a name="105"><span class="lineNum">     105 </span>                :            : </a>
 <span class="lineNum">     106 </span>                :            : gwrlsrc *
-<span class="lineNum">     107 </span>                :<span class="lineCov">         25 : gwrl_src_time_create(int64_t ms, bool repeat, int whence,</span>
-<span class="lineNum">     108 </span>                :<span class="lineCov">         25 : bool persist, gwrlevt_cb * callback, void * userdata) {</span>
+<span class="lineNum">     107 </span>                :<span class="lineCov">         22 : gwrl_src_time_create(int64_t ms, bool repeat, int whence,</span>
+<span class="lineNum">     108 </span>                :<span class="lineCov">         22 : bool persist, gwrlevt_cb * callback, void * userdata) {</span>
 <span class="lineNum">     109 </span>                :            :         //create a time input source
 <span class="lineNum">     110 </span>                :            :         
 <span class="lineNum">     111 </span>                :            :         //setup vars
-<span class="lineNum">     112 </span>                :<span class="lineCov">         25 :         gwrlsrc_time * tsrc = _gwrlsrct(gwrl_mem_calloc(1,sizeof(gwrlsrc_time)));</span>
-<span class="lineNum">     113 </span>                :<span class="lineCov">         25 :         gwrlsrc * src = _gwrlsrc(tsrc);</span>
+<span class="lineNum">     112 </span>                :<span class="lineCov">         22 :         gwrlsrc_time * tsrc = _gwrlsrct(gwrl_mem_calloc(1,sizeof(gwrlsrc_time)));</span>
+<span class="lineNum">     113 </span>                :<span class="lineCov">         22 :         gwrlsrc * src = _gwrlsrc(tsrc);</span>
 <span class="lineNum">     114 </span>                :            :         
 <span class="lineNum">     115 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">     116 </span>                :            :         if(!tsrc) {
@@ -191,34 +191,34 @@
 <span class="lineNum">     120 </span>                :            :         #endif
 <span class="lineNum">     121 </span>                :            :         
 <span class="lineNum">     122 </span>                :            :         //initialize the source
-<span class="lineNum">     123 </span>                :<span class="lineCov">         25 :         src-&gt;type = GWRL_SRC_TYPE_TIME;</span>
-<span class="lineNum">     124 </span>                :<span class="lineCov">         25 :         src-&gt;userdata = userdata;</span>
-<span class="lineNum">     125 </span>                :<span class="lineCov">         25 :         src-&gt;callback = callback;</span>
-<span class="lineNum">     126 </span>                :<span class="lineCov">         25 :         tsrc-&gt;ms = ms;</span>
-<span class="lineNum">     127 </span>                :<span class="lineCov">          7 :         if(persist) flset(src-&gt;flags,GWRL_PERSIST);</span>
-<span class="lineNum">     128 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 22 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         25 :         if(repeat &amp;&amp; whence != GWRL_ABS) flset(src-&gt;flags,GWRL_REPEAT);</span>
-<span class="lineNum">     129 </span>                :<span class="lineCov">         25 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
+<span class="lineNum">     123 </span>                :<span class="lineCov">         22 :         src-&gt;type = GWRL_SRC_TYPE_TIME;</span>
+<span class="lineNum">     124 </span>                :<span class="lineCov">         22 :         src-&gt;userdata = userdata;</span>
+<span class="lineNum">     125 </span>                :<span class="lineCov">         22 :         src-&gt;callback = callback;</span>
+<span class="lineNum">     126 </span>                :<span class="lineCov">         22 :         tsrc-&gt;ms = ms;</span>
+<span class="lineNum">     127 </span>                :<span class="lineCov">          4 :         if(persist) flset(src-&gt;flags,GWRL_PERSIST);</span>
+<span class="lineNum">     128 </span>[<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 19 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 3 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         22 :         if(repeat &amp;&amp; whence != GWRL_ABS) flset(src-&gt;flags,GWRL_REPEAT);</span>
+<span class="lineNum">     129 </span>                :<span class="lineCov">         22 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
 <span class="lineNum">     130 </span>                :            : 
 <span class="lineNum">     131 </span>                :            :         //set the tsrc-&gt;when parameter to the time it should expire.
-<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 24 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">         25 :         if(whence == GWRL_NOW) {</span>
-<span class="lineNum">     133 </span>                :<span class="lineCov">         24 :                 tsrc-&gt;when.tv_sec = sec_min;</span>
-<span class="lineNum">     134 </span>                :<span class="lineCov">         24 :                 tsrc-&gt;when.tv_nsec = nsec_min;</span>
-<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         25 :         } else if(whence == GWRL_ABS) {</span>
+<span class="lineNum">     132 </span>        [<span class="branchCov" title="Branch 0 was taken 21 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">         22 :         if(whence == GWRL_NOW) {</span>
+<span class="lineNum">     133 </span>                :<span class="lineCov">         21 :                 tsrc-&gt;when.tv_sec = sec_min;</span>
+<span class="lineNum">     134 </span>                :<span class="lineCov">         21 :                 tsrc-&gt;when.tv_nsec = nsec_min;</span>
+<span class="lineNum">     135 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">         22 :         } else if(whence == GWRL_ABS) {</span>
 <span class="lineNum">     136 </span>                :<span class="lineCov">          1 :                 flset(src-&gt;flags,GWRL_WHENCE_ABS);</span>
 <span class="lineNum">     137 </span>                :<span class="lineCov">          1 :                 gwtm_ms_to_timespec(ms,&amp;tsrc-&gt;when);</span>
 <span class="lineNum">     138 </span>                :<span class="lineCov">          1 :         }</span>
 <span class="lineNum">     139 </span>                :            :         
-<span class="lineNum">     140 </span>                :<span class="lineCov">         25 :         return src;</span>
+<span class="lineNum">     140 </span>                :<span class="lineCov">         22 :         return src;</span>
 <span class="lineNum">     141 </span>                :            : }
 <a name="142"><span class="lineNum">     142 </span>                :            : </a>
 <span class="lineNum">     143 </span>                :            : gwrlsrc *
-<span class="lineNum">     144 </span>                :<span class="lineCov">         68 : gwrl_src_file_create(fileid_t fd, gwrlsrc_flags_t flags,</span>
-<span class="lineNum">     145 </span>                :<span class="lineCov">         68 : gwrlevt_cb * callback, void * userdata) {</span>
+<span class="lineNum">     144 </span>                :<span class="lineCov">         66 : gwrl_src_file_create(fileid_t fd, gwrlsrc_flags_t flags,</span>
+<span class="lineNum">     145 </span>                :<span class="lineCov">         66 : gwrlevt_cb * callback, void * userdata) {</span>
 <span class="lineNum">     146 </span>                :            :         //create a file input source
 <span class="lineNum">     147 </span>                :            : 
 <span class="lineNum">     148 </span>                :            :         //setup vars
-<span class="lineNum">     149 </span>                :<span class="lineCov">         68 :         gwrlsrc_file * fsrc = _gwrlsrcf(gwrl_mem_calloc(1,sizeof(gwrlsrc_file)));</span>
-<span class="lineNum">     150 </span>                :<span class="lineCov">         68 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
+<span class="lineNum">     149 </span>                :<span class="lineCov">         66 :         gwrlsrc_file * fsrc = _gwrlsrcf(gwrl_mem_calloc(1,sizeof(gwrlsrc_file)));</span>
+<span class="lineNum">     150 </span>                :<span class="lineCov">         66 :         gwrlsrc * src = _gwrlsrc(fsrc);</span>
 <span class="lineNum">     151 </span>                :            :         
 <span class="lineNum">     152 </span>                :            :         #ifndef GWRL_HIDE_FROM_COVERAGE
 <span class="lineNum">     153 </span>                :            :         if(!src) {
@@ -228,14 +228,14 @@
 <span class="lineNum">     157 </span>                :            :         #endif
 <span class="lineNum">     158 </span>                :            : 
 <span class="lineNum">     159 </span>                :            :         //initialize the source
-<span class="lineNum">     160 </span>                :<span class="lineCov">         68 :         src-&gt;flags = flags;</span>
-<span class="lineNum">     161 </span>                :<span class="lineCov">         68 :         src-&gt;type = GWRL_SRC_TYPE_FILE;</span>
-<span class="lineNum">     162 </span>                :<span class="lineCov">         68 :         src-&gt;userdata = userdata;</span>
-<span class="lineNum">     163 </span>                :<span class="lineCov">         68 :         src-&gt;callback = callback;</span>
-<span class="lineNum">     164 </span>                :<span class="lineCov">         68 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
-<span class="lineNum">     165 </span>                :<span class="lineCov">         68 :         fsrc-&gt;fd = fd;</span>
+<span class="lineNum">     160 </span>                :<span class="lineCov">         66 :         src-&gt;flags = flags;</span>
+<span class="lineNum">     161 </span>                :<span class="lineCov">         66 :         src-&gt;type = GWRL_SRC_TYPE_FILE;</span>
+<span class="lineNum">     162 </span>                :<span class="lineCov">         66 :         src-&gt;userdata = userdata;</span>
+<span class="lineNum">     163 </span>                :<span class="lineCov">         66 :         src-&gt;callback = callback;</span>
+<span class="lineNum">     164 </span>                :<span class="lineCov">         66 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
+<span class="lineNum">     165 </span>                :<span class="lineCov">         66 :         fsrc-&gt;fd = fd;</span>
 <span class="lineNum">     166 </span>                :            : 
-<span class="lineNum">     167 </span>                :<span class="lineCov">         68 :         return src;</span>
+<span class="lineNum">     167 </span>                :<span class="lineCov">         66 :         return src;</span>
 <span class="lineNum">     168 </span>                :            : }
 <a name="169"><span class="lineNum">     169 </span>                :            : </a>
 <span class="lineNum">     170 </span>                :            : gwrlsrc *
@@ -249,13 +249,13 @@
 <span class="lineNum">     178 </span>                :            : }
 <a name="179"><span class="lineNum">     179 </span>                :            : </a>
 <span class="lineNum">     180 </span>                :            : gwrlsrc *
-<span class="lineNum">     181 </span>                :<span class="lineCov">         21 : gwrl_set_timeout(gwrl * rl, int64_t ms, bool persist,</span>
-<span class="lineNum">     182 </span>                :<span class="lineCov">         21 : gwrlevt_cb * callback, void * userdata) {</span>
+<span class="lineNum">     181 </span>                :<span class="lineCov">         18 : gwrl_set_timeout(gwrl * rl, int64_t ms, bool persist,</span>
+<span class="lineNum">     182 </span>                :<span class="lineCov">         18 : gwrlevt_cb * callback, void * userdata) {</span>
 <span class="lineNum">     183 </span>                :            :         //shortcut to create a timeout input source and register it.
-<span class="lineNum">     184 </span>                :<span class="lineCov">         21 :         gwrlsrc * tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);</span>
-<span class="lineNum">     185 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 21 times"> + </span>]:<span class="lineCov">         21 :         while(!tsrc) tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);</span>
-<span class="lineNum">     186 </span>                :<span class="lineCov">         21 :         gwrl_src_add(rl,tsrc);</span>
-<span class="lineNum">     187 </span>                :<span class="lineCov">         21 :         return tsrc;</span>
+<span class="lineNum">     184 </span>                :<span class="lineCov">         18 :         gwrlsrc * tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);</span>
+<span class="lineNum">     185 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 18 times"> + </span>]:<span class="lineCov">         18 :         while(!tsrc) tsrc = gwrl_src_time_create(ms,false,GWRL_NOW,persist,callback,userdata);</span>
+<span class="lineNum">     186 </span>                :<span class="lineCov">         18 :         gwrl_src_add(rl,tsrc);</span>
+<span class="lineNum">     187 </span>                :<span class="lineCov">         18 :         return tsrc;</span>
 <span class="lineNum">     188 </span>                :            : }
 <a name="189"><span class="lineNum">     189 </span>                :            : </a>
 <span class="lineNum">     190 </span>                :            : gwrlsrc *
@@ -508,30 +508,30 @@
 <span class="lineNum">     437 </span>                :<span class="lineCov">         12 : }</span>
 <a name="438"><span class="lineNum">     438 </span>                :            : </a>
 <span class="lineNum">     439 </span>                :            : void
-<span class="lineNum">     440 </span>                :<span class="lineCov">        792 : gwrl_evt_free(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">     440 </span>                :<span class="lineCov">        767 : gwrl_evt_free(gwrl * rl, gwrlevt * evt) {</span>
 <span class="lineNum">     441 </span>                :            :         //cache or free a gwrlevt
-<span class="lineNum">     442 </span>                :<span class="lineCov">        792 :         if(rl-&gt;ncevents &gt;= rl-&gt;options.gwrl_event_cache_max) {</span>
+<span class="lineNum">     442 </span>                :<span class="lineCov">        767 :         if(rl-&gt;ncevents &gt;= rl-&gt;options.gwrl_event_cache_max) {</span>
 <span class="lineNum">     443 </span>                :<span class="lineCov">        100 :                 free(evt);</span>
 <span class="lineNum">     444 </span>                :<span class="lineCov">        100 :         } else {</span>
-<span class="lineNum">     445 </span>                :<span class="lineCov">        692 :                 bzero(evt,sizeof(*evt));</span>
-<span class="lineNum">     446 </span>        [<span class="branchCov" title="Branch 0 was taken 542 times"> + </span><span class="branchCov" title="Branch 1 was taken 150 times"> + </span>]:<span class="lineCov">        692 :                 if(rl-&gt;cevents) {</span>
-<span class="lineNum">     447 </span>                :<span class="lineCov">        542 :                         evt-&gt;next = rl-&gt;cevents;</span>
-<span class="lineNum">     448 </span>                :<span class="lineCov">        542 :                 }</span>
-<span class="lineNum">     449 </span>                :<span class="lineCov">        692 :                 rl-&gt;cevents = evt;</span>
-<span class="lineNum">     450 </span>                :<span class="lineCov">        692 :                 rl-&gt;ncevents++;</span>
+<span class="lineNum">     445 </span>                :<span class="lineCov">        667 :                 bzero(evt,sizeof(*evt));</span>
+<span class="lineNum">     446 </span>        [<span class="branchCov" title="Branch 0 was taken 522 times"> + </span><span class="branchCov" title="Branch 1 was taken 145 times"> + </span>]:<span class="lineCov">        667 :                 if(rl-&gt;cevents) {</span>
+<span class="lineNum">     447 </span>                :<span class="lineCov">        522 :                         evt-&gt;next = rl-&gt;cevents;</span>
+<span class="lineNum">     448 </span>                :<span class="lineCov">        522 :                 }</span>
+<span class="lineNum">     449 </span>                :<span class="lineCov">        667 :                 rl-&gt;cevents = evt;</span>
+<span class="lineNum">     450 </span>                :<span class="lineCov">        667 :                 rl-&gt;ncevents++;</span>
 <span class="lineNum">     451 </span>                :            :         }
-<span class="lineNum">     452 </span>                :<span class="lineCov">        792 : }</span>
+<span class="lineNum">     452 </span>                :<span class="lineCov">        767 : }</span>
 <a name="453"><span class="lineNum">     453 </span>                :            : </a>
 <span class="lineNum">     454 </span>                :            : void
-<span class="lineNum">     455 </span>                :<span class="lineCov">        256 : gwrl_evt_free_list(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">     455 </span>                :<span class="lineCov">        253 : gwrl_evt_free_list(gwrl * rl, gwrlevt * evt) {</span>
 <span class="lineNum">     456 </span>                :            :         //free an entire list of gwrlevt
-<span class="lineNum">     457 </span>                :<span class="lineCov">        256 :         gwrlevt * nev = NULL;</span>
-<span class="lineNum">     458 </span>        [<span class="branchCov" title="Branch 0 was taken 790 times"> + </span><span class="branchCov" title="Branch 1 was taken 256 times"> + </span>]:<span class="lineCov">       1046 :         while(evt) {</span>
-<span class="lineNum">     459 </span>                :<span class="lineCov">        790 :                 nev = evt-&gt;next;</span>
-<span class="lineNum">     460 </span>                :<span class="lineCov">        790 :                 gwrl_evt_free(rl,evt);</span>
-<span class="lineNum">     461 </span>                :<span class="lineCov">        790 :                 evt = nev;</span>
-<span class="lineNum">     462 </span>                :<span class="lineCov">        790 :         }</span>
-<span class="lineNum">     463 </span>                :<span class="lineCov">        256 : }</span>
+<span class="lineNum">     457 </span>                :<span class="lineCov">        253 :         gwrlevt * nev = NULL;</span>
+<span class="lineNum">     458 </span>        [<span class="branchCov" title="Branch 0 was taken 765 times"> + </span><span class="branchCov" title="Branch 1 was taken 253 times"> + </span>]:<span class="lineCov">       1018 :         while(evt) {</span>
+<span class="lineNum">     459 </span>                :<span class="lineCov">        765 :                 nev = evt-&gt;next;</span>
+<span class="lineNum">     460 </span>                :<span class="lineCov">        765 :                 gwrl_evt_free(rl,evt);</span>
+<span class="lineNum">     461 </span>                :<span class="lineCov">        765 :                 evt = nev;</span>
+<span class="lineNum">     462 </span>                :<span class="lineCov">        765 :         }</span>
+<span class="lineNum">     463 </span>                :<span class="lineCov">        253 : }</span>
 <a name="464"><span class="lineNum">     464 </span>                :            : </a>
 <span class="lineNum">     465 </span>                :            : void
 <span class="lineNum">     466 </span>                :<span class="lineCov">          3 : gwrl_allow_poll_sleep(gwrl * rl, int onoff) {</span>
@@ -545,14 +545,14 @@
 <span class="lineNum">     474 </span>                :<span class="lineCov">          3 : }</span>
 <a name="475"><span class="lineNum">     475 </span>                :            : </a>
 <span class="lineNum">     476 </span>                :            : void
-<span class="lineNum">     477 </span>                :<span class="lineCov">         94 : gwrl_src_add(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     477 </span>                :<span class="lineCov">         89 : gwrl_src_add(gwrl * rl, gwrlsrc * src) {</span>
 <span class="lineNum">     478 </span>                :            :         //add an input source
-<span class="lineNum">     479 </span>                :<span class="lineCov">         94 :         gwrlsrc * head = rl-&gt;sources[src-&gt;type];</span>
-<span class="lineNum">     480 </span>                :<span class="lineCov">         33 :         if(head) src-&gt;next = head;</span>
-<span class="lineNum">     481 </span>                :<span class="lineCov">         94 :         rl-&gt;sources[src-&gt;type] = src;</span>
-<span class="lineNum">     482 </span>        [<span class="branchCov" title="Branch 0 was taken 68 times"> + </span><span class="branchCov" title="Branch 1 was taken 26 times"> + </span>]:<span class="lineCov">         94 :         if(src-&gt;type == GWRL_SRC_TYPE_FILE) gwrl_bkd_src_add(rl,src);</span>
+<span class="lineNum">     479 </span>                :<span class="lineCov">         89 :         gwrlsrc * head = rl-&gt;sources[src-&gt;type];</span>
+<span class="lineNum">     480 </span>                :<span class="lineCov">         32 :         if(head) src-&gt;next = head;</span>
+<span class="lineNum">     481 </span>                :<span class="lineCov">         89 :         rl-&gt;sources[src-&gt;type] = src;</span>
+<span class="lineNum">     482 </span>        [<span class="branchCov" title="Branch 0 was taken 66 times"> + </span><span class="branchCov" title="Branch 1 was taken 23 times"> + </span>]:<span class="lineCov">         89 :         if(src-&gt;type == GWRL_SRC_TYPE_FILE) gwrl_bkd_src_add(rl,src);</span>
 <span class="lineNum">     483 </span>                :            :         //gwrl_wake(rl);
-<span class="lineNum">     484 </span>                :<span class="lineCov">         94 : }</span>
+<span class="lineNum">     484 </span>                :<span class="lineCov">         89 : }</span>
 <a name="485"><span class="lineNum">     485 </span>                :            : </a>
 <span class="lineNum">     486 </span>                :            : void
 <span class="lineNum">     487 </span>                :<span class="lineCov">          7 : gwrl_src_add_safely(gwrl * rl, gwrlsrc * src) {</span>
@@ -618,251 +618,258 @@
 <span class="lineNum">     547 </span>                :<span class="lineCov">          6 : }</span>
 <a name="548"><span class="lineNum">     548 </span>                :            : </a>
 <span class="lineNum">     549 </span>                :            : void
-<span class="lineNum">     550 </span>                :<span class="lineCov">          3 : gwrl_del_persistent_timeouts(gwrl * rl) {</span>
+<span class="lineNum">     550 </span>                :<span class="lineCov">          1 : gwrl_del_persistent_timeouts(gwrl * rl) {</span>
 <span class="lineNum">     551 </span>                :            :         //delete all persistent timeouts
 <span class="lineNum">     552 </span>                :            : 
-<span class="lineNum">     553 </span>                :<span class="lineCov">          3 :         gwrlsrc * src = rl-&gt;sources[GWRL_SRC_TYPE_TIME];</span>
-<span class="lineNum">     554 </span>                :<span class="lineCov">          3 :         gwrlsrc * shead = src;</span>
-<span class="lineNum">     555 </span>                :<span class="lineCov">          3 :         gwrlsrc * phead = NULL;</span>
-<span class="lineNum">     556 </span>                :<span class="lineCov">          3 :         gwrlsrc * psrc = NULL;</span>
-<span class="lineNum">     557 </span>                :<span class="lineCov">          3 :         gwrlsrc * del = NULL;</span>
-<span class="lineNum">     558 </span>                :<span class="lineCov">          3 :         gwrlsrc * deltmp = NULL;</span>
-<span class="lineNum">     559 </span>                :<span class="lineCov">          3 :         rl-&gt;sources[GWRL_SRC_TYPE_TIME] = NULL;</span>
-<span class="lineNum">     560 </span>                :            : 
+<span class="lineNum">     553 </span>                :<span class="lineCov">          1 :         gwrlsrc * src = rl-&gt;sources[GWRL_SRC_TYPE_TIME];</span>
+<span class="lineNum">     554 </span>                :<span class="lineCov">          1 :         gwrlsrc * shead = src;</span>
+<span class="lineNum">     555 </span>                :<span class="lineCov">          1 :         gwrlsrc * phead = NULL;</span>
+<span class="lineNum">     556 </span>                :<span class="lineCov">          1 :         gwrlsrc * psrc = NULL;</span>
+<span class="lineNum">     557 </span>                :<span class="lineCov">          1 :         gwrlsrc * del = NULL;</span>
+<span class="lineNum">     558 </span>                :<span class="lineCov">          1 :         gwrlsrc * deltmp = NULL;</span>
+<span class="lineNum">     559 </span>                :<span class="lineCov">          1 :         rl-&gt;sources[GWRL_SRC_TYPE_TIME] = NULL;</span>
+<span class="lineNum">     560 </span>                :            :         
 <span class="lineNum">     561 </span>                :            :         //first gather all the ones to free, and
 <span class="lineNum">     562 </span>                :            :         //take them out of the source list
-<span class="lineNum">     563 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          8 :         while(src) {</span>
-<span class="lineNum">     564 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          5 :                 if(src-&gt;flags &amp; GWRL_PERSIST) {</span>
-<span class="lineNum">     565 </span>                :<span class="lineCov">          5 :                         del = src;</span>
-<span class="lineNum">     566 </span>        [<span class="branchCov" title="Branch 0 was taken 5 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          5 :                         if(src == shead) shead = shead-&gt;next;</span>
-<span class="lineNum">     567 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          5 :                         if(psrc) psrc-&gt;next = src-&gt;next;</span>
-<span class="lineNum">     568 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          5 :                         if(!phead) phead = del;</span>
-<span class="lineNum">     569 </span>                :<span class="lineCov">          2 :                         else phead-&gt;next = del, phead = del;</span>
-<span class="lineNum">     570 </span>                :<span class="lineCov">          5 :                 }</span>
-<span class="lineNum">     571 </span>                :<span class="lineCov">          5 :                 psrc = src;</span>
-<span class="lineNum">     572 </span>                :<span class="lineCov">          5 :                 src = src-&gt;next;</span>
-<span class="lineNum">     573 </span>                :<span class="lineCov">          5 :         }</span>
-<span class="lineNum">     574 </span>                :            : 
-<span class="lineNum">     575 </span>                :            :         //delete the persistent ones
-<span class="lineNum">     576 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 3 times"> + </span>]:<span class="lineCov">          6 :         while(phead) {</span>
-<span class="lineNum">     577 </span>                :<span class="lineCov">          3 :                 deltmp = phead-&gt;next;</span>
-<span class="lineNum">     578 </span>                :<span class="lineCov">          3 :                 free(phead);</span>
-<span class="lineNum">     579 </span>                :<span class="lineCov">          3 :                 phead = deltmp;</span>
-<span class="lineNum">     580 </span>                :<span class="lineCov">          3 :         }</span>
-<span class="lineNum">     581 </span>                :            : 
-<span class="lineNum">     582 </span>                :            :         //replace time input sources with updated list
-<span class="lineNum">     583 </span>                :<span class="lineCov">          3 :         rl-&gt;sources[GWRL_SRC_TYPE_TIME] = shead;</span>
-<span class="lineNum">     584 </span>                :<span class="lineCov">          3 : }</span>
-<a name="585"><span class="lineNum">     585 </span>                :            : </a>
-<span class="lineNum">     586 </span>                :            : void
-<span class="lineNum">     587 </span>                :<span class="lineCov">        565 : gwrl_post_evt(gwrl * rl, gwrlevt * evt) {</span>
-<span class="lineNum">     588 </span>                :<span class="lineCov">        565 :         gwrlevt * head = rl-&gt;events;</span>
-<span class="lineNum">     589 </span>                :<span class="lineCov">        308 :         if(head) evt-&gt;next = head;</span>
-<span class="lineNum">     590 </span>                :<span class="lineCov">        565 :         rl-&gt;events = evt;</span>
-<span class="lineNum">     591 </span>                :<span class="lineCov">        565 : }</span>
-<a name="592"><span class="lineNum">     592 </span>                :            : </a>
-<span class="lineNum">     593 </span>                :            : void
-<span class="lineNum">     594 </span>                :<span class="lineCov">          9 : gwrl_src_enable(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     595 </span>                :<span class="lineCov">          9 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
-<span class="lineNum">     596 </span>                :<span class="lineCov">          9 :         if(src-&gt;type == GWRL_SRC_TYPE_TIME) {</span>
-<span class="lineNum">     597 </span>                :<span class="lineCov">          9 :                 gwrlsrc_time * tsrc = (gwrlsrc_time *)src;</span>
-<span class="lineNum">     598 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          9 :                 if(!flisset(src-&gt;flags,GWRL_WHENCE_ABS)) {</span>
-<span class="lineNum">     599 </span>                :<span class="lineCov">          9 :                         gwtm_gettimeofday_timespec(&amp;tsrc-&gt;when);</span>
-<span class="lineNum">     600 </span>                :<span class="lineCov">          9 :                         gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
-<span class="lineNum">     601 </span>                :<span class="lineCov">          9 :                 }</span>
-<span class="lineNum">     602 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">          9 :         } else if(src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
-<span class="lineNum">     603 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_enable_src(rl,src);</span>
-<span class="lineNum">     604 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     605 </span>                :<span class="lineCov">          9 : }</span>
-<a name="606"><span class="lineNum">     606 </span>                :            : </a>
-<span class="lineNum">     607 </span>                :            : void
-<span class="lineNum">     608 </span>                :<span class="lineCov">         17 : gwrl_src_disable(gwrl * rl, gwrlsrc * src) {</span>
-<span class="lineNum">     609 </span>                :<span class="lineCov">         17 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
-<span class="lineNum">     610 </span>                :<span class="lineCov">          1 :         if(src-&gt;type == GWRL_SRC_TYPE_FILE) gwrl_bkd_disable_src(rl,src);</span>
-<span class="lineNum">     611 </span>                :<span class="lineCov">         17 : }</span>
-<a name="612"><span class="lineNum">     612 </span>                :            : </a>
-<span class="lineNum">     613 </span>                :            : void
-<span class="lineNum">     614 </span>                :<span class="lineCov">         20 : gwrl_stop(gwrl * rl) {</span>
-<span class="lineNum">     615 </span>                :<span class="lineCov">         20 :         flset(rl-&gt;flags,GWRL_STOP);</span>
-<span class="lineNum">     616 </span>                :<span class="lineCov">         20 : }</span>
-<a name="617"><span class="lineNum">     617 </span>                :            : </a>
-<span class="lineNum">     618 </span>                :            : void
-<span class="lineNum">     619 </span>                :<span class="lineCov">        294 : gwrl_time_gather(gwrl * rl) {</span>
-<span class="lineNum">     620 </span>                :<span class="lineCov">        294 :         bool update_tsrc = true;</span>
-<span class="lineNum">     621 </span>                :<span class="lineCov">        294 :         bool posted_event = false;</span>
-<span class="lineNum">     622 </span>                :<span class="lineCov">        294 :         struct timespec current;</span>
-<span class="lineNum">     623 </span>                :<span class="lineCov">        294 :         struct timespec timediff;</span>
-<span class="lineNum">     624 </span>                :<span class="lineCov">        294 :         gwrlsrc * src = NULL;</span>
-<span class="lineNum">     625 </span>                :<span class="lineCov">        294 :         gwrlsrc * del = NULL;</span>
-<span class="lineNum">     626 </span>                :<span class="lineCov">        294 :         gwrlsrc_time * tsrc_prev = NULL;</span>
-<span class="lineNum">     627 </span>                :<span class="lineCov">        294 :         gwrlsrc_time * tsrc = _gwrlsrct(rl-&gt;sources[GWRL_SRC_TYPE_TIME]);</span>
-<span class="lineNum">     628 </span>        [<span class="branchCov" title="Branch 0 was taken 354 times"> + </span><span class="branchCov" title="Branch 1 was taken 294 times"> + </span>]:<span class="lineCov">        648 :         while(tsrc) {</span>
-<span class="lineNum">     629 </span>                :<span class="lineCov">        354 :                 src = _gwrlsrc(tsrc);</span>
-<span class="lineNum">     630 </span>                :<span class="lineCov">        354 :                 update_tsrc = true;</span>
-<span class="lineNum">     631 </span>        [<span class="branchCov" title="Branch 0 was taken 20 times"> + </span><span class="branchCov" title="Branch 1 was taken 334 times"> + </span>]:<span class="lineCov">        354 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) goto update_tsrc_l;</span>
-<span class="lineNum">     632 </span>                :            :                 
-<span class="lineNum">     633 </span>                :<span class="lineCov">        334 :                 gwtm_gettimeofday_timespec(&amp;current);</span>
-<span class="lineNum">     634 </span>                :            :                 
-<span class="lineNum">     635 </span>[<span class="branchCov" title="Branch 0 was taken 318 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 24 times"> + </span><span class="branchCov" title="Branch 3 was taken 294 times"> + </span>]:<span class="lineCov">        334 :                 if(!flisset(src-&gt;flags,GWRL_WHENCE_ABS) &amp;&amp; </span>
-<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 24 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
-<span class="lineNum">     636 </span>                :            :                         tsrc-&gt;when.tv_sec == sec_min &amp;&amp; tsrc-&gt;when.tv_nsec == nsec_min) {
-<span class="lineNum">     637 </span>                :<span class="lineCov">         24 :                         gwtm_gettimeofday_timespec(&amp;tsrc-&gt;when);</span>
-<span class="lineNum">     638 </span>                :<span class="lineCov">         24 :                         gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
-<span class="lineNum">     639 </span>                :<span class="lineCov">         24 :                 }</span>
-<span class="lineNum">     640 </span>                :            :                 
-<span class="lineNum">     641 </span>                :<span class="lineCov">        334 :                 gwtm_timespec_sub_into(&amp;tsrc-&gt;when,&amp;current,&amp;timediff);</span>
-<span class="lineNum">     642 </span>                :            :                 
-<span class="lineNum">     643 </span>        [<span class="branchCov" title="Branch 0 was taken 247 times"> + </span><span class="branchCov" title="Branch 1 was taken 87 times"> + </span>]:<span class="lineCov">        334 :                 if(gwtm_timespec_is_expired(&amp;timediff)) {</span>
-<span class="lineNum">     644 </span>                :<span class="lineCov">        247 :                         gwrlevt * evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
-<span class="lineNum">     645 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 247 times"> + </span>]:<span class="lineCov">        247 :                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
-<span class="lineNum">     646 </span>                :<span class="lineCov">        247 :                         gwrl_post_evt(rl,evt);</span>
-<span class="lineNum">     647 </span>                :<span class="lineCov">        247 :                         posted_event = true;</span>
-<span class="lineNum">     648 </span>                :            :                         
-<span class="lineNum">     649 </span>        [<span class="branchCov" title="Branch 0 was taken 217 times"> + </span><span class="branchCov" title="Branch 1 was taken 30 times"> + </span>]:<span class="lineCov">        247 :                         if(flisset(src-&gt;flags,GWRL_REPEAT)) {</span>
-<span class="lineNum">     650 </span>                :            :                                 
-<span class="lineNum">     651 </span>                :<span class="lineCov">        217 :                                 gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
-<span class="lineNum">     652 </span>                :<span class="lineCov">        217 :                                 gwtm_timespec_sub_into(&amp;tsrc-&gt;when,&amp;current,&amp;timediff);</span>
+<span class="lineNum">     563 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          3 :         while(src) {</span>
+<span class="lineNum">     564 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          2 :                 if((src-&gt;flags &amp; GWRL_PERSIST) &amp;&amp; !flisset(src-&gt;flags,GWRL_ENABLED)) {</span>
+<span class="lineNum">     565 </span>[<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>][<span class="branchCov" title="Branch 2 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">          2 :                         if(_gwrlsrct(src)-&gt;when.tv_sec == sec_min &amp;&amp;</span>
+<span class="lineNum">     566 </span>                :            :                         _gwrlsrct(src)-&gt;when.tv_nsec == nsec_min) {
+<span class="lineNum">     567 </span>                :<span class="lineCov">          2 :                                 del = src;</span>
+<span class="lineNum">     568 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          2 :                                 if(src == shead) shead = shead-&gt;next;</span>
+<span class="lineNum">     569 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          2 :                                 if(psrc) psrc-&gt;next = src-&gt;next;</span>
+<span class="lineNum">     570 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          2 :                                 if(!phead) phead = del;</span>
+<span class="lineNum">     571 </span>                :<span class="lineCov">          1 :                                 else phead-&gt;next = del, phead = del;</span>
+<span class="lineNum">     572 </span>                :<span class="lineCov">          2 :                         }</span>
+<span class="lineNum">     573 </span>                :<span class="lineCov">          2 :                 }</span>
+<span class="lineNum">     574 </span>                :<span class="lineCov">          2 :                 psrc = src;</span>
+<span class="lineNum">     575 </span>                :<span class="lineCov">          2 :                 src = src-&gt;next;</span>
+<span class="lineNum">     576 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     577 </span>                :            :         
+<span class="lineNum">     578 </span>                :            :         //delete the persistent ones
+<span class="lineNum">     579 </span>        [<span class="branchCov" title="Branch 0 was taken 1 time"> + </span><span class="branchCov" title="Branch 1 was taken 1 time"> + </span>]:<span class="lineCov">          2 :         while(phead) {</span>
+<span class="lineNum">     580 </span>                :<span class="lineCov">          1 :                 deltmp = phead-&gt;next;</span>
+<span class="lineNum">     581 </span>                :<span class="lineCov">          1 :                 free(phead);</span>
+<span class="lineNum">     582 </span>                :<span class="lineCov">          1 :                 phead = deltmp;</span>
+<span class="lineNum">     583 </span>                :<span class="lineCov">          1 :         }</span>
+<span class="lineNum">     584 </span>                :            :         
+<span class="lineNum">     585 </span>                :            :         //replace time input sources with updated list
+<span class="lineNum">     586 </span>                :<span class="lineCov">          1 :         rl-&gt;sources[GWRL_SRC_TYPE_TIME] = shead;</span>
+<span class="lineNum">     587 </span>                :<span class="lineCov">          1 : }</span>
+<a name="588"><span class="lineNum">     588 </span>                :            : </a>
+<span class="lineNum">     589 </span>                :            : void
+<span class="lineNum">     590 </span>                :<span class="lineCov">        540 : gwrl_post_evt(gwrl * rl, gwrlevt * evt) {</span>
+<span class="lineNum">     591 </span>                :            :         //post an event
+<span class="lineNum">     592 </span>                :<span class="lineCov">        286 :         if(rl-&gt;events) evt-&gt;next = rl-&gt;events;</span>
+<span class="lineNum">     593 </span>                :<span class="lineCov">        540 :         rl-&gt;events = evt;</span>
+<span class="lineNum">     594 </span>                :<span class="lineCov">        540 : }</span>
+<a name="595"><span class="lineNum">     595 </span>                :            : </a>
+<span class="lineNum">     596 </span>                :            : void
+<span class="lineNum">     597 </span>                :<span class="lineCov">          9 : gwrl_src_enable(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     598 </span>                :<span class="lineCov">          9 :         flset(src-&gt;flags,GWRL_ENABLED);</span>
+<span class="lineNum">     599 </span>                :<span class="lineCov">          9 :         if(src-&gt;type == GWRL_SRC_TYPE_TIME) {</span>
+<span class="lineNum">     600 </span>                :<span class="lineCov">          9 :                 gwrlsrc_time * tsrc = _gwrlsrct(src);</span>
+<span class="lineNum">     601 </span>        [<span class="branchCov" title="Branch 0 was taken 9 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          9 :                 if(!flisset(src-&gt;flags,GWRL_WHENCE_ABS)) {</span>
+<span class="lineNum">     602 </span>                :<span class="lineCov">          9 :                         gwtm_gettimeofday_timespec(&amp;tsrc-&gt;when);</span>
+<span class="lineNum">     603 </span>                :<span class="lineCov">          9 :                         gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
+<span class="lineNum">     604 </span>                :<span class="lineCov">          9 :                 }</span>
+<span class="lineNum">     605 </span>        [<span class="branchNoExec" title="Branch 0 was not executed"> # </span><span class="branchNoExec" title="Branch 1 was not executed"> # </span>]:<span class="lineCov">          9 :         } else if(src-&gt;type == GWRL_SRC_TYPE_FILE) {</span>
+<span class="lineNum">     606 </span>                :<span class="lineNoCov">          0 :                 gwrl_bkd_enable_src(rl,src);</span>
+<span class="lineNum">     607 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     608 </span>                :<span class="lineCov">          9 : }</span>
+<a name="609"><span class="lineNum">     609 </span>                :            : </a>
+<span class="lineNum">     610 </span>                :            : void
+<span class="lineNum">     611 </span>                :<span class="lineCov">         14 : gwrl_src_disable(gwrl * rl, gwrlsrc * src) {</span>
+<span class="lineNum">     612 </span>                :<span class="lineCov">         14 :         flclr(src-&gt;flags,GWRL_ENABLED);</span>
+<span class="lineNum">     613 </span>                :<span class="lineCov">          1 :         if(src-&gt;type == GWRL_SRC_TYPE_FILE) gwrl_bkd_disable_src(rl,src);</span>
+<span class="lineNum">     614 </span>                :<span class="lineCov">         14 : }</span>
+<a name="615"><span class="lineNum">     615 </span>                :            : </a>
+<span class="lineNum">     616 </span>                :            : void
+<span class="lineNum">     617 </span>                :<span class="lineCov">         18 : gwrl_stop(gwrl * rl) {</span>
+<span class="lineNum">     618 </span>                :<span class="lineCov">         18 :         flset(rl-&gt;flags,GWRL_STOP);</span>
+<span class="lineNum">     619 </span>                :<span class="lineCov">         18 : }</span>
+<a name="620"><span class="lineNum">     620 </span>                :            : </a>
+<span class="lineNum">     621 </span>                :            : void
+<span class="lineNum">     622 </span>                :<span class="lineCov">        276 : gwrl_time_gather(gwrl * rl) {</span>
+<span class="lineNum">     623 </span>                :<span class="lineCov">        276 :         bool update_tsrc = true;</span>
+<span class="lineNum">     624 </span>                :<span class="lineCov">        276 :         bool posted_event = false;</span>
+<span class="lineNum">     625 </span>                :<span class="lineCov">        276 :         struct timespec current;</span>
+<span class="lineNum">     626 </span>                :<span class="lineCov">        276 :         struct timespec timediff;</span>
+<span class="lineNum">     627 </span>                :<span class="lineCov">        276 :         gwrlsrc * src = NULL;</span>
+<span class="lineNum">     628 </span>                :<span class="lineCov">        276 :         gwrlsrc * del = NULL;</span>
+<span class="lineNum">     629 </span>                :<span class="lineCov">        276 :         gwrlsrc_time * tsrc_prev = NULL;</span>
+<span class="lineNum">     630 </span>                :<span class="lineCov">        276 :         gwrlsrc_time * tsrc = _gwrlsrct(rl-&gt;sources[GWRL_SRC_TYPE_TIME]);</span>
+<span class="lineNum">     631 </span>        [<span class="branchCov" title="Branch 0 was taken 334 times"> + </span><span class="branchCov" title="Branch 1 was taken 276 times"> + </span>]:<span class="lineCov">        610 :         while(tsrc) {</span>
+<span class="lineNum">     632 </span>                :<span class="lineCov">        334 :                 src = _gwrlsrc(tsrc);</span>
+<span class="lineNum">     633 </span>                :<span class="lineCov">        334 :                 update_tsrc = true;</span>
+<span class="lineNum">     634 </span>        [<span class="branchCov" title="Branch 0 was taken 18 times"> + </span><span class="branchCov" title="Branch 1 was taken 316 times"> + </span>]:<span class="lineCov">        334 :                 if(!flisset(src-&gt;flags,GWRL_ENABLED)) goto update_tsrc_l;</span>
+<span class="lineNum">     635 </span>                :            :                 
+<span class="lineNum">     636 </span>                :<span class="lineCov">        316 :                 gwtm_gettimeofday_timespec(&amp;current);</span>
+<span class="lineNum">     637 </span>                :            :                 
+<span class="lineNum">     638 </span>[<span class="branchCov" title="Branch 0 was taken 300 times"> + </span><span class="branchCov" title="Branch 1 was taken 16 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 21 times"> + </span><span class="branchCov" title="Branch 3 was taken 279 times"> + </span>]:<span class="lineCov">        316 :                 if(!flisset(src-&gt;flags,GWRL_WHENCE_ABS) &amp;&amp; </span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 21 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<span class="lineNum">     639 </span>                :            :                         tsrc-&gt;when.tv_sec == sec_min &amp;&amp; tsrc-&gt;when.tv_nsec == nsec_min) {
+<span class="lineNum">     640 </span>                :<span class="lineCov">         21 :                         gwtm_gettimeofday_timespec(&amp;tsrc-&gt;when);</span>
+<span class="lineNum">     641 </span>                :<span class="lineCov">         21 :                         gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
+<span class="lineNum">     642 </span>                :<span class="lineCov">         21 :                 }</span>
+<span class="lineNum">     643 </span>                :            :                 
+<span class="lineNum">     644 </span>                :<span class="lineCov">        316 :                 gwtm_timespec_sub_into(&amp;tsrc-&gt;when,&amp;current,&amp;timediff);</span>
+<span class="lineNum">     645 </span>                :            :                 
+<span class="lineNum">     646 </span>        [<span class="branchCov" title="Branch 0 was taken 233 times"> + </span><span class="branchCov" title="Branch 1 was taken 83 times"> + </span>]:<span class="lineCov">        316 :                 if(gwtm_timespec_is_expired(&amp;timediff)) {</span>
+<span class="lineNum">     647 </span>                :<span class="lineCov">        233 :                         gwrlevt * evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
+<span class="lineNum">     648 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 233 times"> + </span>]:<span class="lineCov">        233 :                         while(!evt) evt = gwrl_evt_create(rl,src,src-&gt;callback,src-&gt;userdata,0,0);</span>
+<span class="lineNum">     649 </span>                :<span class="lineCov">        233 :                         gwrl_post_evt(rl,evt);</span>
+<span class="lineNum">     650 </span>                :<span class="lineCov">        233 :                         posted_event = true;</span>
+<span class="lineNum">     651 </span>                :            :                         
+<span class="lineNum">     652 </span>        [<span class="branchCov" title="Branch 0 was taken 206 times"> + </span><span class="branchCov" title="Branch 1 was taken 27 times"> + </span>]:<span class="lineCov">        233 :                         if(flisset(src-&gt;flags,GWRL_REPEAT)) {</span>
 <span class="lineNum">     653 </span>                :            :                                 
-<span class="lineNum">     654 </span>[<span class="branchCov" title="Branch 0 was taken 213 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 213 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        217 :                                 if(rl-&gt;backend-&gt;timeout.tv_sec == sec_min &amp;&amp; rl-&gt;backend-&gt;timeout.tv_nsec == nsec_min) {</span>
-<span class="lineNum">     655 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 213 times"> + </span>]:<span class="lineCov">        213 :                                         memcpy(&amp;rl-&gt;backend-&gt;timeout,&amp;timediff,sizeof(timediff));</span>
-<span class="lineNum">     656 </span>                :<span class="lineCov">        213 :                                 } else {</span>
-<span class="lineNum">     657 </span>                :<span class="lineCov">          4 :                                         gwtm_timespec_copy_if_smaller(&amp;timediff,&amp;rl-&gt;backend-&gt;timeout);</span>
-<span class="lineNum">     658 </span>                :            :                                 }
-<span class="lineNum">     659 </span>                :            :                                 
-<span class="lineNum">     660 </span>                :<span class="lineCov">        217 :                         } else {</span>
-<span class="lineNum">     661 </span>                :            :                                 
-<span class="lineNum">     662 </span>        [<span class="branchCov" title="Branch 0 was taken 16 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         30 :                                 if(flisset(src-&gt;flags,GWRL_PERSIST)) {</span>
-<span class="lineNum">     663 </span>                :<span class="lineCov">         16 :                                         gwrl_src_disable(rl,src);</span>
-<span class="lineNum">     664 </span>                :<span class="lineCov">         16 :                                         tsrc-&gt;when.tv_sec = sec_min;</span>
-<span class="lineNum">     665 </span>                :<span class="lineCov">         16 :                                         tsrc-&gt;when.tv_nsec = nsec_min;</span>
-<span class="lineNum">     666 </span>                :<span class="lineCov">         16 :                                 } else {</span>
-<span class="lineNum">     667 </span>                :<span class="lineCov">         14 :                                         del = src;</span>
-<span class="lineNum">     668 </span>                :<span class="lineCov">         14 :                                         tsrc = (gwrlsrc_time *)src-&gt;next;</span>
-<span class="lineNum">     669 </span>                :<span class="lineCov">         14 :                                         gwrl_src_del(rl,del,_gwrlsrc(tsrc_prev),true);</span>
-<span class="lineNum">     670 </span>                :<span class="lineCov">         14 :                                         tsrc_prev = NULL;</span>
-<span class="lineNum">     671 </span>                :<span class="lineCov">         30 :                                         update_tsrc = false;</span>
-<span class="lineNum">     672 </span>                :            :                                 }
-<span class="lineNum">     673 </span>                :            :                         }
-<span class="lineNum">     674 </span>                :<span class="lineCov">        247 :                 } else {</span>
-<span class="lineNum">     675 </span>[<span class="branchCov" title="Branch 0 was taken 55 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 55 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         87 :                         if(rl-&gt;backend-&gt;timeout.tv_sec == sec_min &amp;&amp; rl-&gt;backend-&gt;timeout.tv_nsec == nsec_min) {</span>
-<span class="lineNum">     676 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 55 times"> + </span>]:<span class="lineCov">         55 :                                 memcpy(&amp;rl-&gt;backend-&gt;timeout,&amp;timediff,sizeof(timediff));</span>
-<span class="lineNum">     677 </span>                :<span class="lineCov">         55 :                         } else {</span>
-<span class="lineNum">     678 </span>                :<span class="lineCov">        334 :                                 gwtm_timespec_copy_if_smaller(&amp;timediff,&amp;rl-&gt;backend-&gt;timeout);</span>
-<span class="lineNum">     679 </span>                :            :                         }
-<span class="lineNum">     680 </span>                :            :                 }
-<span class="lineNum">     681 </span>                :            :                 
-<span class="lineNum">     682 </span>                :            :         update_tsrc_l:
-<span class="lineNum">     683 </span>        [<span class="branchCov" title="Branch 0 was taken 340 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">        354 :                 if(update_tsrc) {</span>
-<span class="lineNum">     684 </span>                :<span class="lineCov">        340 :                         tsrc_prev = tsrc;</span>
-<span class="lineNum">     685 </span>                :<span class="lineCov">        340 :                         tsrc = _gwrlsrct((_gwrlsrc(tsrc))-&gt;next);</span>
-<span class="lineNum">     686 </span>                :<span class="lineCov">        340 :                 }</span>
-<span class="lineNum">     687 </span>                :<span class="lineCov">        354 :         }</span>
-<span class="lineNum">     688 </span>                :            :         
-<span class="lineNum">     689 </span>        [<span class="branchCov" title="Branch 0 was taken 247 times"> + </span><span class="branchCov" title="Branch 1 was taken 47 times"> + </span>]:<span class="lineCov">        294 :         if(posted_event) {</span>
-<span class="lineNum">     690 </span>                :<span class="lineCov">        247 :                 rl-&gt;backend-&gt;timeout.tv_sec = 0;</span>
-<span class="lineNum">     691 </span>                :<span class="lineCov">        247 :                 rl-&gt;backend-&gt;timeout.tv_nsec = 0;</span>
-<span class="lineNum">     692 </span>                :<span class="lineCov">        247 :         }</span>
-<span class="lineNum">     693 </span>                :<span class="lineCov">        294 : }</span>
-<a name="694"><span class="lineNum">     694 </span>                :            : </a>
-<span class="lineNum">     695 </span>                :            : void
-<span class="lineNum">     696 </span>                :<span class="lineCov">          2 : gwrl_install_queued_sources(gwrl * rl) {</span>
-<span class="lineNum">     697 </span>                :<span class="lineCov">          2 :         gwrlsrc * src = rl-&gt;_qsrc;</span>
-<span class="lineNum">     698 </span>                :<span class="lineCov">          2 :         gwrlsrc * isrc = NULL;</span>
-<span class="lineNum">     699 </span>                :<span class="lineCov">          2 :         lockid_lock(&amp;rl-&gt;_qsrclk);</span>
-<span class="lineNum">     700 </span>                :<span class="lineCov">          2 :         rl-&gt;_qsrc = NULL;</span>
-<span class="lineNum">     701 </span>                :<span class="lineCov">          2 :         lockid_unlock(&amp;rl-&gt;_qsrclk);</span>
-<span class="lineNum">     702 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          5 :         while(src) {</span>
-<span class="lineNum">     703 </span>                :<span class="lineCov">          3 :                 isrc = src;</span>
-<span class="lineNum">     704 </span>                :<span class="lineCov">          3 :                 src = src-&gt;next;</span>
-<span class="lineNum">     705 </span>                :<span class="lineCov">          3 :                 gwrl_src_add(rl,isrc);</span>
-<span class="lineNum">     706 </span>                :<span class="lineCov">          3 :         }</span>
-<span class="lineNum">     707 </span>                :<span class="lineCov">          2 : }</span>
-<a name="708"><span class="lineNum">     708 </span>                :            : </a>
-<span class="lineNum">     709 </span>                :            : void
-<span class="lineNum">     710 </span>                :<span class="lineCov">          2 : gwrl_install_queued_events(gwrl * rl) {</span>
-<span class="lineNum">     711 </span>                :<span class="lineCov">          2 :         gwrlevt * evt = rl-&gt;_qevt;</span>
-<span class="lineNum">     712 </span>                :<span class="lineCov">          2 :         gwrlevt * pevt = NULL;</span>
-<span class="lineNum">     713 </span>                :<span class="lineCov">          2 :         lockid_lock(&amp;rl-&gt;_qevtlk);</span>
-<span class="lineNum">     714 </span>                :<span class="lineCov">          2 :         rl-&gt;_qevt = NULL;</span>
-<span class="lineNum">     715 </span>                :<span class="lineCov">          2 :         lockid_unlock(&amp;rl-&gt;_qevtlk);</span>
-<span class="lineNum">     716 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :         while(evt) {</span>
-<span class="lineNum">     717 </span>                :<span class="lineCov">          2 :                 pevt = evt;</span>
-<span class="lineNum">     718 </span>                :<span class="lineCov">          2 :                 evt = evt-&gt;next;</span>
-<span class="lineNum">     719 </span>                :<span class="lineCov">          2 :                 gwrl_post_evt(rl,pevt);</span>
-<span class="lineNum">     720 </span>                :<span class="lineCov">          2 :         }</span>
-<span class="lineNum">     721 </span>                :<span class="lineCov">          2 : }</span>
-<a name="722"><span class="lineNum">     722 </span>                :            : </a>
-<span class="lineNum">     723 </span>                :            : void
-<span class="lineNum">     724 </span>                :<span class="lineCov">        337 : gwrl_dispatch(gwrl * rl) {</span>
-<span class="lineNum">     725 </span>                :<span class="lineCov">        337 :         uint8_t repost_count = 0;</span>
-<span class="lineNum">     726 </span>                :<span class="lineCov">        337 :         gwrlevt * evt = rl-&gt;events;</span>
-<span class="lineNum">     727 </span>                :<span class="lineCov">        337 :         gwrlevt * del = evt;</span>
-<span class="lineNum">     728 </span>                :<span class="lineCov">        337 :         rl-&gt;events = NULL;</span>
-<span class="lineNum">     729 </span>        [<span class="branchCov" title="Branch 0 was taken 562 times"> + </span><span class="branchCov" title="Branch 1 was taken 337 times"> + </span>]:<span class="lineCov">        899 :         while(evt) {</span>
-<span class="lineNum">     730 </span>        [<span class="branchCov" title="Branch 0 was taken 562 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        562 :                 if(evt-&gt;callback) evt-&gt;callback(rl,evt);</span>
-<span class="lineNum">     731 </span>                :<span class="lineCov">        562 :                 evt = evt-&gt;next;</span>
-<span class="lineNum">     732 </span>[<span class="branchCov" title="Branch 0 was taken 255 times"> + </span><span class="branchCov" title="Branch 1 was taken 307 times"> + </span>][<span class="branchNoCov" title="Branch 2 was not taken"> - </span><span class="branchCov" title="Branch 3 was taken 255 times"> + </span>]:<span class="lineCov">        562 :                 if(!evt &amp;&amp; rl-&gt;events &amp;&amp; repost_count &lt; GWRL_REDISPATCH_MAX) {</span>
-<span class="lineNum">         </span>        [<span class="branchNoExec" title="Branch 4 was not executed"> # </span><span class="branchNoExec" title="Branch 5 was not executed"> # </span>]
-<span class="lineNum">     733 </span>                :<span class="lineNoCov">          0 :                         gwrl_evt_free_list(rl,del);</span>
-<span class="lineNum">     734 </span>                :<span class="lineNoCov">          0 :                         repost_count++;</span>
-<span class="lineNum">     735 </span>                :<span class="lineNoCov">          0 :                         evt = rl-&gt;events;</span>
-<span class="lineNum">     736 </span>                :<span class="lineNoCov">          0 :                         del = evt;</span>
-<span class="lineNum">     737 </span>                :<span class="lineNoCov">          0 :                         rl-&gt;events = NULL;</span>
-<span class="lineNum">     738 </span>                :<span class="lineNoCov">          0 :                 }</span>
-<span class="lineNum">     739 </span>                :<span class="lineCov">        562 :         }</span>
-<span class="lineNum">     740 </span>        [<span class="branchCov" title="Branch 0 was taken 255 times"> + </span><span class="branchCov" title="Branch 1 was taken 82 times"> + </span>]:<span class="lineCov">        337 :         if(del) gwrl_evt_free_list(rl,del);</span>
-<span class="lineNum">     741 </span>                :<span class="lineCov">        337 : }</span>
-<a name="742"><span class="lineNum">     742 </span>                :            : </a>
-<span class="lineNum">     743 </span>                :            : void
-<span class="lineNum">     744 </span>                :<span class="lineCov">          2 : gwrl_run_once(gwrl * rl) {</span>
-<span class="lineNum">     745 </span>                :<span class="lineCov">          2 :         int i = 0;</span>
-<span class="lineNum">     746 </span>                :<span class="lineCov">          2 :         if(rl-&gt;_qsrc) {</span>
-<span class="lineNum">     747 </span>                :<span class="lineNoCov">          0 :                 gwrl_install_queued_sources(rl);</span>
-<span class="lineNum">     748 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     749 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(rl-&gt;_qevt) {</span>
-<span class="lineNum">     750 </span>                :<span class="lineNoCov">          0 :                 gwrl_install_queued_events(rl);</span>
+<span class="lineNum">     654 </span>                :<span class="lineCov">        206 :                                 gwtm_add_ms_to_timespec(tsrc-&gt;ms,&amp;tsrc-&gt;when);</span>
+<span class="lineNum">     655 </span>                :<span class="lineCov">        206 :                                 gwtm_timespec_sub_into(&amp;tsrc-&gt;when,&amp;current,&amp;timediff);</span>
+<span class="lineNum">     656 </span>                :            :                                 
+<span class="lineNum">     657 </span>[<span class="branchCov" title="Branch 0 was taken 202 times"> + </span><span class="branchCov" title="Branch 1 was taken 4 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 202 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">        206 :                                 if(rl-&gt;backend-&gt;timeout.tv_sec == sec_min &amp;&amp; rl-&gt;backend-&gt;timeout.tv_nsec == nsec_min) {</span>
+<span class="lineNum">     658 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 202 times"> + </span>]:<span class="lineCov">        202 :                                         memcpy(&amp;rl-&gt;backend-&gt;timeout,&amp;timediff,sizeof(timediff));</span>
+<span class="lineNum">     659 </span>                :<span class="lineCov">        202 :                                 } else {</span>
+<span class="lineNum">     660 </span>                :<span class="lineCov">          4 :                                         gwtm_timespec_copy_if_smaller(&amp;timediff,&amp;rl-&gt;backend-&gt;timeout);</span>
+<span class="lineNum">     661 </span>                :            :                                 }
+<span class="lineNum">     662 </span>                :            :                                 
+<span class="lineNum">     663 </span>                :<span class="lineCov">        206 :                         } else {</span>
+<span class="lineNum">     664 </span>                :            :                                 
+<span class="lineNum">     665 </span>        [<span class="branchCov" title="Branch 0 was taken 13 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">         27 :                                 if(flisset(src-&gt;flags,GWRL_PERSIST)) {</span>
+<span class="lineNum">     666 </span>                :<span class="lineCov">         13 :                                         gwrl_src_disable(rl,src);</span>
+<span class="lineNum">     667 </span>                :<span class="lineCov">         13 :                                         tsrc-&gt;when.tv_sec = sec_min;</span>
+<span class="lineNum">     668 </span>                :<span class="lineCov">         13 :                                         tsrc-&gt;when.tv_nsec = nsec_min;</span>
+<span class="lineNum">     669 </span>                :<span class="lineCov">         13 :                                 } else {</span>
+<span class="lineNum">     670 </span>                :<span class="lineCov">         14 :                                         del = src;</span>
+<span class="lineNum">     671 </span>                :<span class="lineCov">         14 :                                         tsrc = (gwrlsrc_time *)src-&gt;next;</span>
+<span class="lineNum">     672 </span>                :<span class="lineCov">         14 :                                         gwrl_src_del(rl,del,_gwrlsrc(tsrc_prev),true);</span>
+<span class="lineNum">     673 </span>                :<span class="lineCov">         14 :                                         tsrc_prev = NULL;</span>
+<span class="lineNum">     674 </span>                :<span class="lineCov">         27 :                                         update_tsrc = false;</span>
+<span class="lineNum">     675 </span>                :            :                                 }
+<span class="lineNum">     676 </span>                :            :                         }
+<span class="lineNum">     677 </span>                :<span class="lineCov">        233 :                 } else {</span>
+<span class="lineNum">     678 </span>[<span class="branchCov" title="Branch 0 was taken 51 times"> + </span><span class="branchCov" title="Branch 1 was taken 32 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 51 times"> + </span><span class="branchNoCov" title="Branch 3 was not taken"> - </span>]:<span class="lineCov">         83 :                         if(rl-&gt;backend-&gt;timeout.tv_sec == sec_min &amp;&amp; rl-&gt;backend-&gt;timeout.tv_nsec == nsec_min) {</span>
+<span class="lineNum">     679 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 51 times"> + </span>]:<span class="lineCov">         51 :                                 memcpy(&amp;rl-&gt;backend-&gt;timeout,&amp;timediff,sizeof(timediff));</span>
+<span class="lineNum">     680 </span>                :<span class="lineCov">         51 :                         } else {</span>
+<span class="lineNum">     681 </span>                :<span class="lineCov">        316 :                                 gwtm_timespec_copy_if_smaller(&amp;timediff,&amp;rl-&gt;backend-&gt;timeout);</span>
+<span class="lineNum">     682 </span>                :            :                         }
+<span class="lineNum">     683 </span>                :            :                 }
+<span class="lineNum">     684 </span>                :            :                 
+<span class="lineNum">     685 </span>                :            :         update_tsrc_l:
+<span class="lineNum">     686 </span>        [<span class="branchCov" title="Branch 0 was taken 320 times"> + </span><span class="branchCov" title="Branch 1 was taken 14 times"> + </span>]:<span class="lineCov">        334 :                 if(update_tsrc) {</span>
+<span class="lineNum">     687 </span>                :<span class="lineCov">        320 :                         tsrc_prev = tsrc;</span>
+<span class="lineNum">     688 </span>                :<span class="lineCov">        320 :                         tsrc = _gwrlsrct((_gwrlsrc(tsrc))-&gt;next);</span>
+<span class="lineNum">     689 </span>                :<span class="lineCov">        320 :                 }</span>
+<span class="lineNum">     690 </span>                :<span class="lineCov">        334 :         }</span>
+<span class="lineNum">     691 </span>                :            :         
+<span class="lineNum">     692 </span>        [<span class="branchCov" title="Branch 0 was taken 233 times"> + </span><span class="branchCov" title="Branch 1 was taken 43 times"> + </span>]:<span class="lineCov">        276 :         if(posted_event) {</span>
+<span class="lineNum">     693 </span>                :<span class="lineCov">        233 :                 rl-&gt;backend-&gt;timeout.tv_sec = 0;</span>
+<span class="lineNum">     694 </span>                :<span class="lineCov">        233 :                 rl-&gt;backend-&gt;timeout.tv_nsec = 0;</span>
+<span class="lineNum">     695 </span>                :<span class="lineCov">        233 :         }</span>
+<span class="lineNum">     696 </span>                :<span class="lineCov">        276 : }</span>
+<a name="697"><span class="lineNum">     697 </span>                :            : </a>
+<span class="lineNum">     698 </span>                :            : void
+<span class="lineNum">     699 </span>                :<span class="lineCov">          2 : gwrl_install_queued_sources(gwrl * rl) {</span>
+<span class="lineNum">     700 </span>                :<span class="lineCov">          2 :         gwrlsrc * src = rl-&gt;_qsrc;</span>
+<span class="lineNum">     701 </span>                :<span class="lineCov">          2 :         gwrlsrc * isrc = NULL;</span>
+<span class="lineNum">     702 </span>                :<span class="lineCov">          2 :         lockid_lock(&amp;rl-&gt;_qsrclk);</span>
+<span class="lineNum">     703 </span>                :<span class="lineCov">          2 :         rl-&gt;_qsrc = NULL;</span>
+<span class="lineNum">     704 </span>                :<span class="lineCov">          2 :         lockid_unlock(&amp;rl-&gt;_qsrclk);</span>
+<span class="lineNum">     705 </span>        [<span class="branchCov" title="Branch 0 was taken 3 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          5 :         while(src) {</span>
+<span class="lineNum">     706 </span>                :<span class="lineCov">          3 :                 isrc = src;</span>
+<span class="lineNum">     707 </span>                :<span class="lineCov">          3 :                 src = src-&gt;next;</span>
+<span class="lineNum">     708 </span>                :<span class="lineCov">          3 :                 gwrl_src_add(rl,isrc);</span>
+<span class="lineNum">     709 </span>                :<span class="lineCov">          3 :         }</span>
+<span class="lineNum">     710 </span>                :<span class="lineCov">          2 : }</span>
+<a name="711"><span class="lineNum">     711 </span>                :            : </a>
+<span class="lineNum">     712 </span>                :            : void
+<span class="lineNum">     713 </span>                :<span class="lineCov">          2 : gwrl_install_queued_events(gwrl * rl) {</span>
+<span class="lineNum">     714 </span>                :<span class="lineCov">          2 :         gwrlevt * evt = rl-&gt;_qevt;</span>
+<span class="lineNum">     715 </span>                :<span class="lineCov">          2 :         gwrlevt * pevt = NULL;</span>
+<span class="lineNum">     716 </span>                :<span class="lineCov">          2 :         lockid_lock(&amp;rl-&gt;_qevtlk);</span>
+<span class="lineNum">     717 </span>                :<span class="lineCov">          2 :         rl-&gt;_qevt = NULL;</span>
+<span class="lineNum">     718 </span>                :<span class="lineCov">          2 :         lockid_unlock(&amp;rl-&gt;_qevtlk);</span>
+<span class="lineNum">     719 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :         while(evt) {</span>
+<span class="lineNum">     720 </span>                :<span class="lineCov">          2 :                 pevt = evt;</span>
+<span class="lineNum">     721 </span>                :<span class="lineCov">          2 :                 evt = evt-&gt;next;</span>
+<span class="lineNum">     722 </span>                :<span class="lineCov">          2 :                 gwrl_post_evt(rl,pevt);</span>
+<span class="lineNum">     723 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     724 </span>                :<span class="lineCov">          2 : }</span>
+<a name="725"><span class="lineNum">     725 </span>                :            : </a>
+<span class="lineNum">     726 </span>                :            : void
+<span class="lineNum">     727 </span>                :<span class="lineCov">        317 : gwrl_dispatch(gwrl * rl) {</span>
+<span class="lineNum">     728 </span>                :<span class="lineCov">        317 :         uint8_t repost_count = 0;</span>
+<span class="lineNum">     729 </span>                :<span class="lineCov">        317 :         gwrlevt * evt = rl-&gt;events;</span>
+<span class="lineNum">     730 </span>                :<span class="lineCov">        317 :         gwrlevt * del = evt;</span>
+<span class="lineNum">     731 </span>                :<span class="lineCov">        317 :         rl-&gt;events = NULL;</span>
+<span class="lineNum">     732 </span>        [<span class="branchCov" title="Branch 0 was taken 537 times"> + </span><span class="branchCov" title="Branch 1 was taken 317 times"> + </span>]:<span class="lineCov">        854 :         while(evt) {</span>
+<span class="lineNum">     733 </span>        [<span class="branchCov" title="Branch 0 was taken 537 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        537 :                 if(evt-&gt;callback) evt-&gt;callback(rl,evt);</span>
+<span class="lineNum">     734 </span>                :<span class="lineCov">        537 :                 evt = evt-&gt;next;</span>
+<span class="lineNum">     735 </span>[<span class="branchCov" title="Branch 0 was taken 252 times"> + </span><span class="branchCov" title="Branch 1 was taken 285 times"> + </span>][<span class="branchCov" title="Branch 2 was taken 11 times"> + </span><span class="branchCov" title="Branch 3 was taken 241 times"> + </span>]:<span class="lineCov">        537 :                 if(!evt &amp;&amp; rl-&gt;events &amp;&amp; repost_count &lt; GWRL_REDISPATCH_MAX) {</span>
+<span class="lineNum">         </span>        [<span class="branchCov" title="Branch 4 was taken 11 times"> + </span><span class="branchNoCov" title="Branch 5 was not taken"> - </span>]
+<span class="lineNum">     736 </span>                :<span class="lineCov">         11 :                         gwrl_evt_free_list(rl,del);</span>
+<span class="lineNum">     737 </span>                :<span class="lineCov">         11 :                         repost_count++;</span>
+<span class="lineNum">     738 </span>                :<span class="lineCov">         11 :                         evt = rl-&gt;events;</span>
+<span class="lineNum">     739 </span>                :<span class="lineCov">         11 :                         del = evt;</span>
+<span class="lineNum">     740 </span>                :<span class="lineCov">         11 :                         rl-&gt;events = NULL;</span>
+<span class="lineNum">     741 </span>                :<span class="lineCov">         11 :                 }</span>
+<span class="lineNum">     742 </span>                :<span class="lineCov">        537 :         }</span>
+<span class="lineNum">     743 </span>        [<span class="branchCov" title="Branch 0 was taken 241 times"> + </span><span class="branchCov" title="Branch 1 was taken 76 times"> + </span>]:<span class="lineCov">        317 :         if(del) gwrl_evt_free_list(rl,del);</span>
+<span class="lineNum">     744 </span>                :<span class="lineCov">        317 : }</span>
+<a name="745"><span class="lineNum">     745 </span>                :            : </a>
+<span class="lineNum">     746 </span>                :            : void
+<span class="lineNum">     747 </span>                :<span class="lineCov">          2 : gwrl_run_once(gwrl * rl) {</span>
+<span class="lineNum">     748 </span>                :<span class="lineCov">          2 :         int i = 0;</span>
+<span class="lineNum">     749 </span>                :<span class="lineCov">          2 :         if(rl-&gt;_qsrc) {</span>
+<span class="lineNum">     750 </span>                :<span class="lineNoCov">          0 :                 gwrl_install_queued_sources(rl);</span>
 <span class="lineNum">     751 </span>                :<span class="lineNoCov">          0 :         }</span>
-<span class="lineNum">     752 </span>                :<span class="lineCov">          2 :         gwrl_dispatch(rl);</span>
-<span class="lineNum">     753 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(rl-&gt;flags,GWRL_STOP)) {</span>
-<span class="lineNum">     754 </span>                :<span class="lineNoCov">          0 :                 flclr(rl-&gt;flags,GWRL_STOP);</span>
-<span class="lineNum">     755 </span>                :<span class="lineNoCov">          0 :                 return;</span>
-<span class="lineNum">     756 </span>                :            :         }
-<span class="lineNum">     757 </span>                :<span class="lineCov">          2 :         rl-&gt;backend-&gt;timeout.tv_sec = sec_min;</span>
-<span class="lineNum">     758 </span>                :<span class="lineCov">          2 :         rl-&gt;backend-&gt;timeout.tv_nsec = nsec_min;</span>
-<span class="lineNum">     759 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(rl-&gt;sources[GWRL_SRC_TYPE_TIME]) gwrl_time_gather(rl);</span>
-<span class="lineNum">     760 </span>                :<span class="lineCov">          2 :         gwrl_bkd_gather(rl);</span>
-<span class="lineNum">     761 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :         for(; i&lt;rl-&gt;options.gwrl_gather_funcs_max; i++) {</span>
-<span class="lineNum">     762 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :                 if(!rl-&gt;gatherfncs[i]) break;</span>
-<span class="lineNum">     763 </span>                :<span class="lineCov">          2 :                 ((gwrl_gather_fnc *)rl-&gt;gatherfncs[i])(rl);</span>
-<span class="lineNum">     764 </span>                :<span class="lineCov">          2 :         }</span>
-<span class="lineNum">     765 </span>                :<span class="lineCov">          2 : }</span>
-<a name="766"><span class="lineNum">     766 </span>                :            : </a>
-<span class="lineNum">     767 </span>                :            : void
-<span class="lineNum">     768 </span>                :<span class="lineCov">         19 : gwrl_run(gwrl * rl) {</span>
-<span class="lineNum">     769 </span>                :<span class="lineCov">         19 :         int i = 0;</span>
-<span class="lineNum">     770 </span>                :<span class="lineCov">         19 :         flclr(rl-&gt;flags,GWRL_STOP);</span>
-<span class="lineNum">     771 </span>                :<span class="lineCov">         19 :         for(;;) {</span>
-<span class="lineNum">     772 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 322 times"> + </span>]:<span class="lineCov">        324 :                 if(rl-&gt;_qsrc) gwrl_install_queued_sources(rl);</span>
-<span class="lineNum">     773 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 322 times"> + </span>]:<span class="lineCov">        324 :                 if(rl-&gt;_qevt) gwrl_install_queued_events(rl);</span>
-<span class="lineNum">     774 </span>                :<span class="lineCov">        324 :                 gwrl_dispatch(rl);</span>
-<span class="lineNum">     775 </span>        [<span class="branchCov" title="Branch 0 was taken 19 times"> + </span><span class="branchCov" title="Branch 1 was taken 305 times"> + </span>]:<span class="lineCov">        324 :                 if(flisset(rl-&gt;flags,GWRL_STOP)) {</span>
-<span class="lineNum">     776 </span>                :<span class="lineCov">         19 :                         flclr(rl-&gt;flags,GWRL_STOP);</span>
-<span class="lineNum">     777 </span>                :<span class="lineCov">         19 :                         break;</span>
-<span class="lineNum">     778 </span>                :            :                 }
-<span class="lineNum">     779 </span>                :<span class="lineCov">        305 :                 rl-&gt;backend-&gt;timeout.tv_sec = sec_min;</span>
-<span class="lineNum">     780 </span>                :<span class="lineCov">        305 :                 rl-&gt;backend-&gt;timeout.tv_nsec = nsec_min;</span>
-<span class="lineNum">     781 </span>        [<span class="branchCov" title="Branch 0 was taken 294 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>]:<span class="lineCov">        305 :                 if(rl-&gt;sources[GWRL_SRC_TYPE_TIME]) gwrl_time_gather(rl);</span>
-<span class="lineNum">     782 </span>                :<span class="lineCov">        305 :                 gwrl_bkd_gather(rl);</span>
-<span class="lineNum">     783 </span>        [<span class="branchCov" title="Branch 0 was taken 315 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        315 :                 for(i=0; i&lt;rl-&gt;options.gwrl_gather_funcs_max; i++) {</span>
-<span class="lineNum">     784 </span>        [<span class="branchCov" title="Branch 0 was taken 305 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">        315 :                         if(!rl-&gt;gatherfncs[i]) break;</span>
-<span class="lineNum">     785 </span>                :<span class="lineCov">         10 :                         ((gwrl_gather_fnc *)rl-&gt;gatherfncs[i])(rl);</span>
-<span class="lineNum">     786 </span>                :<span class="lineCov">         10 :                 }</span>
-<span class="lineNum">     787 </span>                :<span class="lineCov">        305 :         }</span>
-<span class="lineNum">     788 </span>                :<span class="lineCov">         19 : }</span>
-<span class="lineNum">     789 </span>                :            : 
-<span class="lineNum">     790 </span>                :            : #ifdef __cplusplus
-<span class="lineNum">     791 </span>                :            : }
-<span class="lineNum">     792 </span>                :            : #endif
+<span class="lineNum">     752 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(rl-&gt;_qevt) {</span>
+<span class="lineNum">     753 </span>                :<span class="lineNoCov">          0 :                 gwrl_install_queued_events(rl);</span>
+<span class="lineNum">     754 </span>                :<span class="lineNoCov">          0 :         }</span>
+<span class="lineNum">     755 </span>                :<span class="lineCov">          2 :         gwrl_dispatch(rl);</span>
+<span class="lineNum">     756 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(flisset(rl-&gt;flags,GWRL_STOP)) {</span>
+<span class="lineNum">     757 </span>                :<span class="lineNoCov">          0 :                 flclr(rl-&gt;flags,GWRL_STOP);</span>
+<span class="lineNum">     758 </span>                :<span class="lineNoCov">          0 :                 return;</span>
+<span class="lineNum">     759 </span>                :            :         }
+<span class="lineNum">     760 </span>                :<span class="lineCov">          2 :         rl-&gt;backend-&gt;timeout.tv_sec = sec_min;</span>
+<span class="lineNum">     761 </span>                :<span class="lineCov">          2 :         rl-&gt;backend-&gt;timeout.tv_nsec = nsec_min;</span>
+<span class="lineNum">     762 </span>        [<span class="branchNoCov" title="Branch 0 was not taken"> - </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          2 :         if(rl-&gt;sources[GWRL_SRC_TYPE_TIME]) gwrl_time_gather(rl);</span>
+<span class="lineNum">     763 </span>                :<span class="lineCov">          2 :         gwrl_bkd_gather(rl);</span>
+<span class="lineNum">     764 </span>        [<span class="branchCov" title="Branch 0 was taken 4 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">          4 :         for(; i&lt;rl-&gt;options.gwrl_gather_funcs_max; i++) {</span>
+<span class="lineNum">     765 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 2 times"> + </span>]:<span class="lineCov">          4 :                 if(!rl-&gt;gatherfncs[i]) break;</span>
+<span class="lineNum">     766 </span>                :<span class="lineCov">          2 :                 ((gwrl_gather_fnc *)rl-&gt;gatherfncs[i])(rl);</span>
+<span class="lineNum">     767 </span>                :<span class="lineCov">          2 :         }</span>
+<span class="lineNum">     768 </span>                :<span class="lineCov">          2 : }</span>
+<a name="769"><span class="lineNum">     769 </span>                :            : </a>
+<span class="lineNum">     770 </span>                :            : void
+<span class="lineNum">     771 </span>                :<span class="lineCov">         17 : gwrl_run(gwrl * rl) {</span>
+<span class="lineNum">     772 </span>                :<span class="lineCov">         17 :         int i = 0;</span>
+<span class="lineNum">     773 </span>                :<span class="lineCov">         17 :         flclr(rl-&gt;flags,GWRL_STOP);</span>
+<span class="lineNum">     774 </span>                :<span class="lineCov">         17 :         for(;;) {</span>
+<span class="lineNum">     775 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 302 times"> + </span>]:<span class="lineCov">        304 :                 if(rl-&gt;_qsrc) {</span>
+<span class="lineNum">     776 </span>                :<span class="lineCov">          2 :                         gwrl_install_queued_sources(rl);</span>
+<span class="lineNum">     777 </span>                :<span class="lineCov">          2 :                 }</span>
+<span class="lineNum">     778 </span>        [<span class="branchCov" title="Branch 0 was taken 2 times"> + </span><span class="branchCov" title="Branch 1 was taken 302 times"> + </span>]:<span class="lineCov">        304 :                 if(rl-&gt;_qevt) {</span>
+<span class="lineNum">     779 </span>                :<span class="lineCov">          2 :                         gwrl_install_queued_events(rl);</span>
+<span class="lineNum">     780 </span>                :<span class="lineCov">          2 :                 }</span>
+<span class="lineNum">     781 </span>                :<span class="lineCov">        304 :                 gwrl_dispatch(rl);</span>
+<span class="lineNum">     782 </span>        [<span class="branchCov" title="Branch 0 was taken 17 times"> + </span><span class="branchCov" title="Branch 1 was taken 287 times"> + </span>]:<span class="lineCov">        304 :                 if(flisset(rl-&gt;flags,GWRL_STOP)) {</span>
+<span class="lineNum">     783 </span>                :<span class="lineCov">         17 :                         flclr(rl-&gt;flags,GWRL_STOP);</span>
+<span class="lineNum">     784 </span>                :<span class="lineCov">         17 :                         break;</span>
+<span class="lineNum">     785 </span>                :            :                 }
+<span class="lineNum">     786 </span>                :<span class="lineCov">        287 :                 rl-&gt;backend-&gt;timeout.tv_sec = sec_min;</span>
+<span class="lineNum">     787 </span>                :<span class="lineCov">        287 :                 rl-&gt;backend-&gt;timeout.tv_nsec = nsec_min;</span>
+<span class="lineNum">     788 </span>        [<span class="branchCov" title="Branch 0 was taken 276 times"> + </span><span class="branchCov" title="Branch 1 was taken 11 times"> + </span>]:<span class="lineCov">        287 :                 if(rl-&gt;sources[GWRL_SRC_TYPE_TIME]) gwrl_time_gather(rl);</span>
+<span class="lineNum">     789 </span>                :<span class="lineCov">        287 :                 gwrl_bkd_gather(rl);</span>
+<span class="lineNum">     790 </span>        [<span class="branchCov" title="Branch 0 was taken 297 times"> + </span><span class="branchNoCov" title="Branch 1 was not taken"> - </span>]:<span class="lineCov">        297 :                 for(i=0; i&lt;rl-&gt;options.gwrl_gather_funcs_max; i++) {</span>
+<span class="lineNum">     791 </span>        [<span class="branchCov" title="Branch 0 was taken 287 times"> + </span><span class="branchCov" title="Branch 1 was taken 10 times"> + </span>]:<span class="lineCov">        297 :                         if(!rl-&gt;gatherfncs[i]) break;</span>
+<span class="lineNum">     792 </span>                :<span class="lineCov">         10 :                         ((gwrl_gather_fnc *)rl-&gt;gatherfncs[i])(rl);</span>
+<span class="lineNum">     793 </span>                :<span class="lineCov">         10 :                 }</span>
+<span class="lineNum">     794 </span>                :<span class="lineCov">        287 :         }</span>
+<span class="lineNum">     795 </span>                :<span class="lineCov">         17 : }</span>
+<span class="lineNum">     796 </span>                :            : 
+<span class="lineNum">     797 </span>                :            : #ifdef __cplusplus
+<span class="lineNum">     798 </span>                :            : }
+<span class="lineNum">     799 </span>                :            : #endif
 </pre>
       </td>
     </tr>
