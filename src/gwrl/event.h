@@ -153,9 +153,8 @@ typedef struct gwrl {
 	//user defined gather functions to call
 	gwrl_gather_fnc ** gatherfncs;
 	
-	#ifdef USING_PROACTOR
-	void * pr; //gwpr, only if using the proactor.
-	#endif
+	//gwpr, only if using the proactor.
+	void * pr;
 } gwrl;
 
 //base input src, any input source needs to include
@@ -178,9 +177,8 @@ typedef struct _gwlsrc_file {
 	struct pollfd * pfd; //struct pollfd * in gwrlbkd_poll->fds[].
 	#endif
 	
-	#ifdef USING_PROACTOR
-	void * pdata; //gwprdata, proactor specific file src data.
-	#endif
+	//gwprdata, proactor specific file src data.
+	void * pdata;
 } gwrlsrc_file;
 
 //time input source
