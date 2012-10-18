@@ -3,8 +3,8 @@
 
 gwrl * rl = NULL;
 gwpr * pr = NULL;
-gwrlsrc_file * rdsrc = NULL;
-gwrlsrc_file * wrsrc = NULL;
+gwrlsrc * rdsrc = NULL;
+gwrlsrc * wrsrc = NULL;
 int rdcount = 0;
 int sockets[2];
 struct sockaddr_storage peer;
@@ -54,10 +54,10 @@ int main(int argc, char ** argv) {
 	gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&didrd);
 	gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&didwr);
 	gwpr_set_cb(pr,wrsrc,gwpr_error_cb_id,&error);
-	gwpr_recvfrom(pr,rdsrc,gwpr_buf_get(pr,128));
+	gwpr_recvfrom(pr,rdsrc,128);
 	
 	gwrl_run(rl);
 	assert(rdcount == 100);
-
+	
 	return 0;
 }

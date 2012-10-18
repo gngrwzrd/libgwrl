@@ -11,7 +11,7 @@ void cb6(gwpr * pr, gwpr_io_info * info){}
 int main(int argc, char ** argv) {
 	gwrl * rl = gwrl_create();
 	gwpr * pr = gwpr_create(rl);
-	gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
+	gwrlsrc * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
 	gwpr_set_cb(pr,fsrc,gwpr_error_cb_id,&cb1);
 	gwpr_set_cb(pr,fsrc,gwpr_accept_cb_id,&cb2);
 	gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&cb3);

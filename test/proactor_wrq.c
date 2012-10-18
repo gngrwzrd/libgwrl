@@ -5,7 +5,8 @@ int main(int argc, char ** argv) {
 	
 	gwrl * rl = gwrl_create();
 	gwpr * pr = gwpr_create(rl);
-	gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
+	gwrlsrc * src = gwpr_set_fd(pr,STDIN_FILENO,NULL);
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	
 	gwprwrq * q1 = gwprwrq_get(pr,fsrc);
 	gwprwrq * q2 = gwprwrq_get(pr,fsrc);

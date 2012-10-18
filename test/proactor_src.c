@@ -3,7 +3,7 @@
 
 gwrl * rl;
 gwpr * pr;
-gwrlsrc_file * src1;
+gwrlsrc * src1;
 
 void timeout(gwrl * rl, gwrlevt * evt) {
 	gwpr_src_remove(pr,src1);

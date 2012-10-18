@@ -20,9 +20,9 @@ void stdin_read(gwpr * pr, gwpr_io_info * info) {
 void testThreadSpecificData() {
 	thdata * data = (thdata *)pthread_getspecific(th1key);
 	gwpr * pr = data->pr;
-	gwrlsrc_file * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
+	gwrlsrc * fsrc = gwpr_set_fd(pr,STDIN_FILENO,NULL);
 	gwpr_set_cb(pr,fsrc,gwpr_did_read_cb_id,&stdin_read);
-	gwpr_read(pr,fsrc, gwpr_buf_get(pr,128));
+	gwpr_read(pr,fsrc,128);
 }
 
 void setupReactor(gwrl * rl, gwrlevt * evt) {

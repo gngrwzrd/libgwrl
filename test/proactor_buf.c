@@ -18,6 +18,9 @@ int main(int argc, char ** argv) {
 	
 	buf1 = gwpr_buf_get_with_data(pr,10,"word",100);
 	assert(buf1 == NULL);
+
+	buf1 = gwpr_buf_get_with_data(pr,5,"word",5);
+	assert(strcmp(buf1->buf,"word") == 0);
 	
 	return 0;
 }

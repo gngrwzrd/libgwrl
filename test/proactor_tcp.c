@@ -3,8 +3,8 @@
 
 gwrl * rl;
 gwpr * pr;
-gwrlsrc_file * rdsrc = NULL;
-gwrlsrc_file * wrsrc = NULL;
+gwrlsrc * rdsrc = NULL;
+gwrlsrc * wrsrc = NULL;
 int rdcount = 0;
 int sockets[2];
 bool called_wrfilter1 = false;
@@ -46,7 +46,7 @@ void write_data(gwrl * rl, gwrlevt * evt) {
 		gwpr_write(pr,wrsrc,buf);
 	} else if(rdcount > 25) {
 		pr->options.gwpr_synchronous_write_max_bytes = 256;
-		gwpr_recv(pr,rdsrc,gwpr_buf_get(pr,128));
+		gwpr_recv(pr,rdsrc,128);
 		gwpr_send(pr,wrsrc,buf);
 	} else if(rdcount > 50) {
 		pr->options.gwpr_synchronous_write_max_bytes = 0;
@@ -89,7 +89,7 @@ int main(int argc, char ** argv) {
 	
 	gwpr_set_cb(pr,wrsrc,gwpr_did_write_cb_id,&didwr);
 	gwpr_set_cb(pr,rdsrc,gwpr_did_read_cb_id,&didrd);
-	gwpr_read(pr,rdsrc,gwpr_buf_get(pr,128));
+	gwpr_read(pr,rdsrc,128);
 	
 	gwrl_set_interval(rl,0,&write_data,NULL);
 	//gwrl_set_timeout(rl,10000,false,&timeout,NULL);

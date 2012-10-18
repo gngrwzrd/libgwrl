@@ -2,7 +2,7 @@
 #include <gwrl/proactor.h>
 
 bool
-gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc_file * fsrc,
+gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc * src,
 gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
 size_t written, int errnm, bool * stopwrite);
 
@@ -10,7 +10,8 @@ bool continue_result = false;
 bool stopwrite = false;
 gwrl * rl = NULL;
 gwpr * pr = NULL;
-gwrlsrc_file * src = NULL;
+gwrlsrc * src = NULL;
+gwrlsrc_file * fsrc = NULL;
 gwprbuf * srcbuf = NULL;
 gwprwrq  * srcq = NULL;
 gwprdata * pdata = NULL;
@@ -38,10 +39,11 @@ void reset() {
 	rl = gwrl_create();
 	pr = gwpr_create(rl);
 	src = gwpr_set_fd(pr,0,NULL);
-	srcq = gwprwrq_get(pr,src);
+	fsrc = _gwrlsrcf(src);
+	srcq = gwprwrq_get(pr,fsrc);
 	srcbuf = gwpr_buf_get_with_data(pr,12,"hello world",12);
 	srcq->buf = srcbuf;
-	pdata = src->pdata;
+	pdata = fsrc->pdata;
 	ioinfo = calloc(1,sizeof(gwpr_io_info));
 	errinfo = calloc(1,sizeof(gwpr_error_info));
 }
