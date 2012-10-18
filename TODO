@@ -1,7 +1,4 @@
--possibly change proactor api's to use gwrlsrc for public functions.
--change proactor read functions to use buffer size not an actual gwprbuf
--breakup gwpr_synchronous_write - it's too big to test easily
--gwrl_free might be able to use double pointers too
+-test gwpr_synchronous_write_result
 -gwrl_del_persistent_timeouts can use pointer to pointer like I did in gwrl_src_del
 -gwpr_free on Windows
 -valgrind, callgrind
