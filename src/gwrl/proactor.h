@@ -113,14 +113,14 @@ typedef struct gwpr_io_info {
 	gwprbuf * buf;
 	
 	//input source the IO operation completed on.
-	gwrlsrc_file * src;
+	gwrlsrc * src;
 	
 	//new peer input source. applies to accept/connect. this input source
 	//has not been registered with the reactor runloop when you get it. It's
 	//up to you to register it with a runloop. It's setup this way so you
 	//can register the input source with a different runloop on another thread
 	//if that's what you'd like.
-	gwrlsrc_file * peersrc;
+	gwrlsrc * peersrc;
 } gwpr_io_info;
 
 //error info structure passed back to error callbacks.
@@ -129,7 +129,7 @@ typedef struct gwpr_error_info {
 	char fnc[16];       //function that triggered the error
 	gwpr_io_op_id op;   //io operation that triggered the error
 	gwprbuf * buf;      //data buffer that didn't succeed
-	gwrlsrc_file * src; //input source that generated the error
+	gwrlsrc * src; //input source that generated the error
 } gwpr_error_info;
 
 //include some private and implementation specific headers.
@@ -156,59 +156,57 @@ void gwpr_buf_free(gwpr * pr, gwprbuf * buf);
 gwpr * gwpr_create(gwrl * rl);
 void gwpr_free(gwpr * pr);
 
-//shortcut for gwpr_src_add
-gwrlsrc_file * gwpr_set_fd(gwpr * pr, fileid_t fd, void * userdata);
+//add file input sources
+gwrlsrc * gwpr_set_fd(gwpr * pr, fileid_t fd, void * userdata);
+void gwpr_src_add(gwpr * pr, gwrlsrc * src);
 
 //set runtime override options
 void gwpr_set_options(gwpr * pr, gwpr_options * opts);
 
 //set callbacks for supported IO operations
-void gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb);
-
-//add a file input source
-void gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc);
+void gwpr_set_cb(gwpr * pr, gwrlsrc * src, gwpr_cb_id cbid, void * cb);
 
 //thread safe version of gwpr_src_add.
-void gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc);
+void gwpr_src_add_safely(gwpr * pr, gwrlsrc * src);
 
 //remove a file input source but don't free it
-void gwpr_src_remove(gwpr * pr, gwrlsrc_file * fsrc);
+void gwpr_src_remove(gwpr * pr, gwrlsrc * fsrc);
 
 //delete a file input source and free it
-void gwpr_src_del(gwpr * pr, gwrlsrc_file * fsrc);
+void gwpr_src_del(gwpr * pr, gwrlsrc * fsrc);
 
 //initiate an asychronous connect
-int gwpr_connect(gwpr * pr, gwrlsrc_file * fsrc, struct sockaddr_storage * addr);
+int gwpr_connect(gwpr * pr, gwrlsrc * src, struct sockaddr_storage * addr);
 
 //mark an input source as willing to accept incoming connections. The input
 //source must be a socket that had already been listening and bound.
-int gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc);
+int gwpr_accept(gwpr * pr, gwrlsrc * src);
 
 //read data asynchronously into the provided buffer. Calling this once marks
 //the input sources as willing to read whenever data is available. You have to
 //specifically shut off reading when you don't want the proactor to read data
 //on your behalf. Use the gwpr_stop_read method to stop read events at any time.
-int gwpr_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-int gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-int gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-void gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc);
+int gwpr_read(gwpr * pr, gwrlsrc * src, size_t bufsize);
+int gwpr_recv(gwpr * pr, gwrlsrc * src, size_t bufsize);
+int gwpr_recvfrom(gwpr * pr, gwrlsrc * src, size_t bufsize);
+void gwpr_stop_read(gwpr * pr, gwrlsrc * src);
 
 //write data asynchronously from the provided buffer. Unlike the read functions
 //above, writes will only happen while there's data to write. After all the write data
 //is written write events will be shut off for the input source until you initiate
 //more writes.
-int gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-int gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf);
-int gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf, struct sockaddr_storage * peer, socklen_t peerlen);
+int gwpr_write(gwpr * pr, gwrlsrc * src, gwprbuf * buf);
+int gwpr_send(gwpr * pr, gwrlsrc * src, gwprbuf * buf);
+int gwpr_sendto(gwpr * pr, gwrlsrc * src, gwprbuf * buf, struct sockaddr_storage * peer, socklen_t peerlen);
 
 //add filter at the end of the filter list for an input source.
-void gwpr_filter_add(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid, gwpr_io_cb * fnc);
+void gwpr_filter_add(gwpr * pr, gwrlsrc * src, gwpr_filter_id fid, gwpr_io_cb * fnc);
 
 //remove all filters associated with an input source.
-void gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid);
+void gwpr_filter_reset(gwpr * pr, gwrlsrc * src, gwpr_filter_id fid);
 
 //call read or write filters with ioinfo provided.
-void gwpr_filter_call(gwpr * pr, gwrlsrc_file * fsrc, gwpr_io_info * info, gwpr_filter_id fid);
+void gwpr_filter_call(gwpr * pr, gwrlsrc * src, gwpr_io_info * info, gwpr_filter_id fid);
 
 
 

@@ -13,18 +13,19 @@ io_activity(gwpr * pr, gwpr_io_info * info) {
 }
 
 void
-gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
+gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc * src) {
 	//this method does the accept logic when a read
 	//event is available for a descriptor that has an
 	//accept callback set
-
+	
 	//setup vars
 	int i = 0;
 	ssize_t res = 0;
 	struct gwpr_io_info ioinfo = {0};
 	struct gwpr_error_info errinfo = {0};
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
-	ioinfo.src = fsrc;
+	ioinfo.src = src;
 	
 	//try and accept as many clients as possible up to the
 	//specified max amount in pr->options.gwpr_max_accept
@@ -36,7 +37,7 @@ gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 		
 		if(res > -1) {
 			//accept success, call the user callback
-			ioinfo.peersrc = _gwrlsrcf(gwrl_src_file_create(res,0,NULL,NULL));
+			ioinfo.peersrc = gwrl_src_file_create(res,0,NULL,NULL);
 			pdata->acceptcb(pr,&ioinfo);
 
 		} else if(res < 0) {
@@ -47,7 +48,7 @@ gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 			if(errno != EWOULDBLOCK) {
 				//error we don't want to handle, pass to the user.
 				if(pdata->errorcb) {
-					errinfo.src = fsrc;
+					errinfo.src = src;
 					errinfo.errnm = errno;
 					memcpy(errinfo.fnc,"accept\0",7);
 					pdata->errorcb(pr,&errinfo);
@@ -60,18 +61,18 @@ gwpr_src_activity_read_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 }
 
 void
-gwpr_src_activity_read(gwpr * pr, gwrlsrc_file * fsrc,
+gwpr_src_activity_read(gwpr * pr, gwrlsrc * src,
 ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 	//this method does the actual read calls when a
 	//read is available on a descriptor.
 
 	//setup vars
 	int _res = 0;
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
-	gwprbuf * rd = pdata->rdbuf;
+	gwprbuf * rd = gwpr_buf_get(pr,pdata->rdbufsize);
 	while(!rd) rd = gwpr_buf_get(pr,pdata->rdbufsize);
-	pdata->rdbuf = NULL;
-	ioinfo->src = fsrc;
+	ioinfo->src = src;
 	ioinfo->buf = rd;
 	ioinfo->op = pdata->rdop;
 
@@ -114,16 +115,17 @@ ssize_t * res, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 
 void
 gwpr_src_activity_read_result(ssize_t res, gwpr * pr,
-gwrlsrc_file * fsrc, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
+gwrlsrc * src, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 	//this method handles the result from a call
 	//to gwpr_src_activity_read() above.
 	
 	//setup vars
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 
 	if(res > 0) {
 		//good read, call filters and the callback.
-		gwpr_filter_call(pr,fsrc,ioinfo,gwpr_rdfilter_id);
+		gwpr_filter_call(pr,src,ioinfo,gwpr_rdfilter_id);
 		pdata->didreadcb(pr,ioinfo);
 	}
 	
@@ -146,7 +148,7 @@ gwrlsrc_file * fsrc, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 		//some other error that we don't want
 		//to handle internally, pass to the user.
 		errinfo->errnm = errno;
-		errinfo->src = fsrc;
+		errinfo->src = src;
 		errinfo->op = ioinfo->op;
 		pdata->errorcb(pr,errinfo);
 	}
@@ -157,7 +159,7 @@ gwrlsrc_file * fsrc, gwpr_io_info * ioinfo, gwpr_error_info * errinfo) {
 }
 
 void
-gwpr_src_activity_write_qitem(gwpr * pr, gwrlsrc_file * fsrc,
+gwpr_src_activity_write_qitem(gwpr * pr, gwrlsrc * src,
 gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
 size_t * written, int * errnm) {
 	//this method writes only a single gwprwrq item
@@ -165,8 +167,9 @@ size_t * written, int * errnm) {
 	//setup vars
 	int _errnm = 0;
 	size_t _written = 0;
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
-	ioinfo->src = fsrc;
+	ioinfo->src = src;
 	ioinfo->op = q->wrop;
 	ioinfo->buf = q->buf;
 	ioinfo->peerlen = q->peerlen;
@@ -180,11 +183,11 @@ size_t * written, int * errnm) {
 	
 	//call write filters
 	if(pdata->wrfilters && pdata->wrfilters[0] != NULL) {
-		gwpr_filter_call(pr,fsrc,ioinfo,gwpr_wrfilter_id);
+		gwpr_filter_call(pr,src,ioinfo,gwpr_wrfilter_id);
 	}
 	
 	//perform the write
-	gwpr_write_buffer(pr,fsrc,q->buf,q->wrop,&q->peer,q->peerlen,&_written,&_errnm);
+	gwpr_write_buffer(pr,src,q->buf,q->wrop,&q->peer,q->peerlen,&_written,&_errnm);
 
 	//update the error fnc if an error occured
 	if(_written == 0 && errnm != 0) {
@@ -199,12 +202,13 @@ size_t * written, int * errnm) {
 }
 
 bool
-gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc_file * fsrc,
+gwpr_src_activity_write_qitem_result(gwpr * pr, gwrlsrc * src,
 gwprwrq * q, gwpr_io_info * ioinfo, gwpr_error_info * errinfo,
 size_t written, int errnm, bool * stopwrite) {
 	size_t remain = 0;
 	bool handled = false;
 	bool continue_result = true;
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 	gwprbuf * rembuf = NULL;
 	ioinfo->buf = q->buf;
@@ -271,7 +275,7 @@ size_t written, int errnm, bool * stopwrite) {
 	if(!handled && errnm != 0 && pdata->errorcb) {
 		//error we don't want to handle. pass to the user.
 		errinfo->errnm = errnm;
-		errinfo->src = fsrc;
+		errinfo->src = src;
 		errinfo->op = q->wrop;
 		errinfo->buf = q->buf;
 		if(remain > 0) errinfo->buf = rembuf;
@@ -311,11 +315,11 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			
 			if(pdata->didreadcb) {
 				//did read callback is set, try and read data.
-				gwpr_src_activity_read(pr,fsrc,&res,&ioinfo,&errinfo);
-				gwpr_src_activity_read_result(res,pr,fsrc,&ioinfo,&errinfo);
+				gwpr_src_activity_read(pr,src,&res,&ioinfo,&errinfo);
+				gwpr_src_activity_read_result(res,pr,src,&ioinfo,&errinfo);
 			} else if(pdata->acceptcb) {
 				//accept is set, try and accept any clients
-				gwpr_src_activity_read_accept(pr,fsrc);
+				gwpr_src_activity_read_accept(pr,src);
 			} else {
 				gwerr("(4FL9KF) proactor can read data but there's no read callback set.");
 			}
@@ -327,7 +331,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			if(pdata->connectcb) {
 				//the user wanted to know when a socket is writable after
 				//calling connect(), call it here and disable the connectcb.
-				ioinfo.src = fsrc;
+				ioinfo.src = src;
 				ioinfo.peerlen = sizeof(ioinfo.peer);
 				getpeername(fsrc->fd,_sockaddr(&ioinfo.peer),&ioinfo.peerlen);
 				pdata->connectcb(pr,&ioinfo);
@@ -358,8 +362,8 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 				while(q) {
 					//write all gwprwrq items.
 					qn = q->next;
-					gwpr_src_activity_write_qitem(pr,fsrc,q,&ioinfo,&errinfo,&written,&errnm);
-					continue_result = gwpr_src_activity_write_qitem_result(pr,fsrc,q,&ioinfo,&errinfo,written,errnm,&stopwrite);
+					gwpr_src_activity_write_qitem(pr,src,q,&ioinfo,&errinfo,&written,&errnm);
+					continue_result = gwpr_src_activity_write_qitem_result(pr,src,q,&ioinfo,&errinfo,written,errnm,&stopwrite);
 					
 					if(stopwrite || !continue_result) {
 						//continue_result - write events should stay installed
@@ -391,7 +395,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			if(pdata->didwritecb) {
 				//a synchronous write completed, notify the user here.
 				gwprwrq * q = (gwprwrq *)evt->userdata;
-				ioinfo.src = fsrc;
+				ioinfo.src = src;
 				ioinfo.buf = q->buf;
 				ioinfo.op = q->wrop;
 				if(q->wrop == gwpr_write_op_id) {
@@ -413,7 +417,7 @@ gwpr_src_activity(gwrl * rl, gwrlevt * evt) {
 			if(pdata->closedcb) {
 				//a synchronous write discovered socket or file close.
 				bzero(&ioinfo,sizeof(ioinfo));
-				ioinfo.src = fsrc;
+				ioinfo.src = src;
 				pdata->closedcb(pr,&ioinfo);
 			} else {
 				gwerr("(7GK9F) proactor detected a closed socket or file with no closed callback set.");
@@ -464,10 +468,6 @@ gwpr_free(gwpr * pr) {
 					free(pdata->wrfilters);
 				}
 				
-				if(pdata->rdbuf) {
-					gwpr_buf_free(pr,pdata->rdbuf);
-				}
-				
 				if(pdata->wrq) {
 					gwprwrq_free_list_no_cache(pr,pdata->wrq);
 					pdata->wrq = NULL;
@@ -496,11 +496,12 @@ gwpr_free(gwpr * pr) {
 }
 
 void
-gwpr_write_buffer(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_write_buffer(gwpr * pr, gwrlsrc * src, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen,
 size_t * written, int * errnm) {
 	//this function writes a single buffer based on the op.
 
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	ssize_t didwrite = 0;
 	size_t towrite = buf->len;
 	char * _buf = buf->buf;
@@ -540,7 +541,7 @@ size_t * written, int * errnm) {
 }
 
 bool
-gwpr_synchronous_write_result(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_synchronous_write_result(gwpr * pr, gwrlsrc * src, gwprbuf * buf,
 gwpr_io_op_id op, ssize_t written, int errnm, struct sockaddr_storage * peer,
 socklen_t peerlen) {
 	//this method checks and handles the result from
@@ -548,7 +549,7 @@ socklen_t peerlen) {
 
 	bool didwr = false;
 	size_t remaining = 0;
-	gwrlsrc * src = _gwrlsrc(fsrc);
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprwrq * q = NULL;
 	gwrlevt * evt = NULL;
 	gwprbuf * rembuf = NULL;
@@ -610,7 +611,7 @@ socklen_t peerlen) {
 			//the kernel telling us there's no more room to write.
 			//post the remaining buffer data to the write queue for later.
 
-			gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);
+			gwpr_asynchronous_write(pr,src,buf,op,peer,peerlen);
 		}
 		
 		//set result
@@ -642,7 +643,7 @@ socklen_t peerlen) {
 		//socket or fd is marked as non-blocking and no data could
 		//be written without blocking, post it all in the queue for
 		//writing later when the file descriptor is writable.
-		gwpr_asynchronous_write(pr,fsrc,buf,op,peer,peerlen);
+		gwpr_asynchronous_write(pr,src,buf,op,peer,peerlen);
 	}
 
 	else if(errnm != 0) {
@@ -652,7 +653,7 @@ socklen_t peerlen) {
 		//create err info for the event.
 		gwpr_error_info * errinfo = calloc(1,sizeof(gwpr_error_info));
 		errinfo->errnm = errnm;
-		errinfo->src = fsrc;
+		errinfo->src = src;
 		errinfo->op = op;
 		errinfo->buf = buf;
 		if(remaining > 0) errinfo->buf = rembuf;
@@ -671,25 +672,19 @@ socklen_t peerlen) {
 }
 
 bool
-gwpr_synchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_synchronous_write(gwpr * pr, gwrlsrc * src, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	bool didwr = false;
-	
-	#if defined(GWPR_TRY_SYNCHRONOUS_WRITE_UNIX)
-	
 	int maxbytes = pr->options.gwpr_synchronous_write_max_bytes;
 
 	if(buf->len <= maxbytes && maxbytes > 0) {
 		//try synchronous write
 		
 		//setup vars
-		gwrlsrc * src = _gwrlsrc(fsrc);
+		gwrlsrc_file * fsrc = _gwrlsrcf(src);
 		gwprdata * pdata = fsrc->pdata;
 		gwprbuf * usedbuf = buf;
-		gwprbuf * rembuf = NULL;
 		gwprbuf * bfcp = NULL;
-		gwprwrq * q = NULL;
-		gwrlevt * evt = NULL;
 
 		//check if we should call write filters
 		if(pdata->wrfilters && pdata->wrfilters[0] != NULL) {
@@ -705,7 +700,7 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 
 			//setup ioinfo for write filter
 			gwpr_io_info ioinfo = {0};
-			ioinfo.src = fsrc;
+			ioinfo.src = src;
 			ioinfo.buf = usedbuf;
 			ioinfo.op = op;
 			if(op == gwpr_sendto_op_id) {
@@ -724,23 +719,22 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 		//write the buffer
 		int errnm = 0;
 		size_t written = 0;
-		gwpr_write_buffer(pr,fsrc,usedbuf,op,peer,peerlen,&written,&errnm);
+		gwpr_write_buffer(pr,src,usedbuf,op,peer,peerlen,&written,&errnm);
 		
 		//check results
-		didwr = gwpr_synchronous_write_result(pr,fsrc,usedbuf,op,usedbuff,errnm,peer,peerlen);
+		didwr = gwpr_synchronous_write_result(pr,src,usedbuf,op,written,errnm,peer,peerlen);
 	}
 	
-	#endif
 	return didwr;
 }
 
 void
-gwpr_asynchronous_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_asynchronous_write(gwpr * pr, gwrlsrc * src, gwprbuf * buf,
 gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 	//this method puts buffer data into the write queue
 
 	//setup vars
-	gwrlsrc * src = _gwrlsrc(fsrc);
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprwrq * q = gwprwrq_get(pr,fsrc);
 	gwrlsrc_flags_t flags = src->flags;
 	
@@ -772,8 +766,8 @@ gwpr_io_op_id op, struct sockaddr_storage * peer, socklen_t peerlen) {
 }
 
 int
-gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc) {
-	gwrlsrc * src = _gwrlsrc(fsrc);
+gwpr_accept(gwpr * pr, gwrlsrc * src) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 	gwrlsrc_flags_t flags = src->flags;
 	if(!pdata->acceptcb) {
@@ -786,10 +780,9 @@ gwpr_accept(gwpr * pr, gwrlsrc_file * fsrc) {
 }
 
 int
-gwpr_connect(gwpr * pr, gwrlsrc_file * fsrc,
-struct sockaddr_storage * addr) {
+gwpr_connect(gwpr * pr, gwrlsrc * src, struct sockaddr_storage * addr) {
 	int res = 0;
-	gwrlsrc * src = _gwrlsrc(fsrc);
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * prdata = (gwprdata *)fsrc->pdata;
 	gwrlsrc_flags_t flags = src->flags;
 	if(!prdata->connectcb) {
@@ -804,9 +797,8 @@ struct sockaddr_storage * addr) {
 }
 
 int
-gwpr_asynchronous_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
-gwpr_io_op_id op) {
-	gwrlsrc * src = _gwrlsrc(fsrc);
+gwpr_asynchronous_read(gwpr * pr, gwrlsrc * src, size_t bufsize, gwpr_io_op_id op) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = (gwprdata *)fsrc->pdata;
 	gwrlsrc_flags_t flags = src->flags;
 	if(!pdata->didreadcb) {
@@ -814,39 +806,37 @@ gwpr_io_op_id op) {
 		return -1;
 	}
 	flset(flags,GWRL_ENABLED|GWRL_RD);
-	pdata->rdbuf = buf;
-	pdata->rdbufsize = buf->bufsize;
+	pdata->rdbufsize = bufsize;
 	pdata->rdop = op;
 	gwrl_src_file_update_flags(pr->rl,src,flags);
 	return 0;
 }
 
 void
-gwpr_stop_read(gwpr * pr, gwrlsrc_file * fsrc) {
-	gwrlsrc * src = _gwrlsrc(fsrc);
+gwpr_stop_read(gwpr * pr, gwrlsrc * src) {
 	gwrlsrc_flags_t flags = src->flags;
 	flclr(flags,GWRL_RD);
 	gwrl_src_file_update_flags(pr->rl,src,flags);
 }
 
 int
-gwpr_read(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_read_op_id);
+gwpr_read(gwpr * pr, gwrlsrc * src, size_t bufsize) {
+	return gwpr_asynchronous_read(pr,src,bufsize,gwpr_read_op_id);
 }
 
 int
-gwpr_recv(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recv_op_id);
+gwpr_recv(gwpr * pr, gwrlsrc * src, size_t bufsize) {
+	return gwpr_asynchronous_read(pr,src,bufsize,gwpr_recv_op_id);
 }
 
 int
-gwpr_recvfrom(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
-	return gwpr_asynchronous_read(pr,fsrc,buf,gwpr_recvfrom_op_id);
+gwpr_recvfrom(gwpr * pr, gwrlsrc * src, size_t bufsize) {
+	return gwpr_asynchronous_read(pr,src,bufsize,gwpr_recvfrom_op_id);
 }
 
-
 int
-gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
+gwpr_write(gwpr * pr, gwrlsrc * src, gwprbuf * buf) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!pdata->didwritecb) {
@@ -854,17 +844,18 @@ gwpr_write(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	}
 	#endif
 	if(pdata->wrq) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);
+		gwpr_asynchronous_write(pr,src,buf,gwpr_write_op_id,NULL,0);
 		return 0;
 	}
-	if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0))) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_write_op_id,NULL,0);
+	if(!(gwpr_synchronous_write(pr,src,buf,gwpr_write_op_id,NULL,0))) {
+		gwpr_asynchronous_write(pr,src,buf,gwpr_write_op_id,NULL,0);
 	}
 	return 0;
 }
 
 int
-gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
+gwpr_send(gwpr * pr, gwrlsrc * src, gwprbuf * buf) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!pdata->didwritecb) {
@@ -872,18 +863,19 @@ gwpr_send(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf) {
 	}
 	#endif
 	if(pdata->wrq) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0);
+		gwpr_asynchronous_write(pr,src,buf,gwpr_send_op_id,NULL,0);
 		return 0;
 	}
-	if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0))) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_send_op_id,NULL,0);
+	if(!(gwpr_synchronous_write(pr,src,buf,gwpr_send_op_id,NULL,0))) {
+		gwpr_asynchronous_write(pr,src,buf,gwpr_send_op_id,NULL,0);
 	}
 	return 0;
 }
 
 int
-gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
+gwpr_sendto(gwpr * pr, gwrlsrc * src, gwprbuf * buf,
 	struct sockaddr_storage * peer, socklen_t peerlen) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * pdata = fsrc->pdata;
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	if(!pdata->didwritecb) {
@@ -891,11 +883,11 @@ gwpr_sendto(gwpr * pr, gwrlsrc_file * fsrc, gwprbuf * buf,
 	}
 	#endif
 	if(pdata->wrq) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);
+		gwpr_asynchronous_write(pr,src,buf,gwpr_sendto_op_id,peer,peerlen);
 		return 0;
 	}
-	if(!(gwpr_synchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen))) {
-		gwpr_asynchronous_write(pr,fsrc,buf,gwpr_sendto_op_id,peer,peerlen);
+	if(!(gwpr_synchronous_write(pr,src,buf,gwpr_sendto_op_id,peer,peerlen))) {
+		gwpr_asynchronous_write(pr,src,buf,gwpr_sendto_op_id,peer,peerlen);
 	}
 	return 0;
 }

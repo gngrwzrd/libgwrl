@@ -32,7 +32,7 @@ gwpr_create(gwrl * rl) {
 			return NULL;
 		}
 	#endif
-
+	
 	gwpr_set_options(pr,&options);
 	pr->rl = rl;
 	rl->pr = pr;
@@ -74,7 +74,7 @@ gwprdata_create() {
 	return data;
 }
 
-gwrlsrc_file *
+gwrlsrc *
 gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {
 	gwrlsrc_file * fsrc = NULL;
 	gwrlsrc * src = gwrl_src_file_create(fd,0,0,NULL);
@@ -83,8 +83,8 @@ gwpr_set_fd(gwpr * pr, fileid_t fd, void * udata) {
 	#endif
 	fsrc = (gwrlsrc_file *)src;
 	src->userdata = udata;
-	gwpr_src_add(pr,fsrc);
-	return fsrc;
+	gwpr_src_add(pr,src);
+	return src;
 }
 
 gwprbufctl *
@@ -111,8 +111,8 @@ gwpr_set_options(gwpr * pr, gwpr_options * opts) {
 }
 
 void
-gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc) {
-	gwrlsrc * src = _gwrlsrc(fsrc);
+gwpr_src_add(gwpr * pr, gwrlsrc * src) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * data = gwprdata_create();
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!data) data = gwprdata_create();
@@ -124,8 +124,8 @@ gwpr_src_add(gwpr * pr, gwrlsrc_file * fsrc) {
 }
 
 void
-gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc) {
-	gwrlsrc * src = _gwrlsrc(fsrc);
+gwpr_src_add_safely(gwpr * pr, gwrlsrc * src) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * data = gwprdata_create();
 	#ifndef GWRL_HIDE_FROM_COVERAGE
 	while(!data) data = gwprdata_create();
@@ -137,29 +137,31 @@ gwpr_src_add_safely(gwpr * pr, gwrlsrc_file * fsrc) {
 }
 
 void
-gwpr_src_remove(gwpr * pr, gwrlsrc_file * src) {
-	if(src->pdata) {
-		free(src->pdata);
-		src->pdata = NULL;
+gwpr_src_remove(gwpr * pr, gwrlsrc * src) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
+	if(fsrc->pdata) {
+		free(fsrc->pdata);
+		fsrc->pdata = NULL;
 	}
-	gwrl_src_remove(pr->rl,(gwrlsrc *)src);
+	gwrl_src_remove(pr->rl,src);
 }
 
 void
-gwpr_src_del(gwpr * pr, gwrlsrc_file * src) {
-	if(src->pdata) {
-		free(src->pdata);
-		src->pdata = NULL;
+gwpr_src_del(gwpr * pr, gwrlsrc * src) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
+	if(fsrc->pdata) {
+		free(fsrc->pdata);
+		fsrc->pdata = NULL;
 	}
-	gwrl_src_del(pr->rl,(gwrlsrc *)src,NULL,true);
+	gwrl_src_del(pr->rl,src,NULL,true);
 }
 
 void
-gwpr_filter_add(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid, gwpr_io_cb * fnc) {
+gwpr_filter_add(gwpr * pr, gwrlsrc * src, gwpr_filter_id fid, gwpr_io_cb * fnc) {
 	#if GWPR_FILTERS_MAX > 0
 		int i = 0;
 		bool added = false;
-		gwprdata * pdata = _gwprdata(fsrc->pdata);
+		gwprdata * pdata = _gwprdata(_gwrlsrcf(src)->pdata);
 	#else
 		gwerr("gwper_filter_add, no filter slots available.");
 		return;
@@ -188,9 +190,9 @@ gwpr_filter_add(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid, gwpr_io_cb *
 }
 
 void
-gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid) {
+gwpr_filter_reset(gwpr * pr, gwrlsrc * src, gwpr_filter_id fid) {
 	#if GWPR_FILTERS_MAX > 0
-		gwprdata * pdata = _gwprdata(fsrc->pdata);
+		gwprdata * pdata = _gwprdata(_gwrlsrcf(src)->pdata);
 		if(GWPR_FILTERS_MAX > 0) {
 			if(fid == gwpr_rdfilter_id && pdata->rdfilters) {
 				bzero(pdata->rdfilters,sizeof(gwpr_io_cb *) * GWPR_FILTERS_MAX);
@@ -202,9 +204,8 @@ gwpr_filter_reset(gwpr * pr, gwrlsrc_file * fsrc, gwpr_filter_id fid) {
 }
 
 void
-gwpr_filter_call(gwpr * pr, gwrlsrc_file * fsrc, gwpr_io_info * ioinfo,
-gwpr_filter_id fid) {
-	gwprdata * pdata = fsrc->pdata;
+gwpr_filter_call(gwpr * pr, gwrlsrc * src, gwpr_io_info * ioinfo, gwpr_filter_id fid) {
+	gwprdata * pdata = _gwrlsrcf(src)->pdata;
 	if(fid == gwpr_rdfilter_id) {
 		int i = 0;
 		if(pdata->rdfilters && pdata->rdfilters[0] != NULL) {
@@ -223,7 +224,8 @@ gwpr_filter_id fid) {
 }
 
 void
-gwpr_set_cb(gwpr * pr, gwrlsrc_file * fsrc, gwpr_cb_id cbid, void * cb) {
+gwpr_set_cb(gwpr * pr, gwrlsrc * src, gwpr_cb_id cbid, void * cb) {
+	gwrlsrc_file * fsrc = _gwrlsrcf(src);
 	gwprdata * data = _gwprdata(fsrc->pdata);
 	switch(cbid) {
 	case gwpr_error_cb_id:
