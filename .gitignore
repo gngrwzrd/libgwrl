@@ -1,3 +1,4 @@
+*.DS_Store
 autom4te.cache/
 stamp-h1
 config.h.in~
